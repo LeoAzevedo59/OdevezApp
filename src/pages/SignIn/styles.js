@@ -1,6 +1,7 @@
 import styled from 'styled-components/native';
 
-export const Logo = styled.Image``;
+export const Logo = styled.Image`
+`;
 
 export const Background = styled.View` 
 flex:1;
@@ -14,6 +15,11 @@ justify-content: center;
 `;
 
 export const AreaInput = styled.View`
+margin-top: 16px;
+margin-bottom: 16px;
+`;
+
+export const AreaCadastro = styled.ScrollView`
 margin-top: 16px;
 margin-bottom: 16px;
 `;
@@ -56,5 +62,15 @@ text-align: center;
 margin-top: 8px;
 `;
 
+export const Back = styled.Image`
+`;
+
+export const Header = styled.View`
+flex-direction: row;
+justify-content: space-between;
+`;
+
+export const Div = styled.View`
+`;
 
 
