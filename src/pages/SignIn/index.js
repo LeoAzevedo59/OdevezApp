@@ -1,13 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Text, TouchableOpacity, Platform } from 'react-native';
 import { Background, Container, AreaInput, Input, Logo, Span, TextoPrincipal, BtnEntrar, TxtEntrar, BtnTxt } from './styles';
 import { useNavigation } from '@react-navigation/native'
+import { AuthContext } from '../../contexts/auth';
 
 export default function SignIn() {
 
     const navigation = useNavigation();
     const [celular, setCelular] = useState('');
     const [senha, setSenha] = useState('');
+
+    function handlerLogin() {
+       
+    }
 
     return (
         <Background>
@@ -41,7 +46,7 @@ export default function SignIn() {
                 </AreaInput>
 
                 <Text style={{ marginTop: 16 }}>Lembrar minha senha.</Text>
-                <BtnEntrar><TxtEntrar>Entrar</TxtEntrar></BtnEntrar>
+                <BtnEntrar onPress={handlerLogin}><TxtEntrar>Entrar</TxtEntrar></BtnEntrar>
                 <TouchableOpacity><BtnTxt style={{ marginTop: 20 }}>Recuperar minha senha</BtnTxt></TouchableOpacity>
                 <TouchableOpacity onPress={() => navigation.navigate('SignUp')}><BtnTxt>cadastrar</BtnTxt></TouchableOpacity>
             </Container>
