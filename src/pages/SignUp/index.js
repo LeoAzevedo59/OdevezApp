@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Platform, TouchableOpacity } from 'react-native';
 import { Background, Container, Input, Logo, BtnEntrar, TxtEntrar, Back, Header, AreaCadastro } from '../SignIn/styles';
 import { useNavigation } from '@react-navigation/native'
+import { AuthContext } from '../../contexts/auth';
 
 export default function SignIn() {
 
@@ -12,6 +13,11 @@ export default function SignIn() {
     const [celular, setCelular] = useState('');
     const [senha, setSenha] = useState('');
     const [confirmarSenha, setConfirmarSenha] = useState('');
+    const { Cadastrar } = useContext(AuthContext);
+
+    function handlerCadastrar() {
+        Cadastrar(nome, sobrenome, email, celular, senha);
+    }
 
     return (
         <Background>
@@ -27,7 +33,7 @@ export default function SignIn() {
                 </Header>
 
                 <AreaCadastro
-                 showsVerticalScrollIndicator={false}>
+                    showsVerticalScrollIndicator={false}>
                     <Input
                         placeholder='Nome'
                         autoCorrect={false}
@@ -86,7 +92,7 @@ export default function SignIn() {
                     />
                 </AreaCadastro>
 
-                <BtnEntrar><TxtEntrar>Cadastrar</TxtEntrar></BtnEntrar>
+                <BtnEntrar onPress={handlerCadastrar}><TxtEntrar>Cadastrar</TxtEntrar></BtnEntrar>
             </Container>
         </Background>
     );

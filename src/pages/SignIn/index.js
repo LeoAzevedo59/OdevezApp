@@ -9,9 +9,10 @@ export default function SignIn() {
     const navigation = useNavigation();
     const [celular, setCelular] = useState('');
     const [senha, setSenha] = useState('');
+    const { Logar } = useContext(AuthContext);
 
     function handlerLogin() {
-       
+        Logar(celular, senha);
     }
 
     return (
