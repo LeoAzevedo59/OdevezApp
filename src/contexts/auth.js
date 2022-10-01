@@ -7,13 +7,17 @@ export default function AuthProvider({ children }) {
     const [usuario, setUsuario] = useState(null);
 
     async function Logar(celular, senha) {
+       
         await api.get("client/login", {
             params: {
                 phonenumber: celular,
-                password: senha
-            }
+                password: senha,
+             
+            },
+            timeout: 2000
         }).then((response) => {
             setUsuario(response.data);
+            console.log(error.response.status);
         }).catch(function (error) {
             console.log(error.response.status);
         });
@@ -32,8 +36,6 @@ export default function AuthProvider({ children }) {
             console.log(error.response.data);
         });
     }
-
-
 
     return (
         <AuthContext.Provider value={{ signed: !!usuario, usuario, Logar, Cadastrar }}>
