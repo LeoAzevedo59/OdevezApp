@@ -1,14 +1,16 @@
 import React, { useState, useContext } from 'react';
-import { Platform, TouchableOpacity } from 'react-native';
-import { Background, Container, Input, Logo, BtnEntrar, TxtEntrar, Back, Header, AreaCadastro } from '../SignIn/styles';
+import { Platform, TouchableOpacity, Text } from 'react-native';
+import { Background, Container, Input, Logo, BtnEntrar, TxtEntrar, Back, Header, AreaCadastro, Texto } from '../SignIn/styles';
 import { useNavigation } from '@react-navigation/native'
 import { AuthContext } from '../../contexts/auth';
+import { MascaraCPF, MascaraCelular } from '../../components/Mascara';
 
 export default function SignIn() {
 
     const navigation = useNavigation();
     const [nome, setNome] = useState('');
     const [sobrenome, setSobrenome] = useState('');
+    const [cpf, setCPF] = useState('');
     const [email, setEmail] = useState('');
     const [celular, setCelular] = useState('');
     const [senha, setSenha] = useState('');
@@ -16,7 +18,15 @@ export default function SignIn() {
     const { Cadastrar } = useContext(AuthContext);
 
     function handlerCadastrar() {
-        Cadastrar(nome, sobrenome, email, celular, senha);
+        Cadastrar(nome, sobrenome, cpf, email, celular, senha, confirmarSenha);
+    }
+
+    function MascararCPF(numeroCPF) {
+        setCPF(MascaraCPF(numeroCPF))
+    }
+
+    function MascararCelular(numeroCelular) {
+        setCelular(MascaraCelular(numeroCelular))
     }
 
     return (
@@ -34,65 +44,62 @@ export default function SignIn() {
 
                 <AreaCadastro
                     showsVerticalScrollIndicator={false}>
+                    <Texto>Nome</Texto>
                     <Input
-                        placeholder='Nome'
                         autoCorrect={false}
                         autoCapitalize='none'
                         value={nome}
                         onChangeText={(text) => setNome(text)}
-                        style={{ marginTop: 20 }}
-                    />
 
+                    />
+                    <Texto>Sobrenome</Texto>
                     <Input
-                        placeholder='Sobrenome'
                         autoCorrect={false}
                         autoCapitalize='none'
                         value={sobrenome}
                         onChangeText={(text) => setSobrenome(text)}
-                        style={{ marginTop: 20 }}
                     />
-
+                    <Texto>CPF</Texto>
                     <Input
-                        placeholder='E-mail'
+                        autoCorrect={false}
+                        autoCapitalize='none'
+                        keyboardType='numeric'
+                        value={cpf}
+                        onChangeText={(text) => MascararCPF(text)}
+                    />
+                    <Texto>E-mail</Texto>
+                    <Input
                         autoCorrect={false}
                         autoCapitalize='none'
                         value={email}
                         onChangeText={(text) => setEmail(text)}
-                        style={{ marginTop: 20 }}
                     />
-
+                    <Texto>Celular</Texto>
                     <Input
-                        placeholder='Celular'
                         autoCorrect={false}
                         autoCapitalize='none'
                         keyboardType='numeric'
                         value={celular}
-                        onChangeText={(text) => setCelular(text)}
-                        style={{ marginTop: 20 }}
+                        onChangeText={(text) => MascararCelular(text)}
                     />
-
+                    <Texto>Senha</Texto>
                     <Input
-                        placeholder='Senha'
                         autoCorrect={false}
                         autoCapitalize='none'
                         secureTextEntry={true}
                         value={senha}
                         onChangeText={(text) => setSenha(text)}
-                        style={{ marginTop: 20 }}
                     />
-
+                    <Texto>Confirmar Senha</Texto>
                     <Input
-                        placeholder='Confirmar Senha'
                         autoCorrect={false}
                         autoCapitalize='none'
                         secureTextEntry={true}
                         value={confirmarSenha}
                         onChangeText={(text) => setConfirmarSenha(text)}
-                        style={{ marginTop: 20 }}
                     />
+                    <BtnEntrar onPress={handlerCadastrar}><TxtEntrar>Cadastrar</TxtEntrar></BtnEntrar>
                 </AreaCadastro>
-
-                <BtnEntrar onPress={handlerCadastrar}><TxtEntrar>Cadastrar</TxtEntrar></BtnEntrar>
             </Container>
         </Background>
     );

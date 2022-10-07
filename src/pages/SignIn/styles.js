@@ -3,12 +3,12 @@ import styled from 'styled-components/native';
 export const Logo = styled.Image`
 `;
 
-export const Background = styled.View` 
+export const Background = styled.KeyboardAvoidingView` 
 flex:1;
 background-color: #F3F3F3;
 `;
 
-export const Container = styled.KeyboardAvoidingView`
+export const Container = styled.View`
 flex: 1;
 padding: 20px;
 justify-content: center;
@@ -73,4 +73,12 @@ justify-content: space-between;
 export const Div = styled.View`
 `;
 
+export const Texto = styled.Text`
+margin-top: 18px;
+`;
+
+export const ContainerSenha = styled.View`
+flex-direction: row;
+align-items: center;
+`;
 

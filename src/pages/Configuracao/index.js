@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import Header from '../../components/Header';
 
 export default function Configuracao() {
     
@@ -8,8 +7,6 @@ export default function Configuracao() {
 
     return (
         <View>
-            <Header />
-
             <Text> Configuracao </Text>
         </View>
     );
