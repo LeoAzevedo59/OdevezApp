@@ -1,8 +1,10 @@
 import React, { useState, useContext } from 'react';
 import { Text, TouchableOpacity, Platform } from 'react-native';
-import { Background, Container, AreaInput, Input, Logo, Span, TextoPrincipal, BtnEntrar, TxtEntrar, BtnTxt } from './styles';
+import { Background, Container, AreaInput, Input, Logo, Span, TextoPrincipal, BtnEntrar, TxtEntrar, BtnTxt, ContainerSenha } from './styles';
 import { useNavigation } from '@react-navigation/native'
 import { AuthContext } from '../../contexts/auth';
+import CheckBox from '../../components/Checkbox';
+import { MascaraCelular } from '../../components/Mascara';
 
 export default function SignIn() {
 
@@ -10,12 +12,18 @@ export default function SignIn() {
     const [celular, setCelular] = useState('');
     const [senha, setSenha] = useState('');
     const { Logar } = useContext(AuthContext);
+    const [lembrarSenha, setLembrarSenha] = useState(false);
+
+    function MascararCelular(numeroCelular) {
+        setCelular(MascaraCelular(numeroCelular))
+    }
 
     function handlerLogin() {
         Logar(celular, senha);
     }
 
     return (
+
         <Background>
             <Container
                 behavior={Platform.OS === 'ios' ? 'padding' : ''}
@@ -32,7 +40,7 @@ export default function SignIn() {
                         autoCapitalize='none'
                         keyboardType='numeric'
                         value={celular}
-                        onChangeText={(text) => setCelular(text)}
+                        onChangeText={(text) => MascararCelular(text)}
                     />
 
                     <Input
@@ -45,12 +53,22 @@ export default function SignIn() {
                         onChangeText={(text) => setSenha(text)}
                     />
                 </AreaInput>
-
-                <Text style={{ marginTop: 16 }}>Lembrar minha senha.</Text>
+                <TouchableOpacity
+                    onPress={() => setLembrarSenha(!lembrarSenha)}>
+                    <ContainerSenha>
+                        <CheckBox
+                            isChecked={lembrarSenha}
+                            onPress={() => setLembrarSenha(!lembrarSenha)}
+                        />
+                        <Text>Lembrar minha senha.</Text>
+                    </ContainerSenha>
+                </TouchableOpacity>
                 <BtnEntrar onPress={handlerLogin}><TxtEntrar>Entrar</TxtEntrar></BtnEntrar>
-                <TouchableOpacity><BtnTxt style={{ marginTop: 20 }}>Recuperar minha senha</BtnTxt></TouchableOpacity>
+                <TouchableOpacity>
+                    <BtnTxt style={{ marginTop: 20 }}>Recuperar minha senha</BtnTxt>
+                </TouchableOpacity>
                 <TouchableOpacity onPress={() => navigation.navigate('SignUp')}><BtnTxt>cadastrar</BtnTxt></TouchableOpacity>
             </Container>
-        </Background>
+        </Background >
     );
 }
