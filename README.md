@@ -1,3 +1,2 @@
 # APP
-
-Aplicativo em React Native
+ [Documentação](https://github.com/LeoAzevedo59/TCC)
