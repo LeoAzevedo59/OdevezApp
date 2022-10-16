@@ -77,8 +77,7 @@ export const Texto = styled.Text`
 margin-top: 18px;
 `;
 
-export const ContainerSenha = styled.View`
-flex-direction: row;
-align-items: center;
+export const Erro = styled.Text`
+color: #e60000;
+padding-top: 4px;
 `;
-
