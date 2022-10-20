@@ -6,7 +6,8 @@ export const AuthContext = createContext({});
 export default function AuthProvider({ children }) {
     const [usuario, setUsuario] = useState(null);
 
-    async function Logar(celular, senha) {       
+    async function Logar(celular, senha) {
+
         await api.get("usuario/entrar", {
             params: {
                 celular: celular,
@@ -14,10 +15,10 @@ export default function AuthProvider({ children }) {
             },
             timeout: 2000
         }).then((response) => {
-            console.log('login sucesso')
             setUsuario(response.data);
         }).catch(function (error) {
             console.log(error.response.status);
+            return false;
         });
     }
 
@@ -31,9 +32,10 @@ export default function AuthProvider({ children }) {
             senha: senha,
             confirmarSenha: confirmarSenha
         }).then((response) => {
-            console.log('cadastro sucesso');
+            setUsuario(response.data);
         }).catch(function (error) {
-            console.log(error.response.data);
+            console.log(error.response.status);
+            return false;
         });
     }
 

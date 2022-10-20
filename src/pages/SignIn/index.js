@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
-import { TouchableOpacity, Platform } from 'react-native';
-import { Background, Container, AreaInput, Input, Logo, Span, TextoPrincipal, BtnEntrar, TxtEntrar, BtnTxt, Texto } from './styles';
+import { TouchableOpacity, Platform, StyleSheet } from 'react-native';
+import { Background, Container, AreaInput, Input, Logo, Span, TextoPrincipal, BtnEntrar, TxtEntrar, BtnTxt, Texto, Erro } from './styles';
 import { useNavigation } from '@react-navigation/native'
 import { AuthContext } from '../../contexts/auth';
 import { MascaraCelular } from '../../components/Mascara';
@@ -8,17 +8,44 @@ import { MascaraCelular } from '../../components/Mascara';
 export default function SignIn() {
 
     const navigation = useNavigation();
+    const { Logar } = useContext(AuthContext);
+
     const [celular, setCelular] = useState('');
     const [senha, setSenha] = useState('');
-    const { Logar } = useContext(AuthContext);
-    const [lembrarSenha, setLembrarSenha] = useState(false);
+    const [erroSenha, SetErroSenha] = useState('');
+    const [erroCelular, setErroCelular] = useState('');
+
 
     function MascararCelular(numeroCelular) {
         setCelular(MascaraCelular(numeroCelular))
     }
 
-    function handlerLogin() {
-        Logar(celular, senha);
+    function isValid() {
+        let retorno = true;
+
+        if (celular == '') {
+            setErroCelular('O campo celular não pode ser vazio.')
+            retorno = false;
+        } else if (celular.length <= 12) {
+            setErroCelular('Celular inválido.')
+            retorno = false;
+        }
+
+        if (senha == '') {
+            SetErroSenha('O campo senha não pode ser vazio.')
+            retorno = false;
+        }
+
+        return retorno
+    }
+
+    async function handlerLogin() {
+        if (isValid()) {
+            if (!await Logar(celular, senha)) {
+                setErroCelular(' ')
+                SetErroSenha('Celular e/ou senha incorreta.')
+            }
+        }
     }
 
     return (
@@ -39,8 +66,15 @@ export default function SignIn() {
                         autoCapitalize='none'
                         keyboardType='numeric'
                         value={celular}
-                        onChangeText={(text) => MascararCelular(text)}
+                        onChangeText={(text) => {
+                            MascararCelular(text)
+                            setErroCelular('')
+                        }}
+                        style={[
+                            erroCelular != '' ? styles.styleErro : styles.styleInput
+                        ]}
                     />
+                    <Erro>{erroCelular}</Erro>
 
                     <Texto>Senha</Texto>
                     <Input
@@ -48,8 +82,16 @@ export default function SignIn() {
                         autoCapitalize='none'
                         secureTextEntry={true}
                         value={senha}
-                        onChangeText={(text) => setSenha(text)}
+                        onChangeText={(text) => {
+                            setSenha(text)
+                            SetErroSenha('')
+                        }}
+                        style={[
+                            erroSenha != '' ? styles.styleErro : styles.styleInput
+                        ]}
                     />
+                    <Erro>{erroSenha}</Erro>
+
                 </AreaInput>
                 <BtnEntrar onPress={handlerLogin}><TxtEntrar>Entrar</TxtEntrar></BtnEntrar>
                 <TouchableOpacity>
@@ -60,3 +102,15 @@ export default function SignIn() {
         </Background >
     );
 }
+
+
+const styles = StyleSheet.create({
+    styleErro: {
+        borderWidth: 1,
+        borderColor: '#e60000',
+        borderRadius: 4
+    },
+    styleInput: {
+        borderColor: '#000'
+    }
+})
