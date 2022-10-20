@@ -51,7 +51,7 @@ function AppRoutes() {
                                     <Notificacao>2</Notificacao>
                                 </TouchableOpacity>
                                 <View style={{ alignSelf: 'center' }}>
-                                    <NomeUsuario>{usuario.apelido}</NomeUsuario>
+                                    <NomeUsuario>leo</NomeUsuario>
                                 </View>
                             </ContainerPerfil>
                             <ContainerIcons>
@@ -211,7 +211,7 @@ function AppRoutes() {
                                     <Notificacao>2</Notificacao>
                                 </TouchableOpacity>
                                 <View style={{ alignSelf: 'center' }}>
-                                    <NomeUsuario>{usuario.apelido}</NomeUsuario>
+                                    <NomeUsuario>leo</NomeUsuario>
                                 </View>
                             </ContainerPerfil>
                             <ContainerIcons>

@@ -39,8 +39,12 @@ export default function AuthProvider({ children }) {
         });
     }
 
+    async function Deslogar() {
+        setUsuario(null);
+    }
+
     return (
-        <AuthContext.Provider value={{ signed: !!usuario, usuario, Logar, Cadastrar }}>
+        <AuthContext.Provider value={{ signed: !!usuario, usuario, Logar, Cadastrar, Deslogar }}>
             {children}
         </AuthContext.Provider>
     );
