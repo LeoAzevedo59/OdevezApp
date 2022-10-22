@@ -9,7 +9,7 @@ function Routes() {
     const { signed } = useContext(AuthContext);
 
     return (
-        signed ? <AppRoutes /> : <AuthRoutes /> //em produção
+        signed ? <AppRoutes /> : <AuthRoutes />//em produção
         // <AppRoutes /> //debug
     );
 }

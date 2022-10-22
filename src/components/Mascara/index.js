@@ -14,3 +14,13 @@ export const MascaraCelular = value => {
         .replace(/(\d{5})/, '$1-')
         .replace(/(-\d{4})\d+?$/, '$1')
 }
+
+export const InputString50 = value => {
+    return value
+        .replace(/[^a-zA-Z]/g, '').substring(0, 50)
+}
+
+export const InputEmail = value => {
+    return value
+        .replace(/^[a-z0-9.]+@[a-z0-9]+\.[a-z]+\.[a-z]?$/i).substring(0, 50)
+}

@@ -3,7 +3,7 @@ import { Platform, TouchableOpacity, StyleSheet } from 'react-native';
 import { Background, Container, Input, Logo, BtnEntrar, TxtEntrar, Back, Header, AreaCadastro, Texto, Erro } from '../SignIn/styles';
 import { useNavigation } from '@react-navigation/native'
 import { AuthContext } from '../../contexts/auth';
-import { MascaraCPF, MascaraCelular } from '../../components/Mascara';
+import { MascaraCPF, MascaraCelular, InputString50, InputEmail } from '../../components/Mascara';
 
 export default function SignIn() {
 
@@ -26,6 +26,7 @@ export default function SignIn() {
     const [erroSenha, setErroSenha] = useState('');
     const [erroSenhaConfirma, setErroSenhaConfirma] = useState('');
     const [erroGeral, setErroGeral] = useState('');
+
 
 
     function isValid() {
@@ -82,14 +83,6 @@ export default function SignIn() {
         }
     }
 
-    function MascararCPF(numeroCPF) {
-        setCPF(MascaraCPF(numeroCPF))
-    }
-
-    function MascararCelular(numeroCelular) {
-        setCelular(MascaraCelular(numeroCelular))
-    }
-
     return (
         <Background>
             <Container
@@ -111,7 +104,7 @@ export default function SignIn() {
                         autoCapitalize='none'
                         value={nome}
                         onChangeText={(text) => {
-                            setNome(text)
+                            setNome(InputString50(text))
                             setErroNome('')
                         }}
                         style={[
@@ -126,7 +119,7 @@ export default function SignIn() {
                         autoCapitalize='none'
                         value={sobrenome}
                         onChangeText={(text) => {
-                            setSobrenome(text)
+                            setSobrenome(InputString50(text))
                             setErroSobrenome('')
                         }}
                         style={[
@@ -142,7 +135,7 @@ export default function SignIn() {
                         keyboardType='numeric'
                         value={cpf}
                         onChangeText={(text) => {
-                            MascararCPF(text)
+                            setCPF(MascaraCPF(text))
                             setErroCPF('')
                             setErroGeral('')
                         }}
@@ -159,7 +152,7 @@ export default function SignIn() {
                         value={email}
                         keyboardType='email-address'
                         onChangeText={(text) => {
-                            setEmail(text)
+                            setEmail(InputEmail(text))
                             setErroEmail('')
                         }}
                         style={[
@@ -175,7 +168,7 @@ export default function SignIn() {
                         keyboardType='numeric'
                         value={celular}
                         onChangeText={(text) => {
-                            MascararCelular(text)
+                            setCelular(MascaraCelular(text))
                             setErroCelular('')
                         }}
                         style={[
