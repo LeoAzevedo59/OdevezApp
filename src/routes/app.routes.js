@@ -50,7 +50,7 @@ function AppRoutes() {
                                     <ImgPerfil source={require('../../assets/images/homer.jpeg')} />
                                 </TouchableOpacity>
                                 <View style={{ alignSelf: 'center' }}>
-                                    {/* <NomeUsuario>{usuario.apelido}</NomeUsuario> */}
+                                    <NomeUsuario>{usuario.apelido}</NomeUsuario>
                                 </View>
                             </ContainerPerfil>
                             <ContainerIcons>
