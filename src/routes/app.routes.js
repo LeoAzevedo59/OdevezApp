@@ -1,14 +1,16 @@
 import React, { useState, useContext } from 'react';
 import { View, TouchableOpacity, useWindowDimensions } from 'react-native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Ionicons, MaterialCommunityIcons, Feather, Octicons } from '@expo/vector-icons';
+import { AuthContext } from '../contexts/auth';
+
 import Home from '../pages/Home';
 import Carteira from '../pages/Carteira';
 import Dashboard from '../pages/Dashboard';
 import Mais from '../pages/Mais';
 import Adicionar from '../pages/Adicionar';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Ionicons, MaterialCommunityIcons, Feather, Octicons } from '@expo/vector-icons';
+
 import styled from 'styled-components/native';
-import { AuthContext } from '../contexts/auth';
 
 const AppStack = createBottomTabNavigator();
 
@@ -16,7 +18,9 @@ function AppRoutes() {
 
     const window = useWindowDimensions();
     const tamanho = window.width;
+
     const [eye, setEye] = useState('eye');
+
     const { usuario } = useContext(AuthContext);
 
     function exibirSimNao() {
@@ -29,126 +33,65 @@ function AppRoutes() {
     return (
         <AppStack.Navigator
             screenOptions={{
-                tabBarActiveTintColor: '#111',
-                tabBarStyle: {
-                    alignItems: 'center',
-                    paddingBottom: 5,
-                    paddingTop: 5
-                }
+                headerTitle: () => { return null },
+                headerRight: () => { return null },
+                headerLeft: () => (
+                    <Container style={{ width: tamanho }}>
+                        <ContainerPerfil>
+                            <TouchableOpacity>
+                                <ImgPerfil source={require('../../assets/images/homer.jpeg')} />
+                            </TouchableOpacity>
+                            <View style={{ alignSelf: 'center' }}>
+                                <NomeUsuario>{usuario.apelido}</NomeUsuario>
+                            </View>
+                        </ContainerPerfil>
+                        <ContainerIcons>
+                            <TouchableOpacity >
+                                <MaterialCommunityIcons name="comment-question-outline" size={24} color="black" />
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={exibirSimNao}>
+                                <Feather name={eye} size={24} color="black" />
+                            </TouchableOpacity>
+                            <TouchableOpacity >
+                                <Octicons name="gear" size={24} color="black" />
+                            </TouchableOpacity>
+                        </ContainerIcons>
+                    </Container>
+                )
             }}>
 
             <AppStack.Screen
                 name='Home'
                 component={Home}
                 options={{
-                    headerTitle: () => { return null },
-                    headerRight: () => { return null },
-                    headerLeft: () => (
-                        <Container style={{ width: tamanho }}>
-                            <ContainerPerfil>
-                                <TouchableOpacity>
-                                    <ImgPerfil source={require('../../assets/images/homer.jpeg')} />
-                                </TouchableOpacity>
-                                <View style={{ alignSelf: 'center' }}>
-                                    <NomeUsuario>{usuario.apelido}</NomeUsuario>
-                                </View>
-                            </ContainerPerfil>
-                            <ContainerIcons>
-                                <TouchableOpacity >
-                                    <MaterialCommunityIcons name="comment-question-outline" size={24} color="black" />
-                                </TouchableOpacity>
-                                <TouchableOpacity onPress={exibirSimNao}>
-                                    <Feather name={eye} size={24} color="black" />
-                                </TouchableOpacity>
-                                <TouchableOpacity >
-                                    <Octicons name="gear" size={24} color="black" />
-                                </TouchableOpacity>
-                            </ContainerIcons>
-                        </Container>
-                    ),
-                    headerStyle: {
-                        backgroundColor: '#FAFF00',
-                        borderBottomRightRadius: 8,
-                        borderBottomLeftRadius: 8,
-                    },
-                    tabBarIcon: ({ size, color }) => (
-                        <Ionicons name='home-outline' size={size} color={color} /> // home
-                    )
+                    tabBarActiveTintColor: 'black',
+                    tabBarIcon: ({ size, color }) => ([
+                        color === 'black' ?
+                            <Ionicons name={'home'} size={size} color={color} />
+                            :
+                            <Ionicons name={'home-outline'} size={size} color={color} />
+                    ])
                 }} />
 
             <AppStack.Screen
                 name='Dashboard'
                 component={Dashboard}
                 options={{
-                    headerTitle: () => { return null },
-                    headerRight: () => { return null },
-                    headerLeft: () => (
-                        <Container style={{ width: tamanho }}>
-                            <ContainerPerfil>
-                                <TouchableOpacity>
-                                    <ImgPerfil source={require('../../assets/images/homer.jpeg')} />
-                                </TouchableOpacity>
-                                <View style={{ alignSelf: 'center' }}>
-                                    <NomeUsuario>{usuario.apelido}</NomeUsuario>
-                                </View>
-                            </ContainerPerfil>
-                            <ContainerIcons>
-                                <TouchableOpacity >
-                                    <MaterialCommunityIcons name="comment-question-outline" size={24} color="black" />
-                                </TouchableOpacity>
-                                <TouchableOpacity onPress={exibirSimNao}>
-                                    <Feather name={eye} size={24} color="black" />
-                                </TouchableOpacity>
-                                <TouchableOpacity >
-                                    <Octicons name="gear" size={24} color="black" />
-                                </TouchableOpacity>
-                            </ContainerIcons>
-                        </Container>
-                    ),
-                    headerStyle: {
-                        backgroundColor: '#FAFF00',
-                        borderBottomRightRadius: 8,
-                        borderBottomLeftRadius: 8,
-                    },
+                    tabBarActiveTintColor: 'black',
                     tabBarIcon: ({ size, color }) => (
-                        <MaterialCommunityIcons name='view-dashboard-outline' size={size} color={color} /> // view-dashboard
-                    )
+                        [
+                            color === 'black' ?
+                                <MaterialCommunityIcons name='view-dashboard' size={size} color={color} />
+                                :
+                                <MaterialCommunityIcons name='view-dashboard-outline' size={size} color={color} />
+                        ])
                 }} />
 
             <AppStack.Screen
                 name='Adicionar'
                 component={Adicionar}
                 options={{
-                    headerTitle: () => { return null },
-                    headerRight: () => { return null },
-                    headerLeft: () => (
-                        <Container style={{ width: tamanho }}>
-                            <ContainerPerfil>
-                                <TouchableOpacity>
-                                    <ImgPerfil source={require('../../assets/images/homer.jpeg')} />
-                                </TouchableOpacity>
-                                <View style={{ alignSelf: 'center' }}>
-                                    <NomeUsuario>{usuario.apelido}</NomeUsuario>
-                                </View>
-                            </ContainerPerfil>
-                            <ContainerIcons>
-                                <TouchableOpacity >
-                                    <MaterialCommunityIcons name="comment-question-outline" size={24} color="black" />
-                                </TouchableOpacity>
-                                <TouchableOpacity onPress={exibirSimNao}>
-                                    <Feather name={eye} size={24} color="black" />
-                                </TouchableOpacity>
-                                <TouchableOpacity >
-                                    <Octicons name="gear" size={24} color="black" />
-                                </TouchableOpacity>
-                            </ContainerIcons>
-                        </Container>
-                    ),
-                    headerStyle: {
-                        backgroundColor: '#FAFF00',
-                        borderBottomRightRadius: 8,
-                        borderBottomLeftRadius: 8,
-                    },
+                    tabBarActiveTintColor: 'black',
                     tabBarIcon: ({ size, color }) => (
                         <Octicons name='diff-added' size={size} color={color} /> // wallet-outline
                     )
@@ -158,39 +101,13 @@ function AppRoutes() {
                 name='Carteira'
                 component={Carteira}
                 options={{
-                    headerTitle: () => { return null },
-                    headerRight: () => { return null },
-                    headerLeft: () => (
-                        <Container style={{ width: tamanho }}>
-                            <ContainerPerfil>
-                                <TouchableOpacity>
-                                    <ImgPerfil source={require('../../assets/images/homer.jpeg')} />
-                                </TouchableOpacity>
-                                <View style={{ alignSelf: 'center' }}>
-                                    <NomeUsuario>{usuario.apelido}</NomeUsuario>
-                                </View>
-                            </ContainerPerfil>
-                            <ContainerIcons>
-                                <TouchableOpacity >
-                                    <MaterialCommunityIcons name="comment-question-outline" size={24} color="black" />
-                                </TouchableOpacity>
-                                <TouchableOpacity onPress={exibirSimNao}>
-                                    <Feather name={eye} size={24} color="black" />
-                                </TouchableOpacity>
-                                <TouchableOpacity >
-                                    <Octicons name="gear" size={24} color="black" />
-                                </TouchableOpacity>
-                            </ContainerIcons>
-                        </Container>
-                    ),
-                    headerStyle: {
-                        backgroundColor: '#FAFF00',
-                        borderBottomRightRadius: 8,
-                        borderBottomLeftRadius: 8,
-                    },
-                    tabBarIcon: ({ size, color }) => (
-                        <Ionicons name='wallet-outline' size={size} color={color} /> // wallet
-                    )
+                    tabBarActiveTintColor: 'black',
+                    tabBarIcon: ({ size, color }) => ([
+                        color === 'black' ?
+                            <Ionicons name='wallet' size={size} color={color} /> // wallet
+                            :
+                            <Ionicons name='wallet-outline' size={size} color={color} /> // wallet
+                    ])
                 }} />
 
             <AppStack.Screen
@@ -198,6 +115,7 @@ function AppRoutes() {
                 component={Mais}
                 options={{
                     headerShown: false,
+                    tabBarActiveTintColor: 'black',
                     tabBarIcon: ({ size, color }) => (
                         <Feather name='more-horizontal' size={size} color={color} />
                     )
