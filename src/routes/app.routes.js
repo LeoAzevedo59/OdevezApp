@@ -5,6 +5,8 @@ import { Ionicons, MaterialCommunityIcons, Feather, Octicons } from '@expo/vecto
 import { AuthContext } from '../contexts/auth';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
+import { Container, ContainerPerfil, ContainerIcons, ImgPerfil, NomeUsuario, Icone } from './style';
+
 import Home from '../pages/Home';
 import Carteira from '../pages/Carteira';
 import Dashboard from '../pages/Dashboard';
@@ -13,7 +15,7 @@ import Adicionar from '../pages/Adicionar';
 import Configuracao from '../pages/Configuracao';
 import Duvidas from '../pages/Duvidas';
 
-import styled from 'styled-components/native';
+
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -138,52 +140,3 @@ function AppRoutes() {
 }
 
 export default AppRoutes;
-
-const Container = styled.View`
-background-color: #FAFF00;
-height: 60px;
-flex-direction: row;
-justify-content: space-between;
-align-items: center;
-padding: 0px 16px;
-`;
-
-const ContainerPerfil = styled.View`
-position: relative;
-flex-direction: row;
-`;
-
-const Notificacao = styled.Text`
-background-color: #212121;
-width: 16px;
-height: 16px;
-color: #FAFF00;
-border-radius: 50px;
-text-align: center;
-font-size: 12px;
-position: absolute;
-margin-left: 36px;
-`;
-
-const ContainerIcons = styled.View`
-width: 120px;
-flex-direction: row;
-justify-content: space-between;
-`;
-
-const ImgPerfil = styled.Image`
-width: 50px;
-height: 50px;
-border-radius: 50px;
-`;
-
-const NomeUsuario = styled.Text`
-padding-left: 8px;
-font-size: 16px;
-font-weight: bold;
-`;
-
-const Icone = styled.Image`
-height: 20px;
-width: 20px;
-`;

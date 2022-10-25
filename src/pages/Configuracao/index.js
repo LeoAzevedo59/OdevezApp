@@ -1,10 +1,10 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 
-export default function Configuracao() {
+export default function Configuracao({ navigation }) {
     return (
         <View>
-            <Text> Configuracao </Text>
+            <Text onPress={() => navigation.navigate('Duvidas')}> btnConfiguracao </Text>
         </View>
     );
 }
