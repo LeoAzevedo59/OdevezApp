@@ -45,7 +45,7 @@ function Tabs({ navigation }) {
                                 <ImgPerfil source={require('../../assets/images/julius-rock.jpg')} />
                             </TouchableOpacity>
                             <View style={{ alignSelf: 'center' }}>
-                                <NomeUsuario>{usuario.apelido}</NomeUsuario>
+                                {/* <NomeUsuario>{usuario.apelido}</NomeUsuario> */}
                             </View>
                         </ContainerPerfil>
                         <ContainerIcons>
