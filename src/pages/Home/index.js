@@ -31,7 +31,7 @@ import {
   TxtMaisExtrato
 } from './style';
 
-export default function Home({ navigation }) {
+export default function Home({ }) {
   const { usuario } = useContext(AuthContext);
 
   return (

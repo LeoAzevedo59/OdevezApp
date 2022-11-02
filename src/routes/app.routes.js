@@ -14,6 +14,7 @@ import Mais from '../pages/Mais';
 import Adicionar from '../pages/Adicionar';
 import Configuracao from '../pages/Configuracao';
 import Duvidas from '../pages/Duvidas';
+import { withTheme } from 'styled-components';
 
 
 
@@ -45,7 +46,7 @@ function Tabs({ navigation }) {
                                 <ImgPerfil source={require('../../assets/images/julius-rock.jpg')} />
                             </TouchableOpacity>
                             <View style={{ alignSelf: 'center' }}>
-                                {/* <NomeUsuario>{usuario.apelido}</NomeUsuario> */}
+                                <NomeUsuario>{usuario.apelido}</NomeUsuario>
                             </View>
                         </ContainerPerfil>
                         <ContainerIcons>
@@ -133,8 +134,21 @@ function AppRoutes() {
 
         <Stack.Navigator>
             <Stack.Screen name='Home' component={Tabs} options={{ headerShown: false }} />
-            <Stack.Screen name='Configuracao' component={Configuracao} />
-            <Stack.Screen name='Duvidas' component={Duvidas} />
+            <Stack.Screen
+                name='Configuracao'
+                component={Configuracao}
+                options={{
+                    headerTitle: 'Configurações',
+
+                }}
+            />
+            <Stack.Screen
+                name='Duvidas'
+                component={Duvidas}
+                options={{
+                    headerTitle: 'Dúvidas',
+                }}
+            />
         </Stack.Navigator>
     );
 }
