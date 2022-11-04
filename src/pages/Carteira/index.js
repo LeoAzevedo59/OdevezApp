@@ -23,8 +23,11 @@ import {
     Feather,
     FontAwesome
 } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native'
 
 export default function Carteira() {
+    const navigation = useNavigation();
+
     return (
         <Background>
             <PatrimonioClick>
@@ -35,7 +38,7 @@ export default function Carteira() {
                 <Feather name="plus-circle" size={24} color="black" />
             </PatrimonioClick>
             <ScrollView>
-                <Cartao onPress={() => alert("Cartão")}>
+                <Cartao onPress={() => navigation.navigate('Extrato')}>
                     <Container>
                         <ContainerHeader>
                             <Header>

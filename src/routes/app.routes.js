@@ -4,7 +4,6 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons, MaterialCommunityIcons, Feather, Octicons } from '@expo/vector-icons';
 import { AuthContext } from '../contexts/auth';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
 import { Container, ContainerPerfil, ContainerIcons, ImgPerfil, NomeUsuario, Icone } from './style';
 
 import Home from '../pages/Home';
@@ -14,9 +13,7 @@ import Mais from '../pages/Mais';
 import Adicionar from '../pages/Adicionar';
 import Configuracao from '../pages/Configuracao';
 import Duvidas from '../pages/Duvidas';
-import { withTheme } from 'styled-components';
-
-
+import Extrato from '../pages/Extrato';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -147,6 +144,13 @@ function AppRoutes() {
                 component={Duvidas}
                 options={{
                     headerTitle: 'Dúvidas',
+                }}
+            />
+            <Stack.Screen
+                name='Extrato'
+                component={Extrato}
+                options={{
+                    headerTitle: 'Extrato',
                 }}
             />
         </Stack.Navigator>

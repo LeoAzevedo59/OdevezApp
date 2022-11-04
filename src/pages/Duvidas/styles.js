@@ -18,7 +18,7 @@ margin-bottom: 4px;
 `;
 
 export const Titulo = styled.Text`
-font-size: 16;
+font-size: 16px;
 font-weight: bold;
 `;
 
