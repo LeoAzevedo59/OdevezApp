@@ -1,10 +1,30 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { } from 'react-native';
+import { Background, ContainerButton, Botao, TextoBotao } from '../Mais/styles';
+import {
+    Feather,
+    Ionicons,
+    MaterialIcons,
+    AntDesign
+} from '@expo/vector-icons';
 
 export default function Adicionar() {
     return (
-        <View>
-            <Text> Adicionar </Text>
-        </View>
+        <Background>
+            <ContainerButton>
+                <Botao>
+                    <MaterialIcons name="attach-money" size={24} color="black" />
+                    <TextoBotao>Patrimônio</TextoBotao>
+                </Botao>
+                <Botao>
+                    <AntDesign name="barschart" size={24} color="black" />
+                    <TextoBotao>Ações</TextoBotao>
+                </Botao>
+                <Botao>
+                    <MaterialIcons name="apartment" size={24} color="black" />
+                    <TextoBotao>Fundos Imobiliários</TextoBotao>
+                </Botao>
+            </ContainerButton>
+        </Background>
     );
 }

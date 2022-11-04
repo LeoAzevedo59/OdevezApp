@@ -14,6 +14,7 @@ import Mais from '../pages/Mais';
 import Adicionar from '../pages/Adicionar';
 import Configuracao from '../pages/Configuracao';
 import Duvidas from '../pages/Duvidas';
+import { withTheme } from 'styled-components';
 
 
 
@@ -133,8 +134,21 @@ function AppRoutes() {
 
         <Stack.Navigator>
             <Stack.Screen name='Home' component={Tabs} options={{ headerShown: false }} />
-            <Stack.Screen name='Configuracao' component={Configuracao} />
-            <Stack.Screen name='Duvidas' component={Duvidas} />
+            <Stack.Screen
+                name='Configuracao'
+                component={Configuracao}
+                options={{
+                    headerTitle: 'Configurações',
+
+                }}
+            />
+            <Stack.Screen
+                name='Duvidas'
+                component={Duvidas}
+                options={{
+                    headerTitle: 'Dúvidas',
+                }}
+            />
         </Stack.Navigator>
     );
 }
