@@ -30,7 +30,7 @@ export default function Carteira() {
 
     return (
         <Background>
-            <PatrimonioClick>
+            <PatrimonioClick onPress={() => navigation.navigate('AdicionarAlterarCarteira')}>
                 <ContainerPatrimonio>
                     <TxtPatrimonio> Carteiras </TxtPatrimonio>
                     <TxtValorPatrimonio> R$ 485.324,11 </TxtValorPatrimonio>
@@ -38,7 +38,7 @@ export default function Carteira() {
                 <Feather name="plus-circle" size={24} color="black" />
             </PatrimonioClick>
             <ScrollView>
-                <Cartao onPress={() => navigation.navigate('Extrato')}>
+                <Cartao>
                     <Container>
                         <ContainerHeader>
                             <Header>

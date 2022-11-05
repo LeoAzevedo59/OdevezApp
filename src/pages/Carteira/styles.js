@@ -35,7 +35,7 @@ flex-direction: column;
 height: 100%;
 `;
 
-export const Cartao = styled.TouchableOpacity`
+export const Cartao = styled.View`
 width: 100%;
 height: 124px;
 border-radius: 8px;

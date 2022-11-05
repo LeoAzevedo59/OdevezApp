@@ -14,6 +14,9 @@ import Adicionar from '../pages/Adicionar';
 import Configuracao from '../pages/Configuracao';
 import Duvidas from '../pages/Duvidas';
 import Extrato from '../pages/Extrato';
+import Patrimonio from '../pages/Patrimonio';
+import Objetivo from '../pages/Objetivo';
+import AdicionarAlterarCarteira from '../pages/AdicionarAlterarCarteira';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -39,9 +42,9 @@ function Tabs({ navigation }) {
                 headerLeft: () => (
                     <Container style={{ width: tamanho }}>
                         <ContainerPerfil>
-                            <TouchableOpacity>
+                            <View>
                                 <ImgPerfil source={require('../../assets/images/julius-rock.jpg')} />
-                            </TouchableOpacity>
+                            </View>
                             <View style={{ alignSelf: 'center' }}>
                                 {/* <NomeUsuario>{usuario.apelido}</NomeUsuario> */}
                             </View>
@@ -130,7 +133,7 @@ function AppRoutes() {
     return (
 
         <Stack.Navigator>
-            <Stack.Screen name='Home' component={Tabs} options={{ headerShown: false }} />
+            <Stack.Screen name='HomeLink' component={Tabs} options={{ headerShown: false }} />
             <Stack.Screen
                 name='Configuracao'
                 component={Configuracao}
@@ -151,6 +154,27 @@ function AppRoutes() {
                 component={Extrato}
                 options={{
                     headerTitle: 'Extrato',
+                }}
+            />
+            <Stack.Screen
+                name='Patrimonio'
+                component={Patrimonio}
+                options={{
+                    headerTitle: 'Patrimonio',
+                }}
+            />
+            <Stack.Screen
+                name='Objetivo'
+                component={Objetivo}
+                options={{
+                    headerTitle: 'Objetivo',
+                }}
+            />
+            <Stack.Screen
+                name='AdicionarAlterarCarteira'
+                component={AdicionarAlterarCarteira}
+                options={{
+                    headerTitle: 'AdicionarAlterarCarteira',
                 }}
             />
         </Stack.Navigator>

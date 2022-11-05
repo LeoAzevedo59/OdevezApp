@@ -10,12 +10,15 @@ import {
     Feather,
     Ionicons
 } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 
 export default function Mais() {
+    const navigate = useNavigation();
+
     return (
         <Background>
             <ContainerButton>
-                <Botao>
+                <Botao onPress={() => navigate.navigate('Objetivo')}>
                     <Feather name="target" size={24} color="black" />
                     <TextoBotao>Objetivos</TextoBotao>
                 </Botao>

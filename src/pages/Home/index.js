@@ -30,13 +30,15 @@ import {
   TxtValorPorcentagem,
   TxtMaisExtrato
 } from './style';
+import { useNavigation } from '@react-navigation/native';
 
-export default function Home({ }) {
+export default function Home() {
   const { usuario } = useContext(AuthContext);
+  const navigation = useNavigation();
 
   return (
     <Background>
-      <PatrimonioClick>
+      <PatrimonioClick onPress={() => navigation.navigate('Carteira')}>
         <ContainerPatrimonio>
           <TxtPatrimonio> Patrimônio </TxtPatrimonio>
           <TxtValorPatrimonio> R$ 485.324,11 </TxtValorPatrimonio>
@@ -50,7 +52,7 @@ export default function Home({ }) {
         horizontal={true}
       >
         <ContainerObjetivo>
-          <Objetivo>
+          <Objetivo onPress={() => navigation.navigate('Objetivo')}>
             <ContainerIcones>
               <Feather name="target" size={24} color="black" />
               <FontAwesome name="users" size={24} color="black" />
@@ -64,7 +66,7 @@ export default function Home({ }) {
         </ContainerObjetivo>
 
         <ContainerObjetivo>
-          <Objetivo>
+          <Objetivo onPress={() => navigation.navigate('Objetivo')}>
             <ContainerIcones>
               <Feather name="target" size={24} color="black" />
               <FontAwesome name="user" size={24} color="black" />
@@ -78,7 +80,7 @@ export default function Home({ }) {
         </ContainerObjetivo>
 
         <ContainerObjetivo>
-          <Objetivo>
+          <Objetivo onPress={() => navigation.navigate('Objetivo')}>
             <ContainerIcones>
               <Feather name="target" size={24} color="black" />
               <FontAwesome name="user" size={24} color="black" />
@@ -94,7 +96,7 @@ export default function Home({ }) {
 
 
       <ContainerExtrato>
-        <Extrato>
+        <Extrato onPress={() => navigation.navigate('Extrato')}>
           <ContainerInfo>
             <IconeExtrato>
               <MaterialIcons name="payments" size={24} color="black" />
@@ -113,7 +115,7 @@ export default function Home({ }) {
           </TxtValorExtrato>
         </Extrato>
 
-        <Extrato>
+        <Extrato onPress={() => navigation.navigate('Extrato')}>
           <ContainerInfo>
             <IconeExtrato>
               <MaterialIcons name="payments" size={24} color="black" />
