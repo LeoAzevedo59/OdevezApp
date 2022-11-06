@@ -43,7 +43,7 @@ function Tabs({ navigation }) {
                     <Container style={{ width: tamanho }}>
                         <ContainerPerfil>
                             <View>
-                                <ImgPerfil source={require('../../assets/images/julius-rock.jpg')} />
+                                <ImgPerfil source={require('../../assets/images/251894087_1962039253968567_7355826083414885049_n.jpg')} />
                             </View>
                             <View style={{ alignSelf: 'center' }}>
                                 {/* <NomeUsuario>{usuario.apelido}</NomeUsuario> */}
@@ -133,7 +133,8 @@ function AppRoutes() {
     return (
 
         <Stack.Navigator>
-            <Stack.Screen name='HomeLink' component={Tabs} options={{ headerShown: false }} />
+            <Stack.Screen name='Home
+            ' component={Tabs} options={{ headerShown: false }} />
             <Stack.Screen
                 name='Configuracao'
                 component={Configuracao}

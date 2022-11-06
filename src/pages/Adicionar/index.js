@@ -2,8 +2,6 @@ import React from 'react';
 import { } from 'react-native';
 import { Background, ContainerButton, Botao, TextoBotao } from '../Mais/styles';
 import {
-    Feather,
-    Ionicons,
     MaterialIcons,
     AntDesign
 } from '@expo/vector-icons';
