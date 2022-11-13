@@ -2,10 +2,9 @@ import React from 'react';
 import { } from 'react-native';
 import { Background, ContainerButton, Botao, TextoBotao } from '../Mais/styles';
 import {
-    Feather,
-    Ionicons,
     MaterialIcons,
-    AntDesign
+    AntDesign,
+    Feather
 } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 
@@ -17,6 +16,10 @@ export default function Adicionar() {
                 <Botao onPress={() => navigation.navigate('Patrimonio')}>
                     <MaterialIcons name="attach-money" size={24} color="black" />
                     <TextoBotao>Patrimônio</TextoBotao>
+                </Botao>
+                <Botao onPress={() => navigation.navigate('Objetivo')}>
+                    <Feather name="target" size={24} color="black" />
+                    <TextoBotao>Objetivo</TextoBotao>
                 </Botao>
                 <Botao>
                     <AntDesign name="barschart" size={24} color="black" />
