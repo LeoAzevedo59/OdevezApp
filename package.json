@@ -11,6 +11,7 @@
   "dependencies": {
     "@hookform/resolvers": "^2.9.8",
     "@react-native-community/checkbox": "^0.5.12",
+    "@react-native-community/datetimepicker": "^6.5.5",
     "@react-native-community/masked-view": "^0.1.11",
     "@react-native-community/picker": "^1.8.1",
     "@react-navigation/bottom-tabs": "^6.4.0",
