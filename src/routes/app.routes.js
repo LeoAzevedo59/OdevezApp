@@ -26,13 +26,17 @@ function Tabs({ navigation }) {
     const tamanho = window.width;
     const [eye, setEye] = useState('eye');
 
-    const { usuario } = useContext(AuthContext);
+    const { usuario, ExibirValor } = useContext(AuthContext);
 
     function exibirSimNao() {
-        if (eye === 'eye')
+        if (eye === 'eye') {
             setEye('eye-off')
-        else
+            ExibirValor(false);
+        }
+        else {
             setEye('eye')
+            ExibirValor(true);
+        }
     }
     return (
         <Tab.Navigator

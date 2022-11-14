@@ -1,9 +1,10 @@
-import React, { useRef } from 'react';
+import React, { useRef, useContext } from 'react';
 import { ScrollView, TouchableOpacity, Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Modalize } from 'react-native-modalize';
 import { ContainerButton, Botao, TextoBotao } from '../Mais/styles';
+import { AuthContext } from '../../contexts/auth';
 
 import {
     Background,
@@ -35,6 +36,7 @@ import {
 export default function Carteira() {
     const navigation = useNavigation();
     const modalizeRef = useRef(null);
+    const { usuario, exibirValor } = useContext(AuthContext);
 
     function onOpen() {
         modalizeRef.current?.open();
@@ -46,7 +48,9 @@ export default function Carteira() {
                 <PatrimonioClick onPress={() => navigation.navigate('AdicionarAlterarCarteira')}>
                     <ContainerPatrimonio>
                         <TxtPatrimonio> Carteiras </TxtPatrimonio>
-                        <TxtValorPatrimonio> R$ 485.324,11 </TxtValorPatrimonio>
+                        <TxtValorPatrimonio> R$
+                            {exibirValor == true ? "485.324,11" : "****"}
+                        </TxtValorPatrimonio>
                     </ContainerPatrimonio>
                     <Feather name="plus-circle" size={24} color="black" />
                 </PatrimonioClick>

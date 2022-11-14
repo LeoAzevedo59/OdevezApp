@@ -1,140 +1,115 @@
-import React, { useContext } from 'react';
-import { Image, ScrollView, Text } from 'react-native';
+//#region Imports
+import React, { useContext, useState } from 'react';
+import { ScrollView, View } from 'react-native';
 import { AuthContext } from '../../contexts/auth';
-import {
-  Feather,
-  FontAwesome,
-  MaterialIcons
-} from '@expo/vector-icons';
-import {
-  Background,
-  PatrimonioClick,
-  ContainerPatrimonio,
-  TxtPatrimonio,
-  TxtValorPatrimonio,
-  Objetivo,
-  ContainerObjetivo,
-  ContainerExtrato,
-  Extrato,
-  IconeExtrato,
-  ContainerDescricao,
-  TxtDescricao,
-  TxtData,
-  TxtValorExtrato,
-  ContainerInfo,
-  ContainerIcones,
-  TxtObjetivoDescricao,
-  TxtValorObjetivo,
-  BarraProgressaoBackground,
-  BarraProgressao,
-  TxtValorPorcentagem,
-  TxtMaisExtrato
-} from './style';
 import { useNavigation } from '@react-navigation/native';
 
+import {
+  Container,
+  ObjetivoVazio,
+  ContainerExtrato,
+  TxtMaisExtrato
+} from './style';
+
+import api from '../../contexts/api';
+import LblPatrimonio from '../../components/LblPatrimonio';
+import LblObjetivo from '../../components/LblObjetivo';
+import LblExtrato from '../../components/LblExtrato';
+import ComponenteVazio from '../../components/ComponenteVazio';
+
+//#endregion
+
 export default function Home() {
-  const { usuario } = useContext(AuthContext);
+  const { usuario, exibirValor } = useContext(AuthContext);
   const navigation = useNavigation();
 
-  return (
-    <Background>
-      <PatrimonioClick onPress={() => navigation.navigate('Carteira')}>
-        <ContainerPatrimonio>
-          <TxtPatrimonio> Patrimônio </TxtPatrimonio>
-          <TxtValorPatrimonio> R$ 485.324,11 </TxtValorPatrimonio>
-        </ContainerPatrimonio>
-        <Image source={require('../../../assets/icons/arrow.png')} />
-      </PatrimonioClick>
+  const [objetivo, setObjetivo] = useState(1);
 
-      <ScrollView
+  async function ObterPatrimonio() {
+    await api.get("objetivo/obter-resumido", {
+      authorization: {
+        token: usuario.token
+      },
+      params: {
+        usuario: usuario.codigo
+      }
+    }).then((response) => {
+      setObjetivo(response.data);
+    }).catch(function (error) {
+      console.log(error.response.status);
+      return false;
+    });
+  }
+
+  async function ObterPatrimonio() {
+    await api.get("patrimonio/obter-resumido", {
+      authorization: {
+        token: usuario.token
+      },
+      params: {
+        usuario: usuario.codigo
+      }
+    }).then((response) => {
+      setObjetivo(response.data);
+    }).catch(function (error) {
+      console.log(error.response.status);
+      return false;
+    });
+  }
+
+  async function ObterExtrato() {
+    await api.get("extrato/obter-resumido", {
+      authorization: {
+        token: usuario.token
+      },
+      params: {
+        usuario: usuario.codigo
+      }
+    }).then((response) => {
+      setObjetivo(response.data);
+    }).catch(function (error) {
+      console.log(error.response.status);
+      return false;
+    });
+  }
+
+  return (
+    <View>
+      <Container>
+        <LblPatrimonio valor="150,03" exibirValor={exibirValor} />
+      </Container>
+
+      <Container>
+        <ComponenteVazio componente="Objetivo" link="Objetivo" />
+      </Container>
+
+      {/* <ScrollView
         showsVerticalScrollIndicator={false}   //vertical
         showsHorizontalScrollIndicator={false} //horizontal
         horizontal={true}
       >
-        <ContainerObjetivo>
-          <Objetivo onPress={() => navigation.navigate('Objetivo')}>
-            <ContainerIcones>
-              <Feather name="target" size={24} color="black" />
-              <FontAwesome name="users" size={24} color="black" />
-            </ContainerIcones>
-            <TxtObjetivoDescricao>Casa</TxtObjetivoDescricao>
-            <TxtValorObjetivo>R$ 154,90</TxtValorObjetivo>
-            <BarraProgressaoBackground />
-            <BarraProgressao />
-            <TxtValorPorcentagem>20%</TxtValorPorcentagem>
-          </Objetivo>
-        </ContainerObjetivo>
-
-        <ContainerObjetivo>
-          <Objetivo onPress={() => navigation.navigate('Objetivo')}>
-            <ContainerIcones>
-              <Feather name="target" size={24} color="black" />
-              <FontAwesome name="user" size={24} color="black" />
-            </ContainerIcones>
-            <TxtObjetivoDescricao>Carro</TxtObjetivoDescricao>
-            <TxtValorObjetivo>R$ 154,90</TxtValorObjetivo>
-            <BarraProgressaoBackground />
-            <BarraProgressao />
-            <TxtValorPorcentagem>20%</TxtValorPorcentagem>
-          </Objetivo>
-        </ContainerObjetivo>
-
-        <ContainerObjetivo>
-          <Objetivo onPress={() => navigation.navigate('Objetivo')}>
-            <ContainerIcones>
-              <Feather name="target" size={24} color="black" />
-              <FontAwesome name="user" size={24} color="black" />
-            </ContainerIcones>
-            <TxtObjetivoDescricao>Carro</TxtObjetivoDescricao>
-            <TxtValorObjetivo>R$ 154,90</TxtValorObjetivo>
-            <BarraProgressaoBackground />
-            <BarraProgressao />
-            <TxtValorPorcentagem>20%</TxtValorPorcentagem>
-          </Objetivo>
-        </ContainerObjetivo>
-      </ScrollView>
+        <LblObjetivo />
+        <LblObjetivo />
+        <LblObjetivo />
+        <LblObjetivo />
+        <ObjetivoVazio />
+      </ScrollView> */}
 
 
-      <ContainerExtrato>
-        <Extrato onPress={() => navigation.navigate('Extrato')}>
-          <ContainerInfo>
-            <IconeExtrato>
-              <MaterialIcons name="payments" size={24} color="black" />
-            </IconeExtrato>
-            <ContainerDescricao>
-              <TxtDescricao>
-                Pagamento
-              </TxtDescricao>
-              <TxtData>
-                01/07/2022 - 12:35
-              </TxtData>
-            </ContainerDescricao>
-          </ContainerInfo>
-          <TxtValorExtrato>
-            + R$ 545,90
-          </TxtValorExtrato>
-        </Extrato>
 
-        <Extrato onPress={() => navigation.navigate('Extrato')}>
-          <ContainerInfo>
-            <IconeExtrato>
-              <MaterialIcons name="payments" size={24} color="black" />
-            </IconeExtrato>
-            <ContainerDescricao>
-              <TxtDescricao>
-                Pagamento
-              </TxtDescricao>
-              <TxtData>
-                01/07/2022 - 12:35
-              </TxtData>
-            </ContainerDescricao>
-          </ContainerInfo>
-          <TxtValorExtrato>
-            + R$ 545,90
-          </TxtValorExtrato>
-        </Extrato>
-        <TxtMaisExtrato> Mais </TxtMaisExtrato>
-      </ContainerExtrato>
-    </Background>
+
+
+      <Container>
+        <ComponenteVazio componente="Extrato" link="Patrimonio" />
+      </Container>
+
+      {/* <Container>
+        <ContainerExtrato>
+          <LblExtrato />
+          <LblExtrato />
+          <TxtMaisExtrato onPress={() => navigation.navigate('Extrato')}> Mais </TxtMaisExtrato>
+        </ContainerExtrato>
+      </Container> */}
+    </View>
   );
 }
