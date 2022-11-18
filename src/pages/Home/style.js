@@ -4,7 +4,7 @@ export const ObjetivoVazio = styled.View`
 padding-right: 16px;
 `;
 
-export const Container = styled.KeyboardAvoidingView` 
+export const Container = styled.View` 
 background-color: #F3F3F3;
 padding: 16px;
 `;

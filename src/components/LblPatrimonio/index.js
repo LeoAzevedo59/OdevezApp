@@ -18,7 +18,7 @@ export default function LblPatrimonio(props) {
             <ContainerPatrimonio>
                 <TxtPatrimonio> Patrimônio </TxtPatrimonio>
                 <TxtValorPatrimonio> R$
-                    {props.exibirValor == true ? props.valor : "****"}
+                    {props.exibirValor == true ? props.valor : " ****"}
                 </TxtValorPatrimonio>
             </ContainerPatrimonio>
             <AntDesign name="arrowright" size={24} color="black" />

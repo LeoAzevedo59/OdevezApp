@@ -1,14 +1,11 @@
 //#region Imports
-import React, { useContext, useState } from 'react';
-import { ScrollView, View } from 'react-native';
+import React, { useContext, useState, useEffect } from 'react';
+import { ScrollView, View, TouchableOpacity, Text } from 'react-native';
 import { AuthContext } from '../../contexts/auth';
 import { useNavigation } from '@react-navigation/native';
 
 import {
-  Container,
-  ObjetivoVazio,
-  ContainerExtrato,
-  TxtMaisExtrato
+  Container
 } from './style';
 
 import api from '../../contexts/api';
@@ -20,63 +17,37 @@ import ComponenteVazio from '../../components/ComponenteVazio';
 //#endregion
 
 export default function Home() {
-  const { usuario, exibirValor } = useContext(AuthContext);
   const navigation = useNavigation();
-
-  const [objetivo, setObjetivo] = useState(1);
-
-  async function ObterPatrimonio() {
-    await api.get("objetivo/obter-resumido", {
-      authorization: {
-        token: usuario.token
-      },
-      params: {
-        usuario: usuario.codigo
-      }
-    }).then((response) => {
-      setObjetivo(response.data);
-    }).catch(function (error) {
-      console.log(error.response.status);
-      return false;
-    });
-  }
+  const { usuario, exibirValor } = useContext(AuthContext);
+  const [patrimonio, setPatrimonio] = useState(0.00);
 
   async function ObterPatrimonio() {
-    await api.get("patrimonio/obter-resumido", {
-      authorization: {
-        token: usuario.token
+    await api.get("carteira/obter-valor-carteira-por-usuario", {
+      headers: {
+        Authorization: usuario.type + " " + usuario.token
       },
       params: {
         usuario: usuario.codigo
       }
     }).then((response) => {
-      setObjetivo(response.data);
+      setPatrimonio(response.data);
     }).catch(function (error) {
-      console.log(error.response.status);
-      return false;
+      console.log(error.response.status + " Componente: Home");
     });
   }
 
-  async function ObterExtrato() {
-    await api.get("extrato/obter-resumido", {
-      authorization: {
-        token: usuario.token
-      },
-      params: {
-        usuario: usuario.codigo
-      }
-    }).then((response) => {
-      setObjetivo(response.data);
-    }).catch(function (error) {
-      console.log(error.response.status);
-      return false;
-    });
-  }
+  useEffect(() => {
+    ObterPatrimonio();
+  }, [])
+
+  useEffect(() => {
+    ObterPatrimonio();
+  }, [patrimonio])
 
   return (
     <View>
       <Container>
-        <LblPatrimonio valor="150,03" exibirValor={exibirValor} />
+        <LblPatrimonio valor={" " + patrimonio} exibirValor={exibirValor} />
       </Container>
 
       <Container>
@@ -84,7 +55,7 @@ export default function Home() {
       </Container>
 
       {/* <ScrollView
-        showsVerticalScrollIndicator={false}   //vertical
+        showsVerticalScrollIndicator={false}   //vertical 
         showsHorizontalScrollIndicator={false} //horizontal
         horizontal={true}
       >
@@ -95,12 +66,8 @@ export default function Home() {
         <ObjetivoVazio />
       </ScrollView> */}
 
-
-
-
-
       <Container>
-        <ComponenteVazio componente="Extrato" link="Patrimonio" />
+        <ComponenteVazio componente="Receita e Despesas" link="Patrimonio" />
       </Container>
 
       {/* <Container>

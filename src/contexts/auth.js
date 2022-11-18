@@ -18,7 +18,7 @@ export default function AuthProvider({ children }) {
         }).then((response) => {
             setUsuario(response.data);
         }).catch(function (error) {
-            console.log(error.response.status);
+            console.log(error.response.status + " Componente: Login");
             return false;
         });
     }
@@ -35,7 +35,7 @@ export default function AuthProvider({ children }) {
         }).then((response) => {
             setUsuario(response.data);
         }).catch(function (error) {
-            console.log(error.response.status);
+            console.log(error.response.status + " Componente: Cadastro");
             return false;
         });
     }
