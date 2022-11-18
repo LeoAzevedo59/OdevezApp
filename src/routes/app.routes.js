@@ -26,13 +26,17 @@ function Tabs({ navigation }) {
     const tamanho = window.width;
     const [eye, setEye] = useState('eye');
 
-    const { usuario } = useContext(AuthContext);
+    const { usuario, ExibirValor } = useContext(AuthContext);
 
     function exibirSimNao() {
-        if (eye === 'eye')
+        if (eye === 'eye') {
             setEye('eye-off')
-        else
+            ExibirValor(false);
+        }
+        else {
             setEye('eye')
+            ExibirValor(true);
+        }
     }
     return (
         <Tab.Navigator
@@ -46,7 +50,7 @@ function Tabs({ navigation }) {
                                 <ImgPerfil source={require('../../assets/images/251894087_1962039253968567_7355826083414885049_n.jpg')} />
                             </View>
                             <View style={{ alignSelf: 'center' }}>
-                                {/* <NomeUsuario>{usuario.apelido}</NomeUsuario> */}
+                                <NomeUsuario>{usuario.apelido}</NomeUsuario>
                             </View>
                         </ContainerPerfil>
                         <ContainerIcons>
@@ -65,19 +69,20 @@ function Tabs({ navigation }) {
             }}>
 
             <Tab.Screen
+                key={0}
                 name='Home'
                 component={Home}
                 options={{
                     tabBarActiveTintColor: 'black',
                     tabBarIcon: ({ size, color }) => ([
                         color === 'black' ?
-                            <Ionicons name={'home'} size={size} color={color} />
+                            <Ionicons key={0} name={'home'} size={size} color={color} />
                             :
-                            <Ionicons name={'home-outline'} size={size} color={color} />
+                            <Ionicons key={1} name={'home-outline'} size={size} color={color} />
                     ])
                 }} />
-
             <Tab.Screen
+                key={1}
                 name='Dashboard'
                 component={Dashboard}
                 options={{
@@ -85,46 +90,44 @@ function Tabs({ navigation }) {
                     tabBarIcon: ({ size, color }) => (
                         [
                             color === 'black' ?
-                                <MaterialCommunityIcons name='view-dashboard' size={size} color={color} />
+                                <MaterialCommunityIcons key={0} name='view-dashboard' size={size} color={color} />
                                 :
-                                <MaterialCommunityIcons name='view-dashboard-outline' size={size} color={color} />
+                                <MaterialCommunityIcons key={1} name='view-dashboard-outline' size={size} color={color} />
                         ])
                 }} />
-
             <Tab.Screen
+                key={2}
                 name='Adicionar'
                 component={Adicionar}
                 options={{
                     tabBarActiveTintColor: 'black',
                     tabBarIcon: ({ size, color }) => (
-                        <Octicons name='diff-added' size={size} color={color} /> // wallet-outline
+                        <Octicons key={0} name='diff-added' size={size} color={color} /> // wallet-outline
                     )
                 }} />
-
-
             <Tab.Screen
+                key={3}
                 name='Carteira'
                 component={Carteira}
                 options={{
                     tabBarActiveTintColor: 'black',
                     tabBarIcon: ({ size, color }) => ([
                         color === 'black' ?
-                            <Ionicons name='wallet' size={size} color={color} /> // wallet
+                            <Ionicons key={0} name='wallet' size={size} color={color} /> // wallet
                             :
-                            <Ionicons name='wallet-outline' size={size} color={color} /> // wallet
+                            <Ionicons key={1} name='wallet-outline' size={size} color={color} /> // wallet
                     ])
                 }} />
-
             <Tab.Screen
+                key={4}
                 name='Mais'
                 component={Mais}
                 options={{
                     tabBarActiveTintColor: 'black',
                     tabBarIcon: ({ size, color }) => (
-                        <Feather name='more-horizontal' size={size} color={color} />
+                        <Feather key={0} name='more-horizontal' size={size} color={color} />
                     )
                 }} />
-
         </Tab.Navigator>
     )
 }
@@ -133,51 +136,53 @@ function AppRoutes() {
     return (
 
         <Stack.Navigator>
-            <Stack.Screen name='Home
-            ' component={Tabs} options={{ headerShown: false }} />
             <Stack.Screen
+                key={5}
+                name='Homes'
+                component={Tabs}
+                options={{ headerShown: false }} />
+            <Stack.Screen
+                key={6}
                 name='Configuracao'
                 component={Configuracao}
                 options={{
                     headerTitle: 'Configurações',
-
-                }}
-            />
+                }} />
             <Stack.Screen
+                key={7}
                 name='Duvidas'
                 component={Duvidas}
                 options={{
                     headerTitle: 'Dúvidas',
-                }}
-            />
+                }} />
             <Stack.Screen
+                key={8}
                 name='Extrato'
                 component={Extrato}
                 options={{
                     headerTitle: 'Extrato',
-                }}
-            />
+                }} />
             <Stack.Screen
+                key={9}
                 name='Patrimonio'
                 component={Patrimonio}
                 options={{
                     headerTitle: 'Patrimonio',
-                }}
-            />
+                }} />
             <Stack.Screen
+                key={10}
                 name='Objetivo'
                 component={Objetivo}
                 options={{
                     headerTitle: 'Objetivo',
-                }}
-            />
+                }} />
             <Stack.Screen
+                key={11}
                 name='AdicionarAlterarCarteira'
                 component={AdicionarAlterarCarteira}
                 options={{
                     headerTitle: 'AdicionarAlterarCarteira',
-                }}
-            />
+                }} />
         </Stack.Navigator>
     );
 }
