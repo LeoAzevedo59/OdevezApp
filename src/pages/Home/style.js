@@ -4,18 +4,20 @@ export const ObjetivoVazio = styled.View`
 padding-right: 16px;
 `;
 
-export const Container = styled.View` 
-background-color: #F3F3F3;
-padding: 16px;
+export const Div = styled.View`
+flex-direction: row;
 `;
 
-export const ContainerExtrato = styled.View`
-width: 100%;
-height: 80px;
-margin-top: 24px;
-align-items: center;
+export const Container = styled.View` 
+padding: 16px;
 `;
 
 export const TxtMaisExtrato = styled.Text`
 margin-top: 16px;
+text-align: center;
+`;
+
+export const ContainerObjetivos = styled.View`
+flex-direction: row;
+margin-top: 24px;
 `;

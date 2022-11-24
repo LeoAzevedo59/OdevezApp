@@ -7,7 +7,7 @@ margin-top: 24px;
 align-items: center;
 `;
 
-export const Extrato = styled.TouchableOpacity`
+export const Extrato = styled.View`
 width: 100%;
 border-bottom-width: 1px;
 border-bottom-color: #ddd;

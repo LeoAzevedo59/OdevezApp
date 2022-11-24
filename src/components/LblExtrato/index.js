@@ -1,6 +1,4 @@
 //#region Improts
-
-import { useNavigation } from '@react-navigation/native';
 import {
     MaterialIcons
 } from '@expo/vector-icons';
@@ -16,26 +14,25 @@ import {
 
 //#endregion
 
-export default function LblExtrato() {
-    const navigation = useNavigation();
-
+export default function LblExtrato(props) {
     return (
-        <Extrato onPress={() => navigation.navigate('Extrato')}>
+        <Extrato>
             <ContainerInfo>
                 <IconeExtrato>
                     <MaterialIcons name="payments" size={24} color="black" />
                 </IconeExtrato>
                 <ContainerDescricao>
                     <TxtDescricao>
-                        Pagamento
+                        {props.data.tipo}
                     </TxtDescricao>
                     <TxtData>
-                        01/07/2022 - 12:35
+                        {props.data.data}
                     </TxtData>
                 </ContainerDescricao>
             </ContainerInfo>
             <TxtValorExtrato>
-                + R$ 545,90
+                + R$
+                {props.exibirValor == true ? props.data.valor : " ****"}
             </TxtValorExtrato>
         </Extrato>
     );

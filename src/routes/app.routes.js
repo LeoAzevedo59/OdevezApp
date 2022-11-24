@@ -50,7 +50,7 @@ function Tabs({ navigation }) {
                                 <ImgPerfil source={require('../../assets/images/251894087_1962039253968567_7355826083414885049_n.jpg')} />
                             </View>
                             <View style={{ alignSelf: 'center' }}>
-                                <NomeUsuario>{usuario.apelido}</NomeUsuario>
+                                {/* <NomeUsuario>{usuario.apelido}</NomeUsuario> */}
                             </View>
                         </ContainerPerfil>
                         <ContainerIcons>

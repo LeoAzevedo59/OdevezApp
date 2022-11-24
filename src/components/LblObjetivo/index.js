@@ -17,21 +17,25 @@ import {
 } from '@expo/vector-icons';
 //#endregion
 
-export default function LblObjetivo() {
+export default function LblObjetivo(props) {
     const navigation = useNavigation();
-    
+
     return (
         <ContainerObjetivo>
             <Objetivo onPress={() => navigation.navigate('Objetivo')}>
                 <ContainerIcones>
                     <Feather name="target" size={24} color="black" />
-                    <FontAwesome name="users" size={24} color="black" />
+                    <FontAwesome name={props.data.tipo} size={24} color="black" />
                 </ContainerIcones>
-                <TxtObjetivoDescricao>Casa</TxtObjetivoDescricao>
-                <TxtValorObjetivo>R$ 154,90</TxtValorObjetivo>
+                <TxtObjetivoDescricao>{props.data.descricao}</TxtObjetivoDescricao>
+                <TxtValorObjetivo>R$
+                    {props.exibirValor == true ? props.data.valor : " ****"}
+                </TxtValorObjetivo>
                 <BarraProgressaoBackground />
                 <BarraProgressao />
-                <TxtValorPorcentagem>20%</TxtValorPorcentagem>
+                <TxtValorPorcentagem>
+                    {props.exibirValor == true ? props.data.porcentagem : " ****"}
+                    %</TxtValorPorcentagem>
             </Objetivo>
         </ContainerObjetivo>
     );

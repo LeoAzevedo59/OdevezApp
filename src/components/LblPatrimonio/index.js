@@ -7,21 +7,27 @@ import {
     TxtPatrimonio,
     TxtValorPatrimonio
 } from './styles';
-import { AntDesign } from '@expo/vector-icons';
+import { AntDesign, Feather } from '@expo/vector-icons';
 //#endregion
 
 export default function LblPatrimonio(props) {
     const navigation = useNavigation();
-    
+
     return (
-        <PatrimonioClick onPress={() => navigation.navigate('Carteira')}>
+        <PatrimonioClick onPress={() => navigation.navigate(props.link)}>
             <ContainerPatrimonio>
-                <TxtPatrimonio> Patrimônio </TxtPatrimonio>
+                <TxtPatrimonio> {props.titulo} </TxtPatrimonio>
                 <TxtValorPatrimonio> R$
                     {props.exibirValor == true ? props.valor : " ****"}
                 </TxtValorPatrimonio>
             </ContainerPatrimonio>
-            <AntDesign name="arrowright" size={24} color="black" />
+            {
+                props.titulo === "Carteira"
+                    ?
+                    <Feather name="plus-circle" size={24} color="black" />
+                    :
+                    <AntDesign name="arrowright" size={24} color="black" />
+            }
         </PatrimonioClick>
     );
 }
