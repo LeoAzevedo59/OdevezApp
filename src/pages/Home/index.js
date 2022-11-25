@@ -1,14 +1,12 @@
 //#region Imports
 import React, { useContext, useState, useEffect } from 'react';
-import { ScrollView, View, FlatList, VirtualizedList, SafeAreaView } from 'react-native';
+import { ScrollView, View, FlatList, StyleSheet, SafeAreaView } from 'react-native';
 import { AuthContext } from '../../contexts/auth';
 import { useNavigation } from '@react-navigation/native';
 
 import {
   Container,
-  TxtMaisExtrato,
-  Div,
-  ObjetivoVazio
+  TxtMaisExtrato
 } from './style';
 
 import api from '../../contexts/api';
@@ -34,10 +32,7 @@ export default function Home() {
 
   const ext = [
     { id: 0, tipo: 'PAGAMENTO', data: '01/07/2022', valor: '545,99' },
-    { id: 1, tipo: 'PAGAMENTO', data: '22/09/2022', valor: '23,12' },
-    { id: 2, tipo: 'PAGAMENTO', data: '01/07/2022', valor: '545,99' },
-    { id: 3, tipo: 'PAGAMENTO', data: '01/07/2022', valor: '545,99' },
-    { id: 4, tipo: 'PAGAMENTO', data: '01/07/2022', valor: '545,99' },
+    { id: 1, tipo: 'PAGAMENTO', data: '22/09/2022', valor: '23,12' }
   ]
 
   const [extrato, setExtratp] = useState(ext);
@@ -66,7 +61,7 @@ export default function Home() {
   }, [patrimonio])
 
   return (
-    <ScrollView>
+    <SafeAreaView>
       <Container>
         <LblPatrimonio valor={" " + patrimonio} exibirValor={exibirValor} link="Carteira" titulo="Patrimônio" />
       </Container>
@@ -77,31 +72,66 @@ export default function Home() {
           <ComponenteVazio componente="Objetivo" link="Objetivo" />
         </Container>
         :
-        <FlatList
-          nestedScrollEnabled
-          horizontal={true}
-          keyExtractor={(item) => item.id}
-          data={objetivos}
-          showsHorizontalScrollIndicator={false}
-          renderItem={({ item }) => <LblObjetivo data={item} exibirValor={exibirValor} />}
-
-        />
-      }
-      <Container>
-        {extrato == null
-          ?
-          <ComponenteVazio componente="Objetivo" link="Objetivo" />
-          :
+        <View>
           <FlatList
-            horizontal={false}
+            horizontal={true}
+            keyExtractor={(item) => item.id}
+            data={objetivos}
+            showsHorizontalScrollIndicator={false}
+            renderItem={({ item }) => <LblObjetivo data={item} exibirValor={exibirValor} />}
+
+          />
+        </View>
+      }
+
+      {extrato == null
+        ?
+        <Container>
+          <ComponenteVazio componente="Extrato" link="Extrato" />
+        </Container>
+        :
+        <Container>
+          <FlatList
             keyExtractor={(item) => item.id}
             data={extrato}
-            showsVerticalScrollIndicator={false}
+            showsHorizontalScrollIndicator={false}
             renderItem={({ item }) => <LblExtrato data={item} exibirValor={exibirValor} />}
-          />}
+          />
+        </Container>
+      }
+
+      <Container>
         <TxtMaisExtrato onPress={() => navigation.navigate('Extrato')}> Mais </TxtMaisExtrato>
       </Container>
-    </ScrollView>
+    </SafeAreaView>
   );
 }
 
+
+
+
+
+
+
+
+
+
+
+// {
+//   extrato == null
+//   ?
+//   <Container>
+//     <ComponenteVazio componente="Extrato" link="Extrato" />
+//   </Container>
+//   :
+//   <View>
+//     <FlatList
+//       horizontal={true}
+//       keyExtractor={(item) => item.id}
+//       data={extrato}
+//       showsVerticalScrollIndicator={false}
+//       renderItem={({ item }) => <LblExtrato data={item} exibirValor={exibirValor} />}
+
+//     />
+//   </View>
+// }

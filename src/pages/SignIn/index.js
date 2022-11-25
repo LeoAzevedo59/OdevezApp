@@ -10,8 +10,8 @@ export default function SignIn() {
     const navigation = useNavigation();
     const { Logar } = useContext(AuthContext);
 
-    const [celular, setCelular] = useState('');
-    const [senha, setSenha] = useState('');
+    const [celular, setCelular] = useState('(19)98235-8635');
+    const [senha, setSenha] = useState('1');
     const [erroSenha, SetErroSenha] = useState('');
     const [erroCelular, setErroCelular] = useState('');
 

@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
-import { View, Text, Button, StyleSheet } from 'react-native';
+import React, { useContext, useState, useEffect } from 'react';
+import { View } from 'react-native';
+import { AuthContext } from '../../contexts/auth';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import { Picker } from '@react-native-community/picker';
+
 import {
     Background,
-    AreaInput,
     Container,
     Input,
     Texto,
-    Btn,
-    BtnTxt,
     AreaCadastro,
     TxtEntrar,
     BtnEntrar,
@@ -15,13 +16,18 @@ import {
     Data,
     Row
 } from './styles';
-import DateTimePicker from '@react-native-community/datetimepicker';
-import { Picker } from '@react-native-community/picker';
+
+import api from '../../contexts/api';
 
 export default function Patrimonio() {
+    const { usuario } = useContext(AuthContext);
     const [date, setDate] = useState(new Date());
     const [dateFormat, setDateFormat] = useState(date.getDate().toString() + '/' + (parseInt(date.getMonth() + 1)).toString() + '/' + date.getFullYear().toString());
     const [show, setShow] = useState(false);
+    const [carteiras, setCarteiras] = useState();
+    const [selectedCarteira, setSelectedCarteira] = useState();
+    const [movimentacoes, setMovimentacoes] = useState();
+    const [selectedMovimentacao, setSelectedMovimentacao] = useState(0);
 
     const onChange = (event, selectedDate) => {
 
@@ -41,21 +47,74 @@ export default function Patrimonio() {
             setShow(false)
     };
 
+    async function ObterDescricaoCarteiras() {
+        await api.get("carteira/obter-descricao-carteira-por-usuario", {
+            headers: {
+                Authorization: usuario.type + " " + usuario.token
+            },
+            params: {
+                usuario: usuario.codigo
+            }
+        }).then((response) => {
+            setCarteiras(response.data);
+        }).catch(function (error) {
+            console.log(error.response.status + " Componente: Home");
+        });
+    }
+
+    async function ObterDescricaoMovimentacoes() {
+        await api.get("carteira/obter-movimentacao-carteira", {
+            headers: {
+                Authorization: usuario.type + " " + usuario.token
+            }
+        }).then((response) => {
+            setMovimentacoes(response.data);
+        }).catch(function (error) {
+            console.log(error.response.status + " Componente: Home");
+        });
+    }
+
+    useEffect(() => {
+        ObterDescricaoCarteiras();
+        ObterDescricaoMovimentacoes();
+    }, [])
+
     return (
         <Background>
             <Container>
                 <AreaCadastro>
+
                     <Texto>Modalidade</Texto>
-                    <Picker>
-                        <Picker.Item key={1} value={1} label="Receita"></Picker.Item>
-                        <Picker.Item key={2} value={3} label="Despesa"></Picker.Item>
+                    <Picker
+                        selectedValue={selectedMovimentacao}
+                        onValueChange={(itemValue, itemIndex) => setSelectedMovimentacao(itemValue)}
+                    >
+                        {
+                            movimentacoes != null
+                                ?
+                                movimentacoes.map((v, k) => {
+                                    return <Picker.Item key={k} value={k} label={v.descricao} />
+                                })
+                                :
+                                <Row />
+                        }
                     </Picker>
                     <Row></Row>
 
                     <Texto>Carteira</Texto>
-                    <Picker>
-                        <Picker.Item key={1} value={1} label="Itau"></Picker.Item>
-                        <Picker.Item key={2} value={3} label="Nu Bank"></Picker.Item>
+                    <Picker
+                        selectedValue={selectedCarteira}
+                        onValueChange={(itemValue, itemIndex) => setSelectedCarteira(itemValue)}
+                    >
+                        {
+                            carteiras != null
+                                ?
+                                carteiras.map((v, k) => {
+                                    return <Picker.Item key={k} value={k} label={v.descricao} />
+                                })
+                                :
+                                <Row />
+                        }
                     </Picker>
                     <Row></Row>
 
