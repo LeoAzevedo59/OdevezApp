@@ -58,51 +58,55 @@ export default function Home() {
 
   useEffect(() => {
     ObterPatrimonio();
-  }, [patrimonio])
+  }, [patrimonio, exibirValor])
 
   return (
     <SafeAreaView>
-      <Container>
-        <LblPatrimonio valor={" " + patrimonio} exibirValor={exibirValor} link="Carteira" titulo="Patrimônio" />
-      </Container>
-
-      {objetivos == null
-        ?
+      <ScrollView>
         <Container>
-          <ComponenteVazio componente="Objetivo" link="Objetivo" />
+          <LblPatrimonio valor={" " + patrimonio.toFixed(2)} exibirValor={exibirValor} link="Carteira" titulo="Patrimônio" />
         </Container>
-        :
-        <View>
-          <FlatList
-            horizontal={true}
-            keyExtractor={(item) => item.id}
-            data={objetivos}
-            showsHorizontalScrollIndicator={false}
-            renderItem={({ item }) => <LblObjetivo data={item} exibirValor={exibirValor} />}
 
-          />
-        </View>
-      }
+        {objetivos == null
+          ?
+          <Container>
+            <ComponenteVazio componente="Objetivo" link="Objetivo" />
+          </Container>
+          :
+          <View>
+            <FlatList
+              horizontal={true}
+              keyExtractor={(item) => item.id}
+              data={objetivos}
+              showsHorizontalScrollIndicator={false}
+              renderItem={({ item }) => <LblObjetivo data={item} exibirValor={exibirValor} />}
 
-      {extrato == null
-        ?
-        <Container>
-          <ComponenteVazio componente="Extrato" link="Extrato" />
-        </Container>
-        :
-        <Container>
-          <FlatList
-            keyExtractor={(item) => item.id}
-            data={extrato}
-            showsHorizontalScrollIndicator={false}
-            renderItem={({ item }) => <LblExtrato data={item} exibirValor={exibirValor} />}
-          />
-        </Container>
-      }
+            />
+          </View>
+        }
 
-      <Container>
-        <TxtMaisExtrato onPress={() => navigation.navigate('Extrato')}> Mais </TxtMaisExtrato>
-      </Container>
+        {extrato == null
+          ?
+          <Container>
+            <ComponenteVazio componente="Extrato" link="Extrato" />
+          </Container>
+          :
+          <Container>
+            <LblExtrato data={extrato[0]} exibirValor={exibirValor} />
+
+            {extrato[1] != null
+              ?
+              <LblExtrato data={extrato[1]} exibirValor={exibirValor} />
+              :
+              <View />
+            }
+
+            <TxtMaisExtrato onPress={() => navigation.navigate('Extrato')}> Mais </TxtMaisExtrato>
+
+          </Container>
+        }
+
+      </ScrollView>
     </SafeAreaView>
   );
 }

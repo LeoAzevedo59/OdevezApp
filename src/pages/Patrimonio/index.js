@@ -1,8 +1,10 @@
+//#region imports
+
 import React, { useContext, useState, useEffect } from 'react';
-import { View } from 'react-native';
+import { Keyboard, StyleSheet, View } from 'react-native';
 import { AuthContext } from '../../contexts/auth';
-import DateTimePicker from '@react-native-community/datetimepicker';
 import { Picker } from '@react-native-community/picker';
+import { useNavigation } from '@react-navigation/native';
 
 import {
     Background,
@@ -14,20 +16,33 @@ import {
     BtnEntrar,
     Div,
     Data,
-    Row
+    Row,
+    Erro
 } from './styles';
 
 import api from '../../contexts/api';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import ComponenteVazio from '../../components/ComponenteVazio';
+
+//#endregion
 
 export default function Patrimonio() {
-    const { usuario } = useContext(AuthContext);
+    const { usuario, ExibirValor, exibirValor } = useContext(AuthContext);
+    const navigation = useNavigation();
+
     const [date, setDate] = useState(new Date());
     const [dateFormat, setDateFormat] = useState(date.getDate().toString() + '/' + (parseInt(date.getMonth() + 1)).toString() + '/' + date.getFullYear().toString());
     const [show, setShow] = useState(false);
     const [carteiras, setCarteiras] = useState();
-    const [selectedCarteira, setSelectedCarteira] = useState();
+    const [selectedCarteira, setSelectedCarteira] = useState(0);
     const [movimentacoes, setMovimentacoes] = useState();
     const [selectedMovimentacao, setSelectedMovimentacao] = useState(0);
+    const [categorias, setCategorias] = useState();
+    const [selectedCategoria, setSelectedCategoria] = useState(0);
+    const [descricao, setDescricao] = useState("");
+    const [valor, setValor] = useState("");
+    const [erroDescricao, setErroDescricao] = useState("");
+    const [erroValor, setErroValor] = useState("");
 
     const onChange = (event, selectedDate) => {
 
@@ -58,7 +73,7 @@ export default function Patrimonio() {
         }).then((response) => {
             setCarteiras(response.data);
         }).catch(function (error) {
-            console.log(error.response.status + " Componente: Home");
+            console.log(error.response.status + " Componente: Cadastro de patrimonio");
         });
     }
 
@@ -70,82 +85,196 @@ export default function Patrimonio() {
         }).then((response) => {
             setMovimentacoes(response.data);
         }).catch(function (error) {
-            console.log(error.response.status + " Componente: Home");
+            console.log(error.response.status + " Componente: Cadastro de patrimonio");
         });
+    }
+
+    async function ObterDescricaoCategorias() {
+        await api.get("carteira/obter-categoria-carteira-por-usuario", {
+            headers: {
+                Authorization: usuario.type + " " + usuario.token
+            },
+            params: {
+                usuario: usuario.codigo
+            }
+        }).then((response) => {
+            setCategorias(response.data);
+        }).catch(function (error) {
+            console.log(error.response.status + " Componente: Cadastro de patrimonio");
+        });
+    }
+
+    async function IncluirMovimentacao() {
+        await api.post("carteira/incluir-movimentacao-carteira", {
+            DataMovimentacao: dateFormat,
+            Descricao: descricao,
+            Valor: valor,
+            Movimentacao: {
+                Codigo: movimentacoes[selectedMovimentacao].codigo,
+                Descricao: movimentacoes[selectedMovimentacao].descricao,
+            },
+            Carteira: {
+                Codigo: carteiras[selectedCarteira].codigo,
+                Descricao: carteiras[selectedCarteira].descricao,
+            },
+            Categoria: {
+                Codigo: categorias[selectedCategoria].codigo,
+                Descricao: categorias[selectedCategoria].descricao,
+            }
+        }, {
+            headers: {
+                Authorization: usuario.type + " " + usuario.token
+            }
+        }).then((response) => {
+            if (response.data) {
+                Keyboard.dismiss();
+                ExibirValor(!exibirValor);
+                ExibirValor(exibirValor);
+                navigation.goBack();
+            }
+        }).catch(function (error) {
+            console.log(error.response.status + " Componente: Cadastro de patrimonio");
+            return false;
+        });
+    }
+
+    function IsValid() {
+        if (descricao == '') {
+            setErroDescricao("Campo descrição não pode ser vazio.")
+        }
+        if (valor == '') {
+            setErroValor("Campo valor não pode ser vazio.")
+        }
+
+        if (descricao != '' && valor != '')
+            IncluirMovimentacao();
     }
 
     useEffect(() => {
         ObterDescricaoCarteiras();
         ObterDescricaoMovimentacoes();
+        ObterDescricaoCategorias();
     }, [])
 
     return (
         <Background>
-            <Container>
-                <AreaCadastro>
+            {carteiras == ''
+                ?
+                <Container>
+                    <ComponenteVazio componente="Carteira" link="AdicionarAlterarCarteira" />
+                </Container>
+                :
+                <Container>
+                    <AreaCadastro>
 
-                    <Texto>Modalidade</Texto>
-                    <Picker
-                        selectedValue={selectedMovimentacao}
-                        onValueChange={(itemValue, itemIndex) => setSelectedMovimentacao(itemValue)}
-                    >
-                        {
-                            movimentacoes != null
-                                ?
-                                movimentacoes.map((v, k) => {
-                                    return <Picker.Item key={k} value={k} label={v.descricao} />
-                                })
-                                :
-                                <Row />
-                        }
-                    </Picker>
-                    <Row></Row>
+                        <Texto>Transação</Texto>
+                        <Picker
+                            selectedValue={selectedMovimentacao}
+                            onValueChange={(itemValue, itemIndex) => setSelectedMovimentacao(itemValue)}
+                        >
+                            {
+                                movimentacoes != null
+                                    ?
+                                    movimentacoes.map((value, key) => {
+                                        return <Picker.Item key={key} value={key} label={value.descricao} />
+                                    })
+                                    :
+                                    <Row />
+                            }
+                        </Picker>
+                        <Row></Row>
 
-                    <Texto>Carteira</Texto>
-                    <Picker
-                        selectedValue={selectedCarteira}
-                        onValueChange={(itemValue, itemIndex) => setSelectedCarteira(itemValue)}
-                    >
-                        {
-                            carteiras != null
-                                ?
-                                carteiras.map((v, k) => {
-                                    return <Picker.Item key={k} value={k} label={v.descricao} />
-                                })
-                                :
-                                <Row />
-                        }
-                    </Picker>
-                    <Row></Row>
+                        <Texto>Carteira</Texto>
+                        <Picker
+                            selectedValue={selectedCarteira}
+                            onValueChange={(itemValue, itemIndex) => setSelectedCarteira(itemValue)}
+                        >
+                            {
+                                carteiras != null
+                                    ?
+                                    carteiras.map((value, key) => {
+                                        return <Picker.Item key={key} value={key} label={value.descricao} />
+                                    })
+                                    :
+                                    <Row />
+                            }
+                        </Picker>
+                        <Row></Row>
 
-                    <Texto>Data de movimentação</Texto>
-                    <Div onPress={showDatePicker}><Data>{dateFormat}</Data></Div>
-                    {show && (
-                        <DateTimePicker
-                            value={date}
-                            mode={'date'}
-                            is24Hour={true}
-                            display="default"
-                            onChange={onChange}
-                            locale="pt-BR"
+                        <Texto>Categoria</Texto>
+                        <Picker
+                            selectedValue={selectedCategoria}
+                            onValueChange={(itemValue, itemIndex) => setSelectedCategoria(itemValue)}
+                        >
+                            {
+                                categorias != null
+                                    ?
+                                    categorias.map((value, key) => {
+                                        return <Picker.Item key={key} value={key} label={value.descricao} />
+                                    })
+                                    :
+                                    <Row />
+                            }
+                        </Picker>
+                        <Row></Row>
+
+                        <Texto>Data de movimentação</Texto>
+                        <Div onPress={showDatePicker}><Data>{dateFormat}</Data></Div>
+                        {show && (
+                            <DateTimePicker
+                                value={date}
+                                mode={'date'}
+                                is24Hour={true}
+                                display="default"
+                                onChange={onChange}
+                                locale="pt-BR"
+                            />
+                        )}
+                        <Texto>Descrição</Texto>
+                        <Input
+                            onChangeText={(text) => {
+                                setDescricao(text)
+                                setErroDescricao('')
+                            }}
+                            placeholder={"Descrição"}
+                            style={[
+                                erroDescricao != '' ? styles.styleErro : styles.styleInput
+                            ]}
                         />
-                    )}
-                    <Texto>Descrição</Texto>
-                    <Input
-                        placeholder={"Descrição"}
-                    />
+                        {erroDescricao != '' ? <Erro>{erroDescricao}</Erro> : <View />}
 
-                    <Texto>Valor</Texto>
-                    <Input
-                        autoCorrect={false}
-                        autoCapitalize='none'
-                        keyboardType='numeric'
-                        placeholder={"0.00"}
-                    />
+                        <Texto>Valor</Texto>
+                        <Input
+                            autoCorrect={false}
+                            autoCapitalize='none'
+                            keyboardType='numeric'
+                            placeholder={"0.00"}
+                            onChangeText={(text) => {
+                                setValor(text)
+                                setErroValor('')
+                            }}
+                            style={[
+                                erroValor != '' ? styles.styleErro : styles.styleInput
+                            ]}
+                        />
+                        {erroValor != '' ? <Erro>{erroValor}</Erro> : <View />}
 
-                    <BtnEntrar><TxtEntrar>Cadastrar</TxtEntrar></BtnEntrar>
-                </AreaCadastro>
-            </Container>
+
+                        <BtnEntrar onPress={() => IsValid()}><TxtEntrar>Cadastrar</TxtEntrar></BtnEntrar>
+                    </AreaCadastro>
+                </Container>
+            }
         </Background>
     );
 }
+
+const styles = StyleSheet.create({
+    styleErro: {
+        borderWidth: 1,
+        borderColor: '#e60000',
+        borderRadius: 4
+    },
+    styleInput: {
+        borderColor: '#000'
+    }
+})

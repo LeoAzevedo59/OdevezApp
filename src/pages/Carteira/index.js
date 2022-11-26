@@ -37,6 +37,7 @@ export default function Carteira() {
                 <LblCarteira metodo={onOpen} valor={" " + "280,88"} exibirValor={exibirValor} /> */}
                 {/* <FlatList
                     data={ }
+
                     renderItem={ }
                 /> */}
             </Background >
