@@ -30,14 +30,16 @@ export default function Carteira() {
     const [carteira, setCarteira] = useState();
     const [codigoCarteira, setCodigoCarteira] = useState();
     const [valorCarteira, setValorCarteira] = useState(0);
+    const [selectedItem, setSelectedItem] = useState(null);
 
     function onOpen(codigo) {
         setCodigoCarteira(codigo);
         modalizeRef.current?.open();
     }
 
-    function TipoCarteiraSelecionada(codigo) {
+    function TipoCarteiraSelecionada(codigo, item) {
         setCodigoTipoCarteira(codigo);
+        setSelectedItem(item);
     }
 
     async function ObterTipoCarteira() {
@@ -47,6 +49,7 @@ export default function Carteira() {
             }
         }).then((response) => {
             setTipoCarteira(response.data);
+            setSelectedItem(response.data[0]);
         }).catch(function (error) {
             console.log(error.response.status + " Componente: Carteira - Obter tipo Carteira");
         });
@@ -126,7 +129,7 @@ export default function Carteira() {
                     keyExtractor={(item) => item.codigo}
                     data={tipoCarteira}
                     showsHorizontalScrollIndicator={false}
-                    renderItem={({ item }) => <LblTipoCarteira data={item} metodo={TipoCarteiraSelecionada} />}
+                    renderItem={({ item }) => <LblTipoCarteira data={item} metodo={TipoCarteiraSelecionada} selected={selectedItem} />}
                 />
             </View>
 
