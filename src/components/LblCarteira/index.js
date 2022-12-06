@@ -30,8 +30,8 @@ export default function LblCarteira(props) {
                     </HeaderInfo>
                     <TextoLowOpacity>Mastercard</TextoLowOpacity>
                     <InfoFooter>
-                        <Texto>{props.data.fechamentoFatura}</Texto>
-                        <TextoLowOpacity>Fechamento</TextoLowOpacity>
+                        {/* <Texto>{props.data.fechamentoFatura}</Texto>
+                        <TextoLowOpacity>Fechamento</TextoLowOpacity> */}
                     </InfoFooter>
                 </InfoCarteira>
                 <AltCarteira onPress={() => props.metodo(props.data.codigo)}>
@@ -40,7 +40,7 @@ export default function LblCarteira(props) {
                     </AltHeader>
                     <AltFooter>
                         <TextoLowOpacity>Saldo</TextoLowOpacity>
-                        <Texto>R$  {props.exibirValor == true ? props.data.valor : " ****"}</Texto>
+                        <Texto>R$  {props.exibirValor == true ? props.data.valor.toFixed(2) : " ****"}</Texto>
                     </AltFooter>
                 </AltCarteira>
             </CarteiraContainer>

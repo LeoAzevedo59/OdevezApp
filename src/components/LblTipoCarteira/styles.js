@@ -8,6 +8,7 @@ align-items: center;
 margin-right: 16px;
 flex-direction: row;
 position: relative;
+border-radius: 8px;
 `;
 
 export const Cor = styled.View`
@@ -17,6 +18,8 @@ height: 100%;
 position: absolute;
 left: 0;
 top: 0;
+border-top-left-radius: 7px;
+border-bottom-left-radius: 7px;
 `;
 
 export const Texto = styled.Text`

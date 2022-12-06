@@ -10,17 +10,17 @@ export default function LblTipoCarteira(props) {
     return (
         <Container
             style={[
-                props.selected === props.data ? styles.selected : styles.styleInput
+                props.selected === props.data && styles.selected
             ]}
             onPress={() => props.metodo(props.data.codigo, props.data)}>
             <Cor
                 style={[
-                    props.selected === props.data ? styles.selected : styles.styleInput
+                    props.selected === props.data && styles.selectedContainer
                 ]}
             />
             <Texto
                 style={[
-                    props.selected === props.data ? styles.selectedText : styles.styleInput
+                    props.selected === props.data && styles.selectedText
                 ]}
             >{props.data.descricao}</Texto>
         </Container>
@@ -34,5 +34,8 @@ const styles = StyleSheet.create({
     },
     selectedText: {
         color: 'white'
+    },
+    selectedContainer: {
+        backgroundColor: '#DC1111'
     }
 });
