@@ -14,9 +14,9 @@ import Adicionar from '../pages/Adicionar';
 import Configuracao from '../pages/Configuracao';
 import Duvidas from '../pages/Duvidas';
 import Extrato from '../pages/Extrato';
-import Patrimonio from '../pages/Patrimonio';
 import Objetivo from '../pages/Objetivo';
-import AdicionarAlterarCarteira from '../pages/AdicionarAlterarCarteira';
+import FrmCarteira from '../formularios/FrmCarteira';
+import FrmPatrimonio from '../formularios/FrmPatrimonio';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -50,7 +50,7 @@ function Tabs({ navigation }) {
                                 <ImgPerfil source={require('../../assets/images/251894087_1962039253968567_7355826083414885049_n.jpg')} />
                             </View>
                             <View style={{ alignSelf: 'center' }}>
-                                <NomeUsuario>{usuario && usuario.apelido}</NomeUsuario>
+                                <NomeUsuario>Olá, {usuario && usuario.apelido}</NomeUsuario>
                             </View>
                         </ContainerPerfil>
                         <ContainerIcons>
@@ -164,10 +164,10 @@ function AppRoutes() {
                 }} />
             <Stack.Screen
                 key={9}
-                name='Patrimonio'
-                component={Patrimonio}
+                name='FrmPatrimonio'
+                component={FrmPatrimonio}
                 options={{
-                    headerTitle: 'Patrimonio',
+                    headerTitle: 'Patrimônio',
                 }} />
             <Stack.Screen
                 key={10}
@@ -178,10 +178,10 @@ function AppRoutes() {
                 }} />
             <Stack.Screen
                 key={11}
-                name='AdicionarAlterarCarteira'
-                component={AdicionarAlterarCarteira}
+                name='FrmCarteira'
+                component={FrmCarteira}
                 options={{
-                    headerTitle: 'AdicionarAlterarCarteira',
+                    headerTitle: 'Carteira',
                 }} />
         </Stack.Navigator>
     );

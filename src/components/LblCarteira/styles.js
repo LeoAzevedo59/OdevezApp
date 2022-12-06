@@ -1,13 +1,13 @@
 import styled from "styled-components";
 
 export const CarteiraContainer = styled.View`
-
-width: 100%;
 height: 124px;
 border-radius: 8px;
-margin-top: 24px;
+margin-bottom: 24px;
 background-color: #FF3F3F;
 flex-direction: row;
+margin-left: 16px;
+margin-right: 16px;
 `;
 
 export const InfoCarteira = styled.TouchableOpacity`

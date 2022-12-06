@@ -13,7 +13,7 @@ export default function Adicionar() {
     return (
         <Background>
             <ContainerButton>
-                <Botao onPress={() => navigation.navigate('Patrimonio')}>
+                <Botao onPress={() => navigation.navigate('FrmPatrimonio')}>
                     <MaterialIcons name="attach-money" size={24} color="black" />
                     <TextoBotao>Patrimônio</TextoBotao>
                 </Botao>

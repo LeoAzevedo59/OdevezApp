@@ -26,7 +26,7 @@ import ComponenteVazio from '../../components/ComponenteVazio';
 
 //#endregion
 
-export default function Patrimonio() {
+export default function FrmPatrimonio() {
     const { usuario, ExibirValor, exibirValor } = useContext(AuthContext);
     const navigation = useNavigation();
 
@@ -106,20 +106,21 @@ export default function Patrimonio() {
 
     async function IncluirMovimentacao() {
         await api.post("carteira/incluir-movimentacao-carteira", {
-            DataMovimentacao: dateFormat,
+            DataCriacao: dateFormat,
             Descricao: descricao,
             Valor: valor,
             Movimentacao: {
                 Codigo: movimentacoes[selectedMovimentacao].codigo,
-                Descricao: movimentacoes[selectedMovimentacao].descricao,
+                Descricao: movimentacoes[selectedMovimentacao].descricao
             },
             Carteira: {
                 Codigo: carteiras[selectedCarteira].codigo,
-                Descricao: carteiras[selectedCarteira].descricao,
+                Descricao: carteiras[selectedCarteira].descricao
             },
             Categoria: {
                 Codigo: categorias[selectedCategoria].codigo,
                 Descricao: categorias[selectedCategoria].descricao,
+                Usuario: usuario.codigo,
             }
         }, {
             headers: {
@@ -156,12 +157,18 @@ export default function Patrimonio() {
         ObterDescricaoCategorias();
     }, [])
 
+    useEffect(() => {
+        ObterDescricaoCarteiras();
+        ObterDescricaoMovimentacoes();
+        ObterDescricaoCategorias();
+    }, [exibirValor])
+
     return (
         <Background>
             {carteiras == ''
                 ?
                 <Container>
-                    <ComponenteVazio componente="Carteira" link="AdicionarAlterarCarteira" />
+                    <ComponenteVazio componente="Carteira" link="FrmCarteira" />
                 </Container>
                 :
                 <Container>

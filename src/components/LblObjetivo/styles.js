@@ -3,13 +3,13 @@ import styled from "styled-components";
 export const ContainerObjetivo = styled.View`
 flex-direction: row;
 margin-top: 24px;
+margin-left: 16px;
 `;
 
 export const Objetivo = styled.TouchableOpacity`
 width: 140px;
 height: 200px;
 border-radius: 8px;
-margin-left: 16px;
 padding: 8px;
 background-color: #bfbfbf;
 box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
