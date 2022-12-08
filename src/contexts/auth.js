@@ -5,6 +5,7 @@ export const AuthContext = createContext({});
 
 export default function AuthProvider({ children }) {
     const [usuario, setUsuario] = useState(null);
+    const [exibirValor, setexibirValor] = useState(true);
 
     async function Logar(celular, senha) {
 
@@ -17,7 +18,7 @@ export default function AuthProvider({ children }) {
         }).then((response) => {
             setUsuario(response.data);
         }).catch(function (error) {
-            console.log(error.response.status);
+            console.log(error.response.status + " Componente: Login");
             return false;
         });
     }
@@ -34,7 +35,7 @@ export default function AuthProvider({ children }) {
         }).then((response) => {
             setUsuario(response.data);
         }).catch(function (error) {
-            console.log(error.response.status);
+            console.log(error.response.status + " Componente: Cadastro");
             return false;
         });
     }
@@ -43,8 +44,13 @@ export default function AuthProvider({ children }) {
         setUsuario(null);
     }
 
+    function ExibirValor(value) {
+        setexibirValor(value)
+        return value;
+    }
+
     return (
-        <AuthContext.Provider value={{ signed: !!usuario, usuario, Logar, Cadastrar, Deslogar }}>
+        <AuthContext.Provider value={{ signed: !!usuario, usuario, exibirValor, Logar, Cadastrar, Deslogar, ExibirValor }}>
             {children}
         </AuthContext.Provider>
     );

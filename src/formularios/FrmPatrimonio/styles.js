@@ -6,8 +6,6 @@ background-color: #F3F3F3;
 `;
 
 export const AreaCadastro = styled.ScrollView`
-margin-top: 16px;
-margin-bottom: 16px;
 `;
 
 export const Container = styled.View`
@@ -71,9 +69,15 @@ border-radius: 16px;
 align-items: center;
 justify-content: center;
 margin-top: 32px;
+margin-bottom: 16px;
 `;
 
 export const Row = styled.View`
 border-bottom-width: 1px;
 margin-top: -8px;
+`;
+
+export const Erro = styled.Text`
+color: #e60000;
+padding-top: 4px;
 `;

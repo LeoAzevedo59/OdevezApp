@@ -41,7 +41,6 @@ border-radius: 50px;
 export const NomeUsuario = styled.Text`
 padding-left: 8px;
 font-size: 16px;
-font-weight: bold;
 `;
 
 export const Icone = styled.Image`
