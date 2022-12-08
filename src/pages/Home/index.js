@@ -7,7 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 import {
   Container,
   TxtMaisExtrato
-} from './style';
+} from './styles';
 
 import api from '../../contexts/api';
 import LblPatrimonio from '../../components/LblPatrimonio';
@@ -23,9 +23,9 @@ export default function Home() {
   const [patrimonio, setPatrimonio] = useState(0.00);
 
   const data = [
-    { id: 0, tipo: 'users', descricao: 'Casa', valor: '154,90', porcentagem: '20' },
-    { id: 1, tipo: 'user', descricao: 'Carro', valor: '3122,90', porcentagem: '5' },
-    { id: 2, tipo: 'user', descricao: 'Carro', valor: '3122,90', porcentagem: '5' }
+    // { id: 0, tipo: 'users', descricao: 'Casa', valor: '154,90', porcentagem: '20' },
+    // { id: 1, tipo: 'user', descricao: 'Carro', valor: '3122,90', porcentagem: '5' },
+    // { id: 2, tipo: 'user', descricao: 'Carro', valor: '3122,90', porcentagem: '5' }
   ];
 
   const [objetivos, setObjetivo] = useState(data);
