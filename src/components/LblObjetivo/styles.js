@@ -1,57 +1,68 @@
 import styled from "styled-components";
 
-export const ContainerObjetivo = styled.View`
-flex-direction: row;
-margin-top: 24px;
+export const Container = styled.View`
 margin-left: 16px;
-`;
-
-export const Objetivo = styled.TouchableOpacity`
-width: 140px;
-height: 200px;
+margin-right: 16px;
+height: 164px;
 border-radius: 8px;
-padding: 8px;
-background-color: #bfbfbf;
-box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+flex-direction: row;
+background-color: #f2f2f2;
 `;
 
-export const ContainerIcones = styled.View`
-flex-direction: row;
+export const Left = styled.View`
+width: 60%;
+height: 100%;
+padding-left: 8px;
+padding-top: 8px;
 justify-content: space-between;
 `;
 
-export const TxtObjetivoDescricao = styled.Text`
-margin-top: 8px;
+export const Right = styled.TouchableOpacity`
+width: 40%;
+height: 100%;
+padding-right: 8px;
+padding-top: 8px;
+align-items: flex-end;
 `;
 
-export const TxtValorObjetivo = styled.Text`
-text-align: right;
-margin-top: 80px;
+export const H1 = styled.Text`
+font-weight: bold;
+font-size: 18px;
+margin-left: 4px;
 `;
 
-export const BarraProgressaoBackground = styled.View`
-width: 100px;
-height: 6px;
+export const H2 = styled.Text`
+font-size: 16px;
+margin-left: 4px;
+font-weight: bold;
+`;
+
+export const H3 = styled.Text`
+font-size: 10px;
 margin-top: 6px;
-align-self: center;
+`;
+
+export const BackgroundProgress = styled.View`
+background-color: #333;
+width: 100px;
+height: 8px;
 border-radius: 8px;
 position: relative;
-background-color: rgba(17, 17, 17, 0.4);
 `;
 
-export const BarraProgressao = styled.View`
-width: 25px;
-height: 6px;
-border-radius: 8px;
+export const ProgressBar = styled.View`
 position: absolute;
-top: 164px;
-left: 20px;
-background-color: yellow;
+height: 8px;
+background-color: #F4F811;
+top: 20px;
+left: 0;
+border-radius: 3px;
 `;
 
-export const TxtValorPorcentagem = styled.Text`
-width: 100%;
-text-align: center;
-font-size: 12px;
-margin-top: 6px;
+export const Div = styled.View`
+flex-direction: row;
+align-items: flex-end;
+`;
+
+export const ContainerLeft = styled.View`
 `;

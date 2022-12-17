@@ -10,9 +10,10 @@ export default function LblTipoCarteira(props) {
     return (
         <Container
             style={[
-                props.selected === props.data && styles.selected
+                props.selected === props.data && styles.selected, styles.shadow
             ]}
-            onPress={() => props.metodo(props.data.codigo, props.data)}>
+            onPress={() => props.metodo(props.data.codigo, props.data)}
+        >
             <Cor
                 style={[
                     props.selected === props.data && styles.selectedContainer
@@ -29,13 +30,19 @@ export default function LblTipoCarteira(props) {
 
 const styles = StyleSheet.create({
     selected: {
-        backgroundColor: 'red',
-        borderColor: 'red'
+        backgroundColor: '#333',
+        borderWidth: 0
     },
     selectedText: {
-        color: 'white'
+        color: '#fff'
     },
     selectedContainer: {
-        backgroundColor: '#DC1111'
+        backgroundColor: '#333'
+    },
+    shadow: {
+        borderRadius: 10,
+        shadowColor: 'black',
+        shadowOpacity: 0.9,
+        elevation: 10,
     }
 });

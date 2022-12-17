@@ -19,11 +19,11 @@ export default function Mais() {
         <Background>
             <ContainerButton>
                 <Botao onPress={() => navigate.navigate('Objetivo')}>
-                    <Feather name="target" size={24} color="black" />
+                    <Feather name="target" size={24} color="#333" />
                     <TextoBotao>Objetivos</TextoBotao>
                 </Botao>
                 <Botao>
-                    <Ionicons name="ios-calculator" size={24} color="black" />
+                    <Ionicons name="ios-calculator" size={24} color="#333" />
                     <TextoBotao>Calculadora</TextoBotao>
                 </Botao>
             </ContainerButton>

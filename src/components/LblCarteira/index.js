@@ -1,4 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
+import { StyleSheet } from 'react-native';
 import {
     CarteiraContainer,
     InfoCarteira,
@@ -23,9 +24,9 @@ export default function LblCarteira(props) {
     return (
         <SafeAreaView>
             <CarteiraContainer>
-                <InfoCarteira onPress={() => navigation.navigate("Extrato")}>
+                <InfoCarteira style={styles.shadow} onPress={() => navigation.navigate("Extrato")}>
                     <HeaderInfo>
-                        <FontAwesome name="bank" size={24} color="white" />
+                        <FontAwesome name="bank" size={24} color="#333" />
                         <CarteiraDesc>{props.data.descricao}</CarteiraDesc>
                     </HeaderInfo>
                     <TextoLowOpacity>Mastercard</TextoLowOpacity>
@@ -34,16 +35,24 @@ export default function LblCarteira(props) {
                         <TextoLowOpacity>Fechamento</TextoLowOpacity> */}
                     </InfoFooter>
                 </InfoCarteira>
-                <AltCarteira onPress={() => props.metodo(props.data.codigo)}>
+                <AltCarteira style={styles.shadow} onPress={() => props.metodo(props.data.codigo)}>
                     <AltHeader>
-                        <Feather name='more-horizontal' size={24} color="white" />
+                        <Feather name='more-horizontal' size={24} color="#333" />
                     </AltHeader>
                     <AltFooter>
-                        <TextoLowOpacity>Saldo</TextoLowOpacity>
-                        <Texto>R$  {props.exibirValor == true ? props.data.valor.toFixed(2) : " ****"}</Texto>
+                        <TextoLowOpacity >Saldo</TextoLowOpacity>
+                        <Texto >R$  {props.exibirValor == true ? props.data.valor.toFixed(2) : " ****"}</Texto>
                     </AltFooter>
                 </AltCarteira>
             </CarteiraContainer>
         </SafeAreaView>
     );
 }
+
+const styles = StyleSheet.create({
+    shadow: {
+        shadowColor: 'black',
+        shadowOpacity: 0.9,
+        elevation: 10,
+    }
+});

@@ -1,18 +1,20 @@
 import styled from "styled-components";
 
 export let Container = styled.TouchableOpacity`
-border: 1px solid #FFA881;
 height: 32px;
 justify-content: center;
 align-items: center;
-margin-right: 16px;
 flex-direction: row;
 position: relative;
 border-radius: 8px;
+background-color: #f2f2f2;
+margin-top: 2px;
+margin-right: 8px;
+margin-left: 8px;
 `;
 
 export const Cor = styled.View`
-background-color: #FFA881;
+background-color: #333;
 width: 10px;
 height: 100%;
 position: absolute;

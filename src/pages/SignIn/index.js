@@ -111,6 +111,6 @@ const styles = StyleSheet.create({
         borderRadius: 4
     },
     styleInput: {
-        borderColor: '#000'
+        borderColor: '##333'
     }
 })

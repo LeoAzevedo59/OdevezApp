@@ -105,7 +105,7 @@ export default function FrmPatrimonio() {
     }
 
     async function IncluirMovimentacao() {
-        await api.post("carteira/incluir-movimentacao-carteira", {
+        await api.post("extrato/incluir-movimentacao-carteira", {
             DataCriacao: dateFormat,
             Descricao: descricao,
             Valor: valor,
@@ -282,6 +282,6 @@ const styles = StyleSheet.create({
         borderRadius: 4
     },
     styleInput: {
-        borderColor: '#000'
+        borderColor: '#333'
     }
 })

@@ -5,7 +5,7 @@ padding: 16px;
 `;
 
 export const Header = styled.View`
-background-color: #FF3F3F;
+background-color: #333;
 width: 100%;
 height: 90px;
 flex-direction: row;
@@ -71,3 +71,7 @@ flex-direction: row;
 align-items: center;
 `;
 
+
+export const ContainerExtrato = styled.View`
+border: 1px solid red;
+`;

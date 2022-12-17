@@ -21,13 +21,7 @@ export default function LblPatrimonio(props) {
                     {props.exibirValor == true ? props.valor : " ****"}
                 </TxtValorPatrimonio>
             </ContainerPatrimonio>
-            {
-                props.titulo === "Carteira"
-                    ?
-                    <Feather name="plus-circle" size={24} color="black" />
-                    :
-                    <AntDesign name="arrowright" size={24} color="black" />
-            }
+            <Feather name="plus-circle" size={24} color="#333" />
         </PatrimonioClick>
     );
 }

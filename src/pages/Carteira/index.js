@@ -122,9 +122,9 @@ export default function Carteira() {
                 <LblPatrimonio valor={" " + valorCarteira.toFixed(2)} exibirValor={exibirValor} link="FrmCarteira" titulo="Carteira" />
             </Background >
 
-            <View style={{ height: 32, marginTop: 24, marginBottom: 24 }}>
+            <View style={{ height: 50, marginTop: 24, marginBottom: 24 }}>
                 <FlatList
-                    style={{ marginLeft: 16, height: 32 }}
+                    style={{ height: 32 }}
                     horizontal={true}
                     keyExtractor={(item) => item.codigo}
                     data={tipoCarteira}
@@ -148,12 +148,12 @@ export default function Carteira() {
             >
                 <Background>
                     <ContainerButton>
-                        <Botao onPress={() => alert('Alteração de carteira')}>
-                            <AntDesign name="retweet" size={24} color="black" />
+                        <Botao onPress={() => alert('Alteração de carteirax')}>
+                            <AntDesign name="retweet" size={24} color="#333" />
                             <TextoBotao>Alterar</TextoBotao>
                         </Botao>
                         <Botao onPress={() => ExcluirCarteira()}>
-                            <MaterialCommunityIcons name="delete-forever-outline" size={24} color="black" />
+                            <MaterialCommunityIcons name="delete-forever-outline" size={24} color="#333" />
                             <TextoBotao>Excluir</TextoBotao>
                         </Botao>
                     </ContainerButton>
