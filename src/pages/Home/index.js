@@ -6,7 +6,8 @@ import { useNavigation } from '@react-navigation/native';
 
 import {
   Container,
-  TxtMaisExtrato
+  TxtMaisExtrato,
+  Espacamento
 } from './styles';
 
 import api from '../../contexts/api';
@@ -95,6 +96,8 @@ export default function Home() {
             />
           </View>
         }
+
+        <Espacamento />
 
         {extrato.length === 0
           ?

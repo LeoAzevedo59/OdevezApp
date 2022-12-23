@@ -1,7 +1,7 @@
 //#region imports
 
 import React, { useContext, useState, useEffect } from 'react';
-import { Keyboard, StyleSheet, View } from 'react-native';
+import { Keyboard, StyleSheet, View, Switch } from 'react-native';
 import { AuthContext } from '../../contexts/auth';
 import { Picker } from '@react-native-community/picker';
 import { useNavigation } from '@react-navigation/native';
@@ -17,7 +17,9 @@ import {
     Div,
     Data,
     Row,
-    Erro
+    Erro,
+    H2,
+    Span
 } from './styles';
 
 import api from '../../contexts/api';
@@ -43,6 +45,8 @@ export default function FrmPatrimonio() {
     const [valor, setValor] = useState("");
     const [erroDescricao, setErroDescricao] = useState("");
     const [erroValor, setErroValor] = useState("");
+    const [efetivado, setEfetivado] = useState(true);
+    const [status, setStatus] = useState(1);
 
     const onChange = (event, selectedDate) => {
 
@@ -109,6 +113,7 @@ export default function FrmPatrimonio() {
             DataCriacao: dateFormat,
             Descricao: descricao,
             Valor: valor,
+            Status: status,
             Movimentacao: {
                 Codigo: movimentacoes[selectedMovimentacao].codigo,
                 Descricao: movimentacoes[selectedMovimentacao].descricao
@@ -151,6 +156,15 @@ export default function FrmPatrimonio() {
             IncluirMovimentacao();
     }
 
+    function AltStatus() {
+        if (status === 1)
+            setStatus(2)
+        else
+            setStatus(1)
+        console.log(status);
+        setEfetivado(!efetivado)
+    }
+
     useEffect(() => {
         ObterDescricaoCarteiras();
         ObterDescricaoMovimentacoes();
@@ -174,10 +188,42 @@ export default function FrmPatrimonio() {
                 <Container>
                     <AreaCadastro>
 
+                        <Texto>Valor</Texto>
+                        <Input
+                            autoCorrect={false}
+                            autoCapitalize='none'
+                            keyboardType='numeric'
+                            placeholder={"0.00"}
+                            onChangeText={(text) => {
+                                setValor(text)
+                                setErroValor('')
+                            }}
+                            style={[
+                                erroValor != '' ? styles.styleErro : styles.styleInput
+                            ]}
+                        />
+                        {erroValor != '' ? <Erro>{erroValor}</Erro> : <View />}
+
+                        <Texto>Status</Texto>
+
+                        <Span>
+                            <H2>
+                                {efetivado === true ? "Efetivado" : "Pendente"}
+                            </H2>
+
+                            <Switch
+                                value={efetivado}
+                                onValueChange={(valor) => AltStatus()}
+                                thumbColor="yellow"
+                                trackColor={{ false: "gray", true: "#FFD700" }}
+                            />
+                        </Span>
+
                         <Texto>Transação</Texto>
                         <Picker
                             selectedValue={selectedMovimentacao}
                             onValueChange={(itemValue, itemIndex) => setSelectedMovimentacao(itemValue)}
+                            style={{ fontSize: 16 }}
                         >
                             {
                                 movimentacoes != null
@@ -249,23 +295,6 @@ export default function FrmPatrimonio() {
                             ]}
                         />
                         {erroDescricao != '' ? <Erro>{erroDescricao}</Erro> : <View />}
-
-                        <Texto>Valor</Texto>
-                        <Input
-                            autoCorrect={false}
-                            autoCapitalize='none'
-                            keyboardType='numeric'
-                            placeholder={"0.00"}
-                            onChangeText={(text) => {
-                                setValor(text)
-                                setErroValor('')
-                            }}
-                            style={[
-                                erroValor != '' ? styles.styleErro : styles.styleInput
-                            ]}
-                        />
-                        {erroValor != '' ? <Erro>{erroValor}</Erro> : <View />}
-
 
                         <BtnEntrar onPress={() => IsValid()}><TxtEntrar>Cadastrar</TxtEntrar></BtnEntrar>
                     </AreaCadastro>

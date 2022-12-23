@@ -71,7 +71,11 @@ flex-direction: row;
 align-items: center;
 `;
 
-
 export const ContainerExtrato = styled.View`
 border: 1px solid red;
+`;
+
+export const Background = styled.KeyboardAvoidingView` 
+flex:1;
+background-color: #F3F3F3;
 `;

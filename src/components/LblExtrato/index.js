@@ -13,7 +13,7 @@ import {
     ContainerInfo,
     StatusExtrato
 } from './styles';
-import { SafeAreaView } from 'react-native';
+import { SafeAreaView, StyleSheet } from 'react-native';
 //#endregion
 
 export default function LblExtrato(props) {
@@ -42,13 +42,17 @@ export default function LblExtrato(props) {
 
     return (
         <SafeAreaView>
-            <Extrato onPress={() => props.resumido !== true && props.metodo(props.data.codigo, props.data.carteira.codigo)}>
+             <Extrato onPress={() => props.resumido !== true && props.metodo(props.data.codigo, props.data.carteira.codigo, props.data.status, props.data.valor)}>
                 <ContainerInfo>
                     <IconeExtrato>
                         {
                             exibirIcone()
                         }
-                        <StatusExtrato />
+                        <StatusExtrato
+                            style={[
+                                props.data.status === 1 ? styles.Efetivado : styles.Pendente
+                            ]}
+                        />
                     </IconeExtrato>
                     <ContainerDescricao>
                         <TxtDescricao>
@@ -73,3 +77,12 @@ export default function LblExtrato(props) {
         </SafeAreaView>
     );
 }
+
+const styles = StyleSheet.create({
+    Pendente: {
+        backgroundColor: 'orange'
+    },
+    Efetivado: {
+        backgroundColor: 'green'
+    }
+})
