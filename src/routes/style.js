@@ -1,7 +1,7 @@
 import styled from 'styled-components/native';
 
 export const Container = styled.View`
-background-color: #FAFF00;
+background-color: #F4F811;
 height: 60px;
 flex-direction: row;
 justify-content: space-between;

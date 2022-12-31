@@ -81,3 +81,13 @@ export const Erro = styled.Text`
 color: #e60000;
 padding-top: 4px;
 `;
+
+export const H2 = styled.Text`
+color: #333;
+`;
+
+export const Span = styled.View`
+flex-direction: row;
+align-items: center;
+justify-content: space-between;
+`;

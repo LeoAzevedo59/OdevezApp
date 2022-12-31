@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const Container = styled.TouchableOpacity`
-border: 1px dashed black;
+border: 1px dashed #333;
 width: 100%;
 height: 80px;
 align-items: center;

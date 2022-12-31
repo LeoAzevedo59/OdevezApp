@@ -14,19 +14,19 @@ export default function Adicionar() {
         <Background>
             <ContainerButton>
                 <Botao onPress={() => navigation.navigate('FrmPatrimonio')}>
-                    <MaterialIcons name="attach-money" size={24} color="black" />
+                    <MaterialIcons name="attach-money" size={24} color="#333" />
                     <TextoBotao>Patrimônio</TextoBotao>
                 </Botao>
-                <Botao onPress={() => navigation.navigate('Objetivo')}>
-                    <Feather name="target" size={24} color="black" />
+                <Botao onPress={() => navigation.navigate('FrmObjetivo')}>
+                    <Feather name="target" size={24} color="#333" />
                     <TextoBotao>Objetivo</TextoBotao>
                 </Botao>
                 <Botao>
-                    <AntDesign name="barschart" size={24} color="black" />
+                    <AntDesign name="barschart" size={24} color="#333" />
                     <TextoBotao>Ações</TextoBotao>
                 </Botao>
                 <Botao>
-                    <MaterialIcons name="apartment" size={24} color="black" />
+                    <MaterialIcons name="apartment" size={24} color="#333" />
                     <TextoBotao>Fundos Imobiliários</TextoBotao>
                 </Botao>
             </ContainerButton>

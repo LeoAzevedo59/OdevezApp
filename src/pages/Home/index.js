@@ -6,12 +6,13 @@ import { useNavigation } from '@react-navigation/native';
 
 import {
   Container,
-  TxtMaisExtrato
+  TxtMaisExtrato,
+  Espacamento
 } from './styles';
 
 import api from '../../contexts/api';
 import LblPatrimonio from '../../components/LblPatrimonio';
-import LblObjetivo from '../../components/LblObjetivo';
+import LblObjetivoSimplificado from '../../components/LblObjetivoSimplificado';
 import LblExtrato from '../../components/LblExtrato';
 import ComponenteVazio from '../../components/ComponenteVazio';
 
@@ -20,19 +21,19 @@ import ComponenteVazio from '../../components/ComponenteVazio';
 export default function Home() {
   const navigation = useNavigation();
   const { usuario, exibirValor } = useContext(AuthContext);
-  const [patrimonio, setPatrimonio] = useState(0.00);
+  const [patrimonio, setPatrimonio] = useState(0);
 
   const data = [
-    // { id: 0, tipo: 'users', descricao: 'Casa', valor: '154,90', porcentagem: '20' },
-    // { id: 1, tipo: 'user', descricao: 'Carro', valor: '3122,90', porcentagem: '5' },
-    // { id: 2, tipo: 'user', descricao: 'Carro', valor: '3122,90', porcentagem: '5' }
+    { codigo: 0, tipo: 'users', descricao: 'Casa', valor: '154,90', porcentagem: '20' },
+    { codigo: 1, tipo: 'user', descricao: 'Carro', valor: '3122,90', porcentagem: '5' },
+    { codigo: 2, tipo: 'user', descricao: 'Carro', valor: '3122,90', porcentagem: '5' }
   ];
 
   const [objetivos, setObjetivo] = useState(data);
   const [extrato, setExtrato] = useState([]);
 
   async function ObterPatrimonio() {
-    await api.get("carteira/obter-valor-carteira-por-usuario", {
+    await api.get("carteira/obter-valor-por-usuario", {
       headers: {
         Authorization: usuario.type + " " + usuario.token
       },
@@ -75,25 +76,28 @@ export default function Home() {
     <SafeAreaView>
       <ScrollView>
         <Container>
-          <LblPatrimonio valor={" " + patrimonio.toFixed(2)} exibirValor={exibirValor} link="Carteira" titulo="Patrimônio" />
+          <LblPatrimonio valor={" " + patrimonio.toFixed(2)} exibirValor={exibirValor} link="FrmPatrimonio" titulo="Patrimônio" />
         </Container>
 
         {objetivos.length === 0
           ?
           <Container>
-            <ComponenteVazio componente="Objetivo" link="Objetivo" />
+            <ComponenteVazio componente="Objetivo" link="FrmObjetivo" />
           </Container>
           :
           <View>
             <FlatList
+              style={{ height: 220, marginTop: 20 }}
               horizontal={true}
-              keyExtractor={(item) => item.id}
+              keyExtractor={(item) => item.codigo}
               data={objetivos}
               showsHorizontalScrollIndicator={false}
-              renderItem={({ item }) => <LblObjetivo data={item} exibirValor={exibirValor} />}
+              renderItem={({ item }) => <LblObjetivoSimplificado data={item} exibirValor={exibirValor} />}
             />
           </View>
         }
+
+        <Espacamento />
 
         {extrato.length === 0
           ?
@@ -101,51 +105,21 @@ export default function Home() {
             <ComponenteVazio componente="Extrato" link="FrmPatrimonio" />
           </Container>
           :
-          <Container>
-            <LblExtrato data={extrato[0]} exibirValor={exibirValor} />
+          <View>
+            <LblExtrato data={extrato[0]} exibirValor={exibirValor} resumido={true} />
 
             {extrato.length > 1
               ?
-              <LblExtrato data={extrato[1]} exibirValor={exibirValor} />
+              <LblExtrato data={extrato[1]} exibirValor={exibirValor} resumido={true} />
               :
               <View />
             }
 
             <TxtMaisExtrato onPress={() => navigation.navigate('Extrato')}> Mais </TxtMaisExtrato>
-
-          </Container>
+          </View>
         }
 
       </ScrollView>
     </SafeAreaView>
   );
 }
-
-
-
-
-
-
-
-
-
-
-
-// {
-//   extrato == null
-//   ?
-//   <Container>
-//     <ComponenteVazio componente="Extrato" link="Extrato" />
-//   </Container>
-//   :
-//   <View>
-//     <FlatList
-//       horizontal={true}
-//       keyExtractor={(item) => item.id}
-//       data={extrato}
-//       showsVerticalScrollIndicator={false}
-//       renderItem={({ item }) => <LblExtrato data={item} exibirValor={exibirValor} />}
-
-//     />
-//   </View>
-// }

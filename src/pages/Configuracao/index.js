@@ -18,7 +18,7 @@ export default function Configuracao({ navigation }) {
         <Background>
             <ContainerButton>
                 <Botao onPress={() => Deslogar()}>
-                    <Ionicons name="ios-exit-outline" size={24} color="black" />
+                    <Ionicons name="ios-exit-outline" size={24} color="#333" />
                     <TextoBotao>Sair</TextoBotao>
                 </Botao>
             </ContainerButton>

@@ -10,7 +10,7 @@ const CheckBox = (props) => {
 		<View style={styles.container}>
 			<Pressable onPress={props.onPress}>
 				<MaterialCommunityIcons
-					name={iconName} size={24} color="#000" />
+					name={iconName} size={24} color="#333" />
 			</Pressable>
 			<Text style={styles.title}>{props.title}</Text>
 		</View>
@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
 	},
 	title: {
 		fontSize: 16,
-		color: "#000",
+		color: "##333",
 		marginLeft: 5,
 		fontWeight: "600",
 	},

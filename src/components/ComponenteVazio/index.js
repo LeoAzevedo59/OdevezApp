@@ -12,7 +12,7 @@ export default function ComponenteVazio(props) {
     return (
         <Container onPress={() => navigation.navigate(props.link)}>
             <Main>
-                <Ionicons name="add-circle-outline" size={24} color="black" />
+                <Ionicons name="add-circle-outline" size={24} color="#333" />
                 <TxtAdicionar>Adicionar {props.componente}</TxtAdicionar>
             </Main>
         </Container>

@@ -1,30 +1,37 @@
 import styled from "styled-components";
 
-export const ContainerExtrato = styled.View`
-width: 100%;
-height: 80px;
-margin-top: 24px;
-align-items: center;
-`;
-
-export const Extrato = styled.View`
+export const Extrato = styled.TouchableOpacity`
 width: 100%;
 border-bottom-width: 1px;
 border-bottom-color: #ddd;
 flex-direction: row;
 align-items: center;
 justify-content: space-between;
-margin-top: 16px;
+margin-bottom: 12px;
 padding-bottom: 6px;
+padding-left: 16px;
+padding-right: 16px;
 `;
 
 export const IconeExtrato = styled.View`
 width: 32px;
 height: 32px;
-background-color: yellow;
+background-color: #F4F811;
 border-radius: 100px;
 align-items: center;
 justify-content: center;
+position: relative;
+`;
+
+export const StatusExtrato = styled.View`
+width: 10px;
+height: 10px;
+border-radius: 100px;
+background-color: orange;
+position: absolute;
+right: 0;
+top: 20px;
+border: 1px solid #eee;
 `;
 
 export const ContainerDescricao = styled.View`

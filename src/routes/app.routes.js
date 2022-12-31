@@ -17,6 +17,7 @@ import Extrato from '../pages/Extrato';
 import Objetivo from '../pages/Objetivo';
 import FrmCarteira from '../formularios/FrmCarteira';
 import FrmPatrimonio from '../formularios/FrmPatrimonio';
+import FrmObjetivo from '../formularios/FrmObjetivo';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -55,13 +56,13 @@ function Tabs({ navigation }) {
                         </ContainerPerfil>
                         <ContainerIcons>
                             <TouchableOpacity onPress={() => navigation.navigate('Duvidas')} >
-                                <MaterialCommunityIcons name="comment-question-outline" size={24} color="black" />
+                                <MaterialCommunityIcons name="comment-question-outline" size={24} color="#333" />
                             </TouchableOpacity>
                             <TouchableOpacity onPress={exibirSimNao}>
-                                <Feather name={eye} size={24} color="black" />
+                                <Feather name={eye} size={24} color="#333" />
                             </TouchableOpacity>
                             <TouchableOpacity onPress={() => navigation.navigate('Configuracao')}>
-                                <Octicons name="gear" size={24} color="black" />
+                                <Octicons name="gear" size={24} color="#333" />
                             </TouchableOpacity>
                         </ContainerIcons>
                     </Container>
@@ -73,9 +74,9 @@ function Tabs({ navigation }) {
                 name='Home'
                 component={Home}
                 options={{
-                    tabBarActiveTintColor: 'black',
+                    tabBarActiveTintColor: '#333',
                     tabBarIcon: ({ size, color }) => ([
-                        color === 'black' ?
+                        color === '#333' ?
                             <Ionicons key={0} name={'home'} size={size} color={color} />
                             :
                             <Ionicons key={1} name={'home-outline'} size={size} color={color} />
@@ -86,10 +87,10 @@ function Tabs({ navigation }) {
                 name='Dashboard'
                 component={Dashboard}
                 options={{
-                    tabBarActiveTintColor: 'black',
+                    tabBarActiveTintColor: '#333',
                     tabBarIcon: ({ size, color }) => (
                         [
-                            color === 'black' ?
+                            color === '#333' ?
                                 <MaterialCommunityIcons key={0} name='view-dashboard' size={size} color={color} />
                                 :
                                 <MaterialCommunityIcons key={1} name='view-dashboard-outline' size={size} color={color} />
@@ -100,7 +101,7 @@ function Tabs({ navigation }) {
                 name='Adicionar'
                 component={Adicionar}
                 options={{
-                    tabBarActiveTintColor: 'black',
+                    tabBarActiveTintColor: '#333',
                     tabBarIcon: ({ size, color }) => (
                         <Octicons key={0} name='diff-added' size={size} color={color} /> // wallet-outline
                     )
@@ -110,9 +111,9 @@ function Tabs({ navigation }) {
                 name='Carteira'
                 component={Carteira}
                 options={{
-                    tabBarActiveTintColor: 'black',
+                    tabBarActiveTintColor: '#333',
                     tabBarIcon: ({ size, color }) => ([
-                        color === 'black' ?
+                        color === '#333' ?
                             <Ionicons key={0} name='wallet' size={size} color={color} /> // wallet
                             :
                             <Ionicons key={1} name='wallet-outline' size={size} color={color} /> // wallet
@@ -123,7 +124,7 @@ function Tabs({ navigation }) {
                 name='Mais'
                 component={Mais}
                 options={{
-                    tabBarActiveTintColor: 'black',
+                    tabBarActiveTintColor: '#333',
                     tabBarIcon: ({ size, color }) => (
                         <Feather key={0} name='more-horizontal' size={size} color={color} />
                     )
@@ -182,6 +183,13 @@ function AppRoutes() {
                 component={FrmCarteira}
                 options={{
                     headerTitle: 'Carteira',
+                }} />
+            <Stack.Screen
+                key={12}
+                name='FrmObjetivo'
+                component={FrmObjetivo}
+                options={{
+                    headerTitle: 'Objetivo',
                 }} />
         </Stack.Navigator>
     );

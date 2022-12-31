@@ -21,3 +21,7 @@ export const ContainerObjetivos = styled.View`
 flex-direction: row;
 margin-top: 24px;
 `;
+
+export const Espacamento = styled.View`
+margin-top: 24px;
+`;

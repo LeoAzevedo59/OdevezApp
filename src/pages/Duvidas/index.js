@@ -34,7 +34,7 @@ export default function Duvidas() {
                     <Titulo>Como alterar a forma de pagamento da assinatura?</Titulo>
                     <AntDesign name={[
                         id == 1 && exibirDescricao == 'none' ? 'down' : 'right'
-                    ]} size={24} color="black" onPress={() => AlterarIcone(1)} />
+                    ]} size={24} color="#333" onPress={() => AlterarIcone(1)} />
                 </Header>
                 <Descricao style={[
                     id == 1 && exibirDescricao == 'none' ? { display: 'flex' } : { display: 'none' }
@@ -49,7 +49,7 @@ export default function Duvidas() {
                     <Titulo>Como alterar a forma de pagamento da assinatura?</Titulo>
                     <AntDesign name={[
                         id == 2 && exibirDescricao == 'none' ? 'down' : 'right'
-                    ]} size={24} color="black" onPress={() => AlterarIcone(2)} />
+                    ]} size={24} color="#333" onPress={() => AlterarIcone(2)} />
                 </Header>
                 <Descricao style={[
                     id == 2 && exibirDescricao == 'none' ? { display: 'flex' } : { display: 'none' }
@@ -61,6 +61,3 @@ export default function Duvidas() {
         </Background>
     );
 }
-
-//Há uma cobrança que não reconheço?
-//Ao verificar sua fatura de cartão de crédito, se deparou com uma cobrança que não conhece sua origem ou não sabia que haveria renovação automática? Verifique as informações abaixo e, se comprovar que a cobraça é realmente do Odevez Finance, entre em contato com nossa equipe em odevezfinance.me/contatosuporte.
