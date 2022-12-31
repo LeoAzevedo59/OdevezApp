@@ -28,7 +28,7 @@ import ComponenteVazio from '../../components/ComponenteVazio';
 
 //#endregion
 
-export default function FrmPatrimonio() {
+export default function FrmPatrimonio({ route }) {
     const { usuario, ExibirValor, exibirValor } = useContext(AuthContext);
     const navigation = useNavigation();
 
@@ -41,16 +41,18 @@ export default function FrmPatrimonio() {
     const [selectedMovimentacao, setSelectedMovimentacao] = useState(0);
     const [categorias, setCategorias] = useState();
     const [selectedCategoria, setSelectedCategoria] = useState(0);
-    const [descricao, setDescricao] = useState("");
-    const [valor, setValor] = useState("");
-    const [erroDescricao, setErroDescricao] = useState("");
-    const [erroValor, setErroValor] = useState("");
+    const [descricao, setDescricao] = useState('');
+    const [valor, setValor] = useState('');
+    const [erroValor, setErroValor] = useState('');
     const [efetivado, setEfetivado] = useState(true);
     const [status, setStatus] = useState(1);
+    const [txtBtn, setTxtBtn] = useState('');
+    const [alterar, setAlterar] = useState(false);
+    const [codExtrato, setCodExtrato] = useState(0);
 
-    const onChange = (event, selectedDate) => {
+    const onChange = (event, selectedDate, alt) => {
 
-        if (show == false)
+        if (show == false && alt !== true)
             setShow(true)
         else {
             setShow(false)
@@ -64,7 +66,7 @@ export default function FrmPatrimonio() {
             setShow(true)
         else
             setShow(false)
-    };
+    }
 
     async function ObterDescricaoCarteiras() {
         await api.get("carteira/obter-descricao-carteira-por-usuario", {
@@ -76,8 +78,9 @@ export default function FrmPatrimonio() {
             }
         }).then((response) => {
             setCarteiras(response.data);
+            return response.data;
         }).catch(function (error) {
-            console.log(error.response.status + " Componente: Cadastro de patrimonio");
+            console.log(error.response.status + " Componente: Cadastro de patrimonio - ObterDescricaoCarteiras()");
         });
     }
 
@@ -88,9 +91,88 @@ export default function FrmPatrimonio() {
             }
         }).then((response) => {
             setMovimentacoes(response.data);
+            return response.data;
         }).catch(function (error) {
-            console.log(error.response.status + " Componente: Cadastro de patrimonio");
+            console.log(error.response.status + " Componente: Cadastro de patrimonio - ObterDescricaoMovimentacoes()");
         });
+    }
+
+    async function AlterarAsync(codExtratoAlt) {
+        setAlterar(true);
+
+        const retornoExtrato = await api.get("extrato/obter-extrato-por-codigo", {
+            headers: {
+                Authorization: usuario.type + " " + usuario.token
+            },
+            params: {
+                extrato: codExtratoAlt
+            }
+        });
+
+        setCodExtrato(retornoExtrato.data.codigo);
+        setDescricao(retornoExtrato.data.descricao.toString());
+        setStatus(retornoExtrato.data.status);
+
+        let data = retornoExtrato.data.dataCriacao.toString("yyyy-MM-dd HH:mm:ss").substring(0, 10).split('/');
+        data = data[1] + '/' + data[0] + '/' + data[2]
+        data = new Date(data);
+        data.setDate(data.getDate());
+        onChange(null, data, true);
+
+        const retornoCarteiras = await api.get("carteira/obter-descricao-carteira-por-usuario", {
+            headers: {
+                Authorization: usuario.type + " " + usuario.token
+            },
+            params: {
+                usuario: usuario.codigo
+            }
+        });
+
+        const retornoMovimentacoes = await api.get("carteira/obter-movimentacao-carteira", {
+            headers: {
+                Authorization: usuario.type + " " + usuario.token
+            }
+        });
+
+        const retornoCategorias = await api.get("carteira/obter-categoria-carteira-por-usuario", {
+            headers: {
+                Authorization: usuario.type + " " + usuario.token
+            },
+            params: {
+                usuario: usuario.codigo
+            }
+        });
+
+        retornoExtrato.data.valor > 0
+            ? setValor(retornoExtrato.data.valor.toString())
+            : setValor((retornoExtrato.data.valor * -1).toString())
+
+        if (retornoExtrato.data.status === 1)
+            setEfetivado(true);
+        else if (retornoExtrato.data.status === 2)
+            setEfetivado(false);
+
+        setMovimentacoes(retornoMovimentacoes.data);
+
+        for (let x = 0; x < retornoMovimentacoes.data.length; x++) {
+            if (retornoExtrato.data.movimentacao.codigo === retornoMovimentacoes.data[x].codigo)
+                setSelectedMovimentacao(x);
+        }
+
+        setCarteiras(retornoCarteiras.data);
+
+        for (let x = 0; x < retornoCarteiras.data.length; x++) {
+            if (retornoExtrato.data.carteira.codigo === retornoCarteiras.data[x].codigo)
+                setSelectedCarteira(x);
+        }
+
+        setCategorias(retornoCategorias.data);
+
+        for (let x = 0; x < retornoCategorias.data.length; x++) {
+            if (retornoExtrato.data.categoria.codigo === retornoCategorias.data[x].codigo)
+                setSelectedCategoria(x);
+        }
+
     }
 
     async function ObterDescricaoCategorias() {
@@ -108,10 +190,10 @@ export default function FrmPatrimonio() {
         });
     }
 
-    async function IncluirMovimentacao() {
+    async function IncluirExtrato() {
         await api.post("extrato/incluir-movimentacao-carteira", {
             DataCriacao: dateFormat,
-            Descricao: descricao,
+            Descricao: descricao === '' ? categorias[selectedCategoria].descricao : descricao,
             Valor: valor,
             Status: status,
             Movimentacao: {
@@ -144,37 +226,69 @@ export default function FrmPatrimonio() {
         });
     }
 
-    function IsValid() {
-        if (descricao == '') {
-            setErroDescricao("Campo descrição não pode ser vazio.")
-        }
-        if (valor == '') {
-            setErroValor("Campo valor não pode ser vazio.")
-        }
+    async function AlterarExtrato() {
+        await api.put("extrato/alterar", {
+            Codigo: codExtrato,
+            DataCriacao: dateFormat,
+            Descricao: descricao === '' ? categorias[selectedCategoria].descricao : descricao,
+            Valor: valor,
+            Status: status,
+            Movimentacao: {
+                Codigo: movimentacoes[selectedMovimentacao].codigo
+            },
+            Carteira: {
+                Codigo: carteiras[selectedCarteira].codigo
+            },
+            Categoria: {
+                Codigo: categorias[selectedCategoria].codigo
+            }
+        }, {
+            headers: {
+                Authorization: usuario.type + " " + usuario.token
+            }
+        }).then((response) => {
+            if (response.data) {
+                Keyboard.dismiss();
+                ExibirValor(!exibirValor);
+                ExibirValor(exibirValor);
+                navigation.goBack();
+            }
+        }).catch(function (error) {
+            console.log(error.response.status + " Componente: Alteração de patrimonio");
+            return false;
+        });
+    }
 
-        if (descricao != '' && valor != '')
-            IncluirMovimentacao();
+    function IsValid() {
+        if (valor == '')
+            setErroValor("Campo valor não pode ser vazio.")
+
+        if (valor != '' && alterar)
+            AlterarExtrato();
+        else
+            IncluirExtrato();
     }
 
     function AltStatus() {
-        if (status === 1)
-            setStatus(2)
-        else
-            setStatus(1)
-        console.log(status);
+            if (status === 1)
+                setStatus(2)
+            else
+                setStatus(1)
+                
         setEfetivado(!efetivado)
     }
 
     useEffect(() => {
-        ObterDescricaoCarteiras();
-        ObterDescricaoMovimentacoes();
-        ObterDescricaoCategorias();
-    }, [])
-
-    useEffect(() => {
-        ObterDescricaoCarteiras();
-        ObterDescricaoMovimentacoes();
-        ObterDescricaoCategorias();
+        if (route.params !== undefined) {
+            AlterarAsync(route.params.extrato);
+            setTxtBtn('Salvar');
+        }
+        else {
+            ObterDescricaoCarteiras();
+            ObterDescricaoMovimentacoes();
+            ObterDescricaoCategorias();
+            setTxtBtn('Cadastrar');
+        }
     }, [exibirValor])
 
     return (
@@ -194,6 +308,7 @@ export default function FrmPatrimonio() {
                             autoCapitalize='none'
                             keyboardType='numeric'
                             placeholder={"0.00"}
+                            value={valor}
                             onChangeText={(text) => {
                                 setValor(text)
                                 setErroValor('')
@@ -285,18 +400,13 @@ export default function FrmPatrimonio() {
                         )}
                         <Texto>Descrição</Texto>
                         <Input
+                            value={descricao}
                             onChangeText={(text) => {
                                 setDescricao(text)
-                                setErroDescricao('')
                             }}
                             placeholder={"Descrição"}
-                            style={[
-                                erroDescricao != '' ? styles.styleErro : styles.styleInput
-                            ]}
                         />
-                        {erroDescricao != '' ? <Erro>{erroDescricao}</Erro> : <View />}
-
-                        <BtnEntrar onPress={() => IsValid()}><TxtEntrar>Cadastrar</TxtEntrar></BtnEntrar>
+                        <BtnEntrar onPress={() => IsValid()}><TxtEntrar>{txtBtn}</TxtEntrar></BtnEntrar>
                     </AreaCadastro>
                 </Container>
             }
