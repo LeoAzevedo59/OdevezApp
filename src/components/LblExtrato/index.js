@@ -17,6 +17,7 @@ import { SafeAreaView, StyleSheet } from 'react-native';
 //#endregion
 
 export default function LblExtrato(props) {
+    let corExpandMore = props.data.movimentacao.codigo === 1 ? 'green' : 'red'
 
     function exibirIcone() {
         let nome = "";
@@ -42,7 +43,7 @@ export default function LblExtrato(props) {
 
     return (
         <SafeAreaView>
-             <Extrato onPress={() => props.resumido !== true && props.metodo(props.data.codigo, props.data.carteira.codigo, props.data.status, props.data.valor)}>
+            <Extrato onPress={() => props.resumido !== true && props.metodo(props.data.codigo, props.data.carteira.codigo, props.data.status, props.data.valor)}>
                 <ContainerInfo>
                     <IconeExtrato>
                         {
@@ -71,7 +72,7 @@ export default function LblExtrato(props) {
                         R$
                         {props.exibirValor === true ? " " + props.data.valor.toFixed(2) : " ****"}
                     </TxtValorExtrato>
-                    <MaterialIcons name="expand-more" size={24} color="black" />
+                    <MaterialIcons name="expand-more" size={24} color={corExpandMore} />
                 </ContainerInfo>
             </Extrato>
         </SafeAreaView>
