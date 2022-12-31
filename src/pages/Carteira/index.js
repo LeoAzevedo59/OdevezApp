@@ -1,3 +1,4 @@
+//#region 
 import React, { useRef, useContext, useEffect, useState } from 'react';
 import { View, FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native'
@@ -20,13 +21,14 @@ import {
     AntDesign,
     MaterialCommunityIcons
 } from '@expo/vector-icons';
+//#endregion
 
 export default function Carteira() {
     const navigation = useNavigation();
     const modalizeRef = useRef(null);
     const { usuario, exibirValor, ExibirValor } = useContext(AuthContext);
     const [tipoCarteira, setTipoCarteira] = useState();
-    const [codigoTipoCarteira, setCodigoTipoCarteira] = useState(12);
+    const [codigoTipoCarteira, setCodigoTipoCarteira] = useState(0);
     const [carteira, setCarteira] = useState();
     const [codigoCarteira, setCodigoCarteira] = useState();
     const [valorCarteira, setValorCarteira] = useState(0);
@@ -72,7 +74,7 @@ export default function Carteira() {
     }
 
     async function ObterValorCarteira() {
-        await api.get("carteira/obter-valor-carteira-por-tipo-carteira", {
+        await api.get("carteira/obter-valor-por-tipo", {
             headers: {
                 Authorization: usuario.type + " " + usuario.token
             },
@@ -138,7 +140,7 @@ export default function Carteira() {
                 keyExtractor={(item) => item.codigo}
                 data={carteira}
                 showsVerticalScrollIndicator={false}
-                renderItem={({ item }) => <LblCarteira data={item} metodo={onOpen} exibirValor={exibirValor} />}
+                renderItem={({ item }) => <LblCarteira data={item} metodo={onOpen} exibirValor={exibirValor} valor={" " + valorCarteira.toFixed(2)} />}
             />
 
             <Modalize

@@ -21,7 +21,7 @@ import ComponenteVazio from '../../components/ComponenteVazio';
 export default function Home() {
   const navigation = useNavigation();
   const { usuario, exibirValor } = useContext(AuthContext);
-  const [patrimonio, setPatrimonio] = useState(0.00);
+  const [patrimonio, setPatrimonio] = useState(0);
 
   const data = [
     { codigo: 0, tipo: 'users', descricao: 'Casa', valor: '154,90', porcentagem: '20' },
@@ -33,7 +33,7 @@ export default function Home() {
   const [extrato, setExtrato] = useState([]);
 
   async function ObterPatrimonio() {
-    await api.get("carteira/obter-valor-carteira-por-usuario", {
+    await api.get("carteira/obter-valor-por-usuario", {
       headers: {
         Authorization: usuario.type + " " + usuario.token
       },

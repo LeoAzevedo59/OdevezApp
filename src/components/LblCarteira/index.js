@@ -1,5 +1,9 @@
-import { useNavigation } from '@react-navigation/native';
+//#region 
+import React, { useRef, useContext, useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
+import { AuthContext } from '../../contexts/auth';
+import { useNavigation } from '@react-navigation/native'
+import { SafeAreaView } from 'react-native';
 import {
     CarteiraContainer,
     InfoCarteira,
@@ -16,10 +20,37 @@ import {
     Feather,
     FontAwesome
 } from '@expo/vector-icons';
-import { SafeAreaView } from 'react-native';
+
+import api from '../../contexts/api';
+//#endregion
 
 export default function LblCarteira(props) {
     const navigation = useNavigation();
+    const { usuario, exibirValor, ExibirValor } = useContext(AuthContext);
+    const [valorCarteira, setValorCarteira] = useState(0);
+
+    async function ObterValorCarteira() {
+        await api.get("carteira/obter-valor-por-codigo", {
+            headers: {
+                Authorization: usuario.type + " " + usuario.token
+            },
+            params: {
+                carteira: props.data.codigo
+            }
+        }).then((response) => {
+            setValorCarteira(response.data);
+        }).catch(function (error) {
+            console.log(error.response.status + " Componente: Carteira - Obter Valro Carteira");
+        });
+    }
+
+    useEffect(() => {
+        ObterValorCarteira();
+    }, [])
+
+    useEffect(() => {
+        ObterValorCarteira();
+    }, [exibirValor])
 
     return (
         <SafeAreaView>
@@ -41,7 +72,7 @@ export default function LblCarteira(props) {
                     </AltHeader>
                     <AltFooter>
                         <TextoLowOpacity >Saldo</TextoLowOpacity>
-                        <Texto >R$  {props.exibirValor == true ? props.data.valor.toFixed(2) : " ****"}</Texto>
+                        <Texto >R$  {props.exibirValor == true ? valorCarteira.toFixed(2) : " ****"}</Texto>
                     </AltFooter>
                 </AltCarteira>
             </CarteiraContainer>
