@@ -79,7 +79,7 @@ export default function Home() {
           <LblPatrimonio valor={" " + patrimonio.toFixed(2)} exibirValor={exibirValor} link="FrmPatrimonio" titulo="Patrimônio" />
         </Container>
 
-        {objetivos.length === 0
+        {/* {objetivos.length === 0
           ?
           <Container>
             <ComponenteVazio componente="Objetivo" link="FrmObjetivo" />
@@ -95,7 +95,7 @@ export default function Home() {
               renderItem={({ item }) => <LblObjetivoSimplificado data={item} exibirValor={exibirValor} />}
             />
           </View>
-        }
+        } */}
 
         <Espacamento />
 

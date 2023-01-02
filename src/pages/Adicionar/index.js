@@ -17,7 +17,7 @@ export default function Adicionar() {
                     <MaterialIcons name="attach-money" size={24} color="#333" />
                     <TextoBotao>Patrimônio</TextoBotao>
                 </Botao>
-                <Botao onPress={() => navigation.navigate('FrmObjetivo')}>
+                {/* <Botao onPress={() => navigation.navigate('FrmObjetivo')}>
                     <Feather name="target" size={24} color="#333" />
                     <TextoBotao>Objetivo</TextoBotao>
                 </Botao>
@@ -28,7 +28,7 @@ export default function Adicionar() {
                 <Botao>
                     <MaterialIcons name="apartment" size={24} color="#333" />
                     <TextoBotao>Fundos Imobiliários</TextoBotao>
-                </Botao>
+                </Botao> */}
             </ContainerButton>
         </Background>
     );
