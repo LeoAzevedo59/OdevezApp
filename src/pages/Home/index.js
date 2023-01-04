@@ -1,6 +1,6 @@
 //#region Imports
 import React, { useContext, useState, useEffect } from 'react';
-import { ScrollView, View, FlatList, SafeAreaView } from 'react-native';
+import { ScrollView, View, ActivityIndicator, SafeAreaView } from 'react-native';
 import { AuthContext } from '../../contexts/auth';
 import { useNavigation } from '@react-navigation/native';
 
@@ -22,6 +22,7 @@ export default function Home() {
   const navigation = useNavigation();
   const { usuario, exibirValor } = useContext(AuthContext);
   const [patrimonio, setPatrimonio] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
 
   const data = [
     { codigo: 0, tipo: 'users', descricao: 'Casa', valor: '154,90', porcentagem: '20' },
@@ -60,6 +61,12 @@ export default function Home() {
     }).catch(function (error) {
       console.log(error.response.status + " Componente: Home - Extrato resumido");
     });
+    setIsLoading(false);
+  }
+
+  const getContent = () => {
+    if (isLoading)
+      return <ActivityIndicator size="large" />
   }
 
   useEffect(() => {
@@ -102,21 +109,27 @@ export default function Home() {
         {extrato.length === 0
           ?
           <Container>
-            <ComponenteVazio componente="Extrato" link="FrmPatrimonio" />
+            <ComponenteVazio componente="Receita / Despesa" link="FrmPatrimonio" />
           </Container>
           :
-          <View>
-            <LblExtrato data={extrato[0]} exibirValor={exibirValor} resumido={true} />
 
-            {extrato.length > 1
-              ?
-              <LblExtrato data={extrato[1]} exibirValor={exibirValor} resumido={true} />
-              :
-              <View />
-            }
+          isLoading === false
+            ?
+            <View>
+              <LblExtrato data={extrato[0]} exibirValor={exibirValor} resumido={true} />
 
-            <TxtMaisExtrato onPress={() => navigation.navigate('Extrato')}> Mais </TxtMaisExtrato>
-          </View>
+              {extrato.length > 1
+                ?
+                <LblExtrato data={extrato[1]} exibirValor={exibirValor} resumido={true} />
+                :
+                <View />
+              }
+
+              <TxtMaisExtrato onPress={() => navigation.navigate('Extrato')}> Mais </TxtMaisExtrato>
+            </View>
+
+            :
+            getContent()
         }
 
       </ScrollView>

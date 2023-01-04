@@ -7,7 +7,6 @@ height: 80px;
 align-items: center;
 justify-content: center;
 border-radius: 8px;
-margin-top: 24px;
 `;
 
 export const Main = styled.View`

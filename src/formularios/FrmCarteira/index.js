@@ -32,6 +32,7 @@ export default function FrmCarteira() {
     const [tiposCarteiras, setTiposCarteiras] = useState();
     const [selectedTipoCarteira, setSelectedTipoCarteira] = useState(0);
     const [erroDescricao, setErroDescricao] = useState('');
+    const [pressButton, setPressButton] = useState(false);
 
 
     async function ObterTipoCarteira() {
@@ -56,8 +57,12 @@ export default function FrmCarteira() {
     }
 
     function IsValid() {
+        setPressButton(true);
+
         if (descricao == '') {
             setErroDescricao("Campo descrição não pode ser vazio.")
+            setPressButton(false);
+            return;
         }
 
         IncluirTipoCarteira();
@@ -73,8 +78,7 @@ export default function FrmCarteira() {
                 Authorization: usuario.type + " " + usuario.token
             }
         }).then((response) => {
-            if (response.data)
-            {
+            if (response.data) {
                 ExibirValor(!exibirValor);
                 ExibirValor(exibirValor);
                 navigation.goBack();
@@ -143,7 +147,7 @@ export default function FrmCarteira() {
                     />
                     {erroDescricao != '' ? <Erro>{erroDescricao}</Erro> : <View />}
 
-                    <BtnEntrar onPress={() => IsValid()}><TxtEntrar>Cadastrar</TxtEntrar></BtnEntrar>
+                    <BtnEntrar disabled={pressButton} onPress={() => IsValid()}><TxtEntrar>Cadastrar</TxtEntrar></BtnEntrar>
                 </AreaCadastro>
             </Container>
         </Background>

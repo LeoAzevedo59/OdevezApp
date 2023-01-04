@@ -1,10 +1,10 @@
 import React, { useState, useContext } from 'react';
 import { View, TouchableOpacity, useWindowDimensions } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Ionicons, MaterialCommunityIcons, Feather, Octicons } from '@expo/vector-icons';
+import { Ionicons, MaterialCommunityIcons, Feather, Octicons, Entypo } from '@expo/vector-icons';
 import { AuthContext } from '../contexts/auth';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { Container, ContainerPerfil, ContainerIcons, ImgPerfil, NomeUsuario, Icone } from './style';
+import { Container, ContainerPerfil, ContainerIcons, ImgPerfil, NomeUsuario, TxtPerfil } from './style';
 
 import Home from '../pages/Home';
 import Carteira from '../pages/Carteira';
@@ -48,10 +48,13 @@ function Tabs({ navigation }) {
                     <Container style={{ width: tamanho }}>
                         <ContainerPerfil>
                             <View>
-                                <ImgPerfil source={require('../../assets/images/251894087_1962039253968567_7355826083414885049_n.jpg')} />
+                                <ImgPerfil>
+                                    <Entypo name="image" size={20} color="yellow" />
+                                </ImgPerfil>
                             </View>
                             <View style={{ alignSelf: 'center' }}>
                                 <NomeUsuario>Olá, {usuario && usuario.apelido}</NomeUsuario>
+                                <TxtPerfil>Visualizar perfil</TxtPerfil>
                             </View>
                         </ContainerPerfil>
                         <ContainerIcons>
@@ -119,7 +122,7 @@ function Tabs({ navigation }) {
                             <Ionicons key={1} name='wallet-outline' size={size} color={color} /> // wallet
                     ])
                 }} />
-            <Tab.Screen
+            {/* <Tab.Screen
                 key={4}
                 name='Mais'
                 component={Mais}
@@ -128,7 +131,7 @@ function Tabs({ navigation }) {
                     tabBarIcon: ({ size, color }) => (
                         <Feather key={0} name='more-horizontal' size={size} color={color} />
                     )
-                }} />
+                }} /> */}
         </Tab.Navigator>
     )
 }

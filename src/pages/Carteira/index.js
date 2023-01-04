@@ -1,6 +1,6 @@
 //#region 
 import React, { useRef, useContext, useEffect, useState } from 'react';
-import { View, FlatList } from 'react-native';
+import { View, FlatList, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Modalize } from 'react-native-modalize';
@@ -33,6 +33,7 @@ export default function Carteira() {
     const [codigoCarteira, setCodigoCarteira] = useState();
     const [valorCarteira, setValorCarteira] = useState(0);
     const [selectedItem, setSelectedItem] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
 
     function onOpen(codigo) {
         setCodigoCarteira(codigo);
@@ -58,6 +59,7 @@ export default function Carteira() {
     }
 
     async function ObterCarteira() {
+        setIsLoading(true);
         await api.get("carteira/obter-carteira-por-usuario", {
             headers: {
                 Authorization: usuario.type + " " + usuario.token
@@ -71,6 +73,7 @@ export default function Carteira() {
         }).catch(function (error) {
             console.log(error.response.status + " Componente: Carteira - Obter Carteira");
         });
+        setIsLoading(false);
     }
 
     async function ObterValorCarteira() {
@@ -90,6 +93,9 @@ export default function Carteira() {
     }
 
     async function ExcluirCarteira() {
+        modalizeRef.current?.close();
+
+
         await api.delete("carteira/excluir-carteira", {
             headers: {
                 Authorization: usuario.type + " " + usuario.token
@@ -101,10 +107,15 @@ export default function Carteira() {
         }).then((response) => {
             ExibirValor(!exibirValor)
             ExibirValor(exibirValor)
-            modalizeRef.current?.close();
+
         }).catch(function (error) {
             console.log(error.response.status + " Componente: Carteira - Excluir Carteira");
         });
+    }
+
+    const getContent = () => {
+        if (isLoading)
+            return <ActivityIndicator size="large" />
     }
 
     useEffect(() => {
@@ -135,13 +146,18 @@ export default function Carteira() {
                 />
             </View>
 
-            <FlatList
-                horizontal={false}
-                keyExtractor={(item) => item.codigo}
-                data={carteira}
-                showsVerticalScrollIndicator={false}
-                renderItem={({ item }) => <LblCarteira data={item} metodo={onOpen} exibirValor={exibirValor} valor={" " + valorCarteira.toFixed(2)} />}
-            />
+            {isLoading === false
+                ?
+                <FlatList
+                    horizontal={false}
+                    keyExtractor={(item) => item.codigo}
+                    data={carteira}
+                    showsVerticalScrollIndicator={false}
+                    renderItem={({ item }) => <LblCarteira data={item} metodo={onOpen} exibirValor={exibirValor} valor={" " + valorCarteira.toFixed(2)} />}
+                />
+                :
+                getContent()
+            }
 
             <Modalize
                 ref={modalizeRef}
