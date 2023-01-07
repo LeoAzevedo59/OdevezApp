@@ -42,11 +42,6 @@ export default function SignIn() {
             setErroSobrenome('O campo Sobrenome não pode ser nulo.')
         }
 
-        if (cpf == '') {
-            retorno = false;
-            setErroCPF('O campo CPF não pode ser nulo.')
-        }
-
         if (email == '') {
             retorno = false;
             setErroEmail('O campo E-mail não pode ser nulo.')
@@ -78,7 +73,7 @@ export default function SignIn() {
         if (isValid()) {
             if (!await Cadastrar(nome, sobrenome, cpf, email, celular, senha, confirmarSenha)) {
                 setErroCPF('CPF já cadastrado.')
-                setErroGeral('Erro ao cadastrar-se.')
+                setErroGeral('e-mail já cadastrado.')
             }
         }
     }
@@ -128,7 +123,7 @@ export default function SignIn() {
                     />
                     <Erro>{erroSobrenome}</Erro>
 
-                    <Texto>CPF</Texto>
+                    {/* <Texto>CPF</Texto>
                     <Input
                         autoCorrect={false}
                         autoCapitalize='none'
@@ -143,7 +138,7 @@ export default function SignIn() {
                             erroCpf != '' ? styles.styleErro : styles.styleInput
                         ]}
                     />
-                    <Erro>{erroCpf}</Erro>
+                    <Erro>{erroCpf}</Erro> */}
 
                     <Texto>E-mail</Texto>
                     <Input
