@@ -88,3 +88,28 @@ export const Erro = styled.Text`
 color: #e60000;
 padding-top: 4px;
 `;
+
+export const ContainerData = styled.View`
+align-items: center;
+`;
+
+export const InputData = styled.TouchableOpacity`
+border: 1px solid #333;
+height: 40px;
+padding-left: 6px;
+border-radius: 8px;
+width: 64px;
+margin-top: 16px;
+align-items: center;
+`;
+
+export const FlexDirectionRow = styled.View`
+flex-direction: row;
+justify-content: space-between;
+`;
+
+export const ContainerBtnData = styled.View`
+border: 1px solid red;
+width: 100%;
+height: 100%;
+`;

@@ -27,7 +27,7 @@ export default function Carteira() {
     const navigation = useNavigation();
     const modalizeRef = useRef(null);
     const { usuario, exibirValor, ExibirValor } = useContext(AuthContext);
-    const [tipoCarteira, setTipoCarteira] = useState();
+    const [tipoCarteira, setTipoCarteira] = useState(null);
     const [codigoTipoCarteira, setCodigoTipoCarteira] = useState(0);
     const [carteira, setCarteira] = useState();
     const [codigoCarteira, setCodigoCarteira] = useState();
@@ -51,8 +51,16 @@ export default function Carteira() {
                 Authorization: usuario.type + " " + usuario.token
             }
         }).then((response) => {
-            setTipoCarteira(response.data);
-            setSelectedItem(response.data[0]);
+
+            const array = [{
+                codigo: 0,
+                descricao: "TODOS",
+            }]
+
+            let jun = [...array, ...response.data];
+            
+            setTipoCarteira(jun);
+            setSelectedItem(jun[0]);
         }).catch(function (error) {
             console.log(error.response.status + " Componente: Carteira - Obter tipo Carteira");
         });
