@@ -14,7 +14,8 @@ import {
     AltCarteira,
     InfoFooter,
     AltFooter,
-    AltHeader
+    AltHeader,
+    FlexDirectionRow
 } from './styles';
 import {
     Feather,
@@ -22,12 +23,16 @@ import {
 } from '@expo/vector-icons';
 
 import api from '../../contexts/api';
+import { Header } from 'react-native/Libraries/NewAppScreen';
 //#endregion
 
 export default function LblCarteira(props) {
     const navigation = useNavigation();
     const { usuario, exibirValor, ExibirValor } = useContext(AuthContext);
     const [valorCarteira, setValorCarteira] = useState(0);
+
+    const dateObj = new Date();
+    const monthNameShort = dateObj.toLocaleString("pt-BR").toString().slice(4, 7);
 
     async function ObterValorCarteira() {
         await api.get("carteira/obter-valor-por-codigo", {
@@ -60,11 +65,21 @@ export default function LblCarteira(props) {
                         <FontAwesome name="bank" size={24} color="#333" />
                         <CarteiraDesc>{props.data.descricao}</CarteiraDesc>
                     </HeaderInfo>
-                    <TextoLowOpacity>Mastercard</TextoLowOpacity>
-                    <InfoFooter>
-                        {/* <Texto>{props.data.fechamentoFatura}</Texto>
-                        <TextoLowOpacity>Fechamento</TextoLowOpacity> */}
-                    </InfoFooter>
+                    <TextoLowOpacity>{props.data.bancoDTO.name}</TextoLowOpacity>
+
+                    {props.data.vencimentoFatura > 0 && (
+                        <InfoFooter>
+                            <FlexDirectionRow>
+                                <Texto>{props.data.fechamentoFatura} / {monthNameShort}</Texto>
+                                <TextoLowOpacity style={{ marginLeft: 8 }}>Fechamento</TextoLowOpacity>
+                            </FlexDirectionRow>
+                            <FlexDirectionRow>
+                                <Texto>{props.data.vencimentoFatura} / {monthNameShort}</Texto>
+                                <TextoLowOpacity style={{ marginLeft: 8 }}>Vencimento</TextoLowOpacity>
+                            </FlexDirectionRow>
+                        </InfoFooter>
+                    )}
+
                 </InfoCarteira>
                 <AltCarteira style={styles.shadow} onPress={() => props.metodo(props.data.codigo)}>
                     <AltHeader>

@@ -7,6 +7,7 @@ import { AuthContext } from '../../contexts/auth';
 import { Picker } from '@react-native-community/picker';
 import { useNavigation } from '@react-navigation/native';
 import { Modalize } from 'react-native-modalize';
+import { MaterialIcons, EvilIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 
 import {
     Background,
@@ -22,10 +23,19 @@ import {
     InputData,
     FlexDirectionRow,
     ContainerData,
-    ContainerBtnData
+    ContainerBtnData,
+    TextoBanco,
+    ContainerBanco,
+    InputPesquisa,
+    ContainerPesquisaBanco,
+    IconePesquisaBanco,
+    TextoNomeBanco,
+    BotaoNomeBanco,
+    BtnLimpar
 } from './styles';
 
 import api from '../../contexts/api';
+import service from '../../contexts/services';
 import CheckBox from '../../components/Checkbox';
 import LblDataBall from '../../components/LblDataBall';
 
@@ -52,6 +62,7 @@ export default function FramCarteira() {
     const { usuario, ExibirValor, exibirValor } = useContext(AuthContext);
     const navigation = useNavigation();
     const modalizeRef = useRef(null);
+    const modalizeRefBank = useRef(null);
 
     const [descricao, setDescricao] = useState('');
     const [tiposCarteiras, setTiposCarteiras] = useState(null);
@@ -64,7 +75,10 @@ export default function FramCarteira() {
     const [dataFechamento, setDataFechamento] = useState(0);
     const [tipoData, setTipoData] = useState(0);
     const [data, setData] = useState(dataArray);
-
+    const [bancos, setBancos] = useState();
+    const [banks, setBanks] = useState([]);
+    const [BancoDes, setBancoDes] = useState();
+    const [selectedBank, setSelectedBank] = useState(null);
 
     const [erroDescricao, setErroDescricao] = useState('');
     const [erroTipoCarteira, setErroTipoCarteira] = useState('');
@@ -86,6 +100,18 @@ export default function FramCarteira() {
             setTiposCarteiras(jun);
         }).catch(function (error) {
             console.log(error.response.status + " Componente: Cadastro de carteira - ObterTipoCarteira()");
+        });
+    }
+
+    async function ObterBancos() {
+        await api.get("carteira/obter", {
+            headers: {
+                Authorization: usuario.type + " " + usuario.token
+            }
+        }).then((response) => {
+            setBancos(response.data)
+        }).catch(function (error) {
+            console.log(error.response.status + " Componente: Cadastro de carteira - ObterBancos()");
         });
     }
 
@@ -111,6 +137,21 @@ export default function FramCarteira() {
 
         setTipoData(value);
         modalizeRef.current?.open();
+    }
+
+    function SelecionarBanco_Click(code, name, ispb) {
+        setSelectedBank({
+            code: code,
+            name: name,
+            ispb: ispb
+        })
+
+        modalizeRefBank.current?.close();
+    }
+
+    function onOpenBank() {
+        LimparBanco();
+        modalizeRefBank.current?.open();
     }
 
     function HabilitarOpcoes(itemValue) {
@@ -156,8 +197,13 @@ export default function FramCarteira() {
             }
         }
 
+        if (selectedBank === null) {
+            setIsLoading(false);
+            return;
+        }
+
         setIsLoading(false);
-        IncluirTipoCarteira();
+        IncluirCarteira();
     }
 
     function chkExibirHome() {
@@ -175,11 +221,22 @@ export default function FramCarteira() {
         setErroTipoCarteira('');
     }
 
-    async function IncluirTipoCarteira() {
-        await api.post("carteira/incluir-tipo-carteira", {
+    async function IncluirCarteira() {
+        await api.post("carteira/incluir", {
             Descricao: descricao,
             Usuario: usuario.codigo,
-            TipoCarteira: tiposCarteiras[selectedTipoCarteira].codigo
+            TipoCarteira: tiposCarteiras[selectedTipoCarteira].codigo,
+            FechamentoFatura: dataFechamento,
+            VencimentoFatura: dataVencimento,
+            ChkExibirHome: exibirHomeIsChecked,
+            ChkNaoSomarPatrimonio: naoSomaPatrimonioIsChecked,
+            Valor: valorInicial,
+            BancoDTO: {
+                code: parseInt(selectedBank.code),
+                name: selectedBank.name,
+                ispb: selectedBank.ispb,
+                Usuario: usuario.codigo
+            }
         }, {
             headers: {
                 Authorization: usuario.type + " " + usuario.token
@@ -191,9 +248,14 @@ export default function FramCarteira() {
                 navigation.goBack();
             }
         }).catch(function (error) {
-            console.log(error.response.status + " Componente: Cadastro de carrteira - IncluirTipoCarteira()");
+            console.log(error + " Componente: Cadastro de carrteira - IncluirCarteira()");
             return false;
         });
+    }
+
+    function LimparBanco() {
+        setBancoDes('')
+        setBanks([])
     }
 
     const getContent = () => {
@@ -270,12 +332,26 @@ export default function FramCarteira() {
         );
     }
 
+    const inputBanco = () => {
+        return (
+            <View>
+                <Texto>Nome do banco</Texto>
+                <ContainerBanco onPress={onOpenBank}>
+                    <TextoBanco>{selectedBank !== null ? selectedBank.name : 'NENHUM'}</TextoBanco>
+                    <MaterialIcons name="arrow-drop-down" size={24} color="#616161" />
+                </ContainerBanco>
+                <Row />
+            </View>
+        );
+    }
+
     const RenderTipoCarteira = () => {
         switch (selectedTipoCarteira.toString()) {
 
             case TipoCarteiraEnum.Credito:
                 return (
                     <View>
+                        {inputBanco()}
                         {inputDescricao()}
                         {inputDataVencimento()}
                     </View>
@@ -283,6 +359,7 @@ export default function FramCarteira() {
             case TipoCarteiraEnum.Conta_Corrente:
                 return (
                     <View>
+                        {inputBanco()}
                         {inputDescricao()}
                         {inputVlrInicial()}
                     </View>
@@ -290,6 +367,7 @@ export default function FramCarteira() {
             case TipoCarteiraEnum.Poupanca:
                 return (
                     <View>
+                        {inputBanco()}
                         {inputDescricao()}
                         {inputVlrInicial()}
                     </View>
@@ -313,12 +391,9 @@ export default function FramCarteira() {
     }
 
     useEffect(() => {
+        ObterBancos();
         ObterTipoCarteira();
     }, []);
-
-    useEffect(() => {
-
-    }, [dataVencimento, dataFechamento]);
 
     return (
         <Background>
@@ -395,6 +470,56 @@ export default function FramCarteira() {
                         />
                     </View>
                 </Modalize>
+
+                <Modalize
+                    ref={modalizeRefBank}
+                    snapPoint={450}
+                    modalHeight={450}
+                    data={bancos}
+                    renderItem={({ item }) => <Text> {item}</Text>}
+                >
+
+                    <ContainerPesquisaBanco>
+                        <IconePesquisaBanco>
+                            <EvilIcons name="search" size={24} color="black" />
+                        </IconePesquisaBanco>
+
+                        <InputPesquisa
+                            placeholder={'Digite o nome do banco...'}
+                            value={BancoDes}
+                            onChangeText={(text) => {
+                                setBancoDes(text)
+                                const arry = [];
+                                bancos?.forEach(element => {
+                                    if (element.fullName.toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(text.toUpperCase()) ||
+                                        element.name.toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(text.toUpperCase()))
+                                        arry.push(element)
+                                })
+                                setBanks(arry.splice(0, 50));
+                            }}
+                        />
+                        <BtnLimpar onPress={() => LimparBanco()}>
+                            <MaterialCommunityIcons name="delete-forever-outline" size={24} color="#333" />
+                        </BtnLimpar>
+                    </ContainerPesquisaBanco>
+                    <View style={{ alignItems: 'center', marginTop: 12 }}>
+                        {
+                            banks?.map(i => {
+                                return (
+                                    <BotaoNomeBanco key={i.ispb} onPress={() => SelecionarBanco_Click(i.code, i.name, i.ispb)}>
+                                        <TextoNomeBanco>
+                                            {i.name.toUpperCase()}
+                                        </TextoNomeBanco>
+                                    </BotaoNomeBanco>
+                                )
+                            })
+
+                        }
+
+                    </View>
+
+                </Modalize>
+
             </GestureHandlerRootView>
         </Background>
     );

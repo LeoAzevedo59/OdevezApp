@@ -109,7 +109,62 @@ justify-content: space-between;
 `;
 
 export const ContainerBtnData = styled.View`
-border: 1px solid red;
 width: 100%;
 height: 100%;
+`;
+
+export const TextoBanco = styled.Text`
+margin: 16px 0;
+font-size: 16px;
+padding-left: 6px;
+`;
+
+export const ContainerBanco = styled.TouchableOpacity`
+flex-direction: row;
+align-items: center;
+justify-content: space-between;
+padding-right: 14px;
+`;
+
+export const ContainerPesquisaBanco = styled.View`
+align-items: center;
+width: 100%;
+margin-top: 16px;
+flex-direction: row;
+justify-content: space-evenly;
+`;
+
+export const InputPesquisa = styled.TextInput`
+background-color: #eeeeee;
+width: 80%;
+height: 48px;
+border-radius: 8px;
+padding-left: 16px;
+padding-right: 32px;
+`;
+
+export const IconePesquisaBanco = styled.View`
+position: absolute;
+top: 16px;
+right: 64px;
+z-index: 99;
+`;
+
+export const BtnLimpar = styled.TouchableOpacity`
+width: 32px;
+height: 32px;
+align-items: center;
+justify-content: center;
+`;
+
+export const TextoNomeBanco = styled.Text`
+padding: 8px;
+`;
+
+export const BotaoNomeBanco = styled.TouchableOpacity`
+background-color: #f3f6f4;
+margin-top: 8px;
+margin-bottom: 8px;
+width: 90%;
+border-radius: 8px;
 `;

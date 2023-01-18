@@ -35,6 +35,9 @@ margin-left: 6px;
 
 export const InfoFooter = styled.View`
 margin-top: 24px;
+flex-direction: column;
+align-items: flex-start;
+justify-content: flex-end;
 `;
 
 export const TextoLowOpacity = styled.Text`
@@ -63,4 +66,8 @@ align-items: flex-end;
 
 export const AltHeader = styled.View`
 align-items: flex-end;
+`;
+
+export const FlexDirectionRow = styled.View`
+flex-direction: row;
 `;
