@@ -58,7 +58,7 @@ export default function Carteira() {
             }]
 
             let jun = [...array, ...response.data];
-            
+
             setTipoCarteira(jun);
             setSelectedItem(jun[0]);
         }).catch(function (error) {

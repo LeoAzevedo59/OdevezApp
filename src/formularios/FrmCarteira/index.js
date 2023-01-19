@@ -1,8 +1,8 @@
 //#region imports
 
 import React, { useRef, useContext, useEffect, useState } from 'react';
-import { View, StyleSheet, ActivityIndicator, Text, FlatList } from 'react-native';
-import { GestureHandlerRootView, RotationGestureHandler } from 'react-native-gesture-handler';
+import { View, StyleSheet, ActivityIndicator, Text, FlatList, SafeAreaView } from 'react-native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { AuthContext } from '../../contexts/auth';
 import { Picker } from '@react-native-community/picker';
 import { useNavigation } from '@react-navigation/native';
@@ -42,7 +42,7 @@ import LblDataBall from '../../components/LblDataBall';
 //#endregion
 
 let dataArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28];
-var dataBKP = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28];
+var dataBKP = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28];
 
 const TipoCarteiraEnum = {
     Nenhum: '0',
@@ -197,12 +197,17 @@ export default function FramCarteira() {
             }
         }
 
-        if (selectedBank === null) {
-            setIsLoading(false);
-            return;
+        if (selectedTipoCarteira.toString() === TipoCarteiraEnum.Credito ||
+            selectedTipoCarteira.toString() === TipoCarteiraEnum.Conta_Corrente ||
+            selectedTipoCarteira.toString() === TipoCarteiraEnum.Poupanca) {
+            console.log('teste');
+
+            if (selectedBank === null) {
+                setIsLoading(false);
+                return;
+            }
         }
 
-        setIsLoading(false);
         IncluirCarteira();
     }
 
@@ -232,9 +237,9 @@ export default function FramCarteira() {
             ChkNaoSomarPatrimonio: naoSomaPatrimonioIsChecked,
             Valor: valorInicial,
             BancoDTO: {
-                code: parseInt(selectedBank.code),
-                name: selectedBank.name,
-                ispb: selectedBank.ispb,
+                code: selectedBank !== null ? parseInt(selectedBank.code) : null,
+                name: selectedBank !== null ? selectedBank.name : '',
+                ispb: selectedBank !== null ? selectedBank.ispb : '',
                 Usuario: usuario.codigo
             }
         }, {
@@ -245,6 +250,7 @@ export default function FramCarteira() {
             if (response.data) {
                 ExibirValor(!exibirValor);
                 ExibirValor(exibirValor);
+                setIsLoading(false);
                 navigation.goBack();
             }
         }).catch(function (error) {
@@ -478,7 +484,6 @@ export default function FramCarteira() {
                     data={bancos}
                     renderItem={({ item }) => <Text> {item}</Text>}
                 >
-
                     <ContainerPesquisaBanco>
                         <IconePesquisaBanco>
                             <EvilIcons name="search" size={24} color="black" />
@@ -517,9 +522,7 @@ export default function FramCarteira() {
                         }
 
                     </View>
-
                 </Modalize>
-
             </GestureHandlerRootView>
         </Background>
     );

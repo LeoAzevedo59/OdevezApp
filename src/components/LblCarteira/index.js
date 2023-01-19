@@ -34,6 +34,8 @@ export default function LblCarteira(props) {
     const dateObj = new Date();
     const monthNameShort = dateObj.toLocaleString("pt-BR").toString().slice(4, 7);
 
+    const descricaoBanco = props.data.bancoDTO !== null ? props.data.bancoDTO.name : '';
+
     async function ObterValorCarteira() {
         await api.get("carteira/obter-valor-por-codigo", {
             headers: {
@@ -65,7 +67,7 @@ export default function LblCarteira(props) {
                         <FontAwesome name="bank" size={24} color="#333" />
                         <CarteiraDesc>{props.data.descricao}</CarteiraDesc>
                     </HeaderInfo>
-                    <TextoLowOpacity>{props.data.bancoDTO.name}</TextoLowOpacity>
+                    <TextoLowOpacity>{descricaoBanco}</TextoLowOpacity>
 
                     {props.data.vencimentoFatura > 0 && (
                         <InfoFooter>
