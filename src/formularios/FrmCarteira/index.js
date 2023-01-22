@@ -84,6 +84,7 @@ export default function FramCarteira() {
     const [erroTipoCarteira, setErroTipoCarteira] = useState('');
     const [erroDataVencimento, setErroDataVencimento] = useState('');
     const [erroDataFechamento, setErroDataFechamento] = useState('');
+    const [erroBanco, setErroBanco] = useState('');
 
     async function ObterTipoCarteira() {
         await api.get("carteira/obter-tipo-carteira", {
@@ -177,6 +178,17 @@ export default function FramCarteira() {
             return;
         }
 
+        if (selectedTipoCarteira.toString() === TipoCarteiraEnum.Credito ||
+            selectedTipoCarteira.toString() === TipoCarteiraEnum.Conta_Corrente ||
+            selectedTipoCarteira.toString() === TipoCarteiraEnum.Poupanca) {
+
+            if (selectedBank === null) {
+                setIsLoading(false);
+                setErroBanco("Selecione um Banco.")
+                return;
+            }
+        }
+
         if (descricao == '') {
             setErroDescricao("Campo descrição não pode ser vazio.")
             setIsLoading(false);
@@ -192,17 +204,6 @@ export default function FramCarteira() {
 
             if (dataFechamento === 0) {
                 setErroDataFechamento('Dia incorreto');
-                setIsLoading(false);
-                return;
-            }
-        }
-
-        if (selectedTipoCarteira.toString() === TipoCarteiraEnum.Credito ||
-            selectedTipoCarteira.toString() === TipoCarteiraEnum.Conta_Corrente ||
-            selectedTipoCarteira.toString() === TipoCarteiraEnum.Poupanca) {
-            console.log('teste');
-
-            if (selectedBank === null) {
                 setIsLoading(false);
                 return;
             }
@@ -224,6 +225,7 @@ export default function FramCarteira() {
         setErroDataVencimento('');
         setErroDescricao('');
         setErroTipoCarteira('');
+        setErroBanco('');
     }
 
     async function IncluirCarteira() {
@@ -260,6 +262,7 @@ export default function FramCarteira() {
     }
 
     function LimparBanco() {
+        setErroBanco('');
         setBancoDes('')
         setBanks([])
     }
@@ -283,7 +286,7 @@ export default function FramCarteira() {
                         erroDescricao != '' ? styles.styleErro : styles.styleInput
                     ]}
                 />
-                {erroDescricao != '' ? <Erro>{erroDescricao}</Erro> : <View />}
+                {erroDescricao != '' ? <Erro>{erroDescricao}</Erro> : <></>}
             </View>
         );
     }
@@ -346,7 +349,10 @@ export default function FramCarteira() {
                     <TextoBanco>{selectedBank !== null ? selectedBank.name : 'NENHUM'}</TextoBanco>
                     <MaterialIcons name="arrow-drop-down" size={24} color="#616161" />
                 </ContainerBanco>
-                <Row />
+                <Row style={[
+                    erroBanco != '' ? styles.styleErro : styles.styleInput
+                ]} />
+                {erroBanco != '' ? <Erro>{erroBanco}</Erro> : <></>}
             </View>
         );
     }
