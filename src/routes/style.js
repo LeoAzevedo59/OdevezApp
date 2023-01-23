@@ -9,7 +9,7 @@ align-items: center;
 padding: 0px 16px;
 `;
 
-export const ContainerPerfil = styled.View`
+export const ContainerPerfil = styled.TouchableOpacity`
 position: relative;
 flex-direction: row;
 `;
@@ -32,15 +32,24 @@ flex-direction: row;
 justify-content: space-between;
 `;
 
-export const ImgPerfil = styled.Image`
-width: 50px;
-height: 50px;
+export const ImgPerfil = styled.View`
+width: 40px;
+height: 40px;
 border-radius: 50px;
+background-color: #333;
+align-items: center;
+justify-content: center;
 `;
 
 export const NomeUsuario = styled.Text`
 padding-left: 8px;
 font-size: 16px;
+`;
+
+export const TxtPerfil = styled.Text`
+font-size: 10px;
+padding-left: 8px;
+color: #333;
 `;
 
 export const Icone = styled.Image`

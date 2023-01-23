@@ -1,7 +1,7 @@
 //#region imports
 
 import React, { useContext, useState, useEffect } from 'react';
-import { Keyboard, StyleSheet, View, Switch } from 'react-native';
+import { Keyboard, StyleSheet, View, Switch, ActivityIndicator } from 'react-native';
 import { AuthContext } from '../../contexts/auth';
 import { Picker } from '@react-native-community/picker';
 import { useNavigation } from '@react-navigation/native';
@@ -49,6 +49,8 @@ export default function FrmPatrimonio({ route }) {
     const [txtBtn, setTxtBtn] = useState('');
     const [alterar, setAlterar] = useState(false);
     const [codExtrato, setCodExtrato] = useState(0);
+    const [isLoading, setIsLoading] = useState(true);
+    const [pressButton, setPressButton] = useState(false);
 
     const onChange = (event, selectedDate, alt) => {
 
@@ -173,6 +175,7 @@ export default function FrmPatrimonio({ route }) {
                 setSelectedCategoria(x);
         }
 
+        setIsLoading(false);
     }
 
     async function ObterDescricaoCategorias() {
@@ -188,6 +191,7 @@ export default function FrmPatrimonio({ route }) {
         }).catch(function (error) {
             console.log(error.response.status + " Componente: Cadastro de patrimonio");
         });
+        setIsLoading(false);
     }
 
     async function IncluirExtrato() {
@@ -227,6 +231,8 @@ export default function FrmPatrimonio({ route }) {
     }
 
     async function AlterarExtrato() {
+        setIsLoading(true);
+
         await api.put("extrato/alterar", {
             Codigo: codExtrato,
             DataCriacao: dateFormat,
@@ -260,8 +266,12 @@ export default function FrmPatrimonio({ route }) {
     }
 
     function IsValid() {
-        if (valor == '')
+        setPressButton(true);
+
+        if (valor == '') {
+            setPressButton(false);
             setErroValor("Campo valor não pode ser vazio.")
+        }
 
         if (valor != '' && alterar)
             AlterarExtrato();
@@ -269,12 +279,17 @@ export default function FrmPatrimonio({ route }) {
             IncluirExtrato();
     }
 
+    const getContent = () => {
+        if (isLoading)
+            return <ActivityIndicator size="large" />
+    }
+
     function AltStatus() {
-            if (status === 1)
-                setStatus(2)
-            else
-                setStatus(1)
-                
+        if (status === 1)
+            setStatus(2)
+        else
+            setStatus(1)
+
         setEfetivado(!efetivado)
     }
 
@@ -300,114 +315,119 @@ export default function FrmPatrimonio({ route }) {
                 </Container>
                 :
                 <Container>
-                    <AreaCadastro>
+                    {isLoading === false
+                        ?
+                        <AreaCadastro>
 
-                        <Texto>Valor</Texto>
-                        <Input
-                            autoCorrect={false}
-                            autoCapitalize='none'
-                            keyboardType='numeric'
-                            placeholder={"0.00"}
-                            value={valor}
-                            onChangeText={(text) => {
-                                setValor(text)
-                                setErroValor('')
-                            }}
-                            style={[
-                                erroValor != '' ? styles.styleErro : styles.styleInput
-                            ]}
-                        />
-                        {erroValor != '' ? <Erro>{erroValor}</Erro> : <View />}
-
-                        <Texto>Status</Texto>
-
-                        <Span>
-                            <H2>
-                                {efetivado === true ? "Efetivado" : "Pendente"}
-                            </H2>
-
-                            <Switch
-                                value={efetivado}
-                                onValueChange={(valor) => AltStatus()}
-                                thumbColor="yellow"
-                                trackColor={{ false: "gray", true: "#FFD700" }}
+                            <Texto>Valor</Texto>
+                            <Input
+                                autoCorrect={false}
+                                autoCapitalize='none'
+                                keyboardType='numeric'
+                                placeholder={"0.00"}
+                                value={valor}
+                                onChangeText={(text) => {
+                                    setValor(text)
+                                    setErroValor('')
+                                }}
+                                style={[
+                                    erroValor != '' ? styles.styleErro : styles.styleInput
+                                ]}
                             />
-                        </Span>
+                            {erroValor != '' ? <Erro>{erroValor}</Erro> : <View />}
 
-                        <Texto>Transação</Texto>
-                        <Picker
-                            selectedValue={selectedMovimentacao}
-                            onValueChange={(itemValue, itemIndex) => setSelectedMovimentacao(itemValue)}
-                            style={{ fontSize: 16 }}
-                        >
-                            {
-                                movimentacoes != null
-                                    ?
-                                    movimentacoes.map((value, key) => {
-                                        return <Picker.Item key={key} value={key} label={value.descricao} />
-                                    })
-                                    :
-                                    <Row />
-                            }
-                        </Picker>
-                        <Row></Row>
+                            <Texto>Status</Texto>
 
-                        <Texto>Carteira</Texto>
-                        <Picker
-                            selectedValue={selectedCarteira}
-                            onValueChange={(itemValue, itemIndex) => setSelectedCarteira(itemValue)}
-                        >
-                            {
-                                carteiras != null
-                                    ?
-                                    carteiras.map((value, key) => {
-                                        return <Picker.Item key={key} value={key} label={value.descricao} />
-                                    })
-                                    :
-                                    <Row />
-                            }
-                        </Picker>
-                        <Row></Row>
+                            <Span>
+                                <H2>
+                                    {efetivado === true ? "Efetivado" : "Pendente"}
+                                </H2>
 
-                        <Texto>Categoria</Texto>
-                        <Picker
-                            selectedValue={selectedCategoria}
-                            onValueChange={(itemValue, itemIndex) => setSelectedCategoria(itemValue)}
-                        >
-                            {
-                                categorias != null
-                                    ?
-                                    categorias.map((value, key) => {
-                                        return <Picker.Item key={key} value={key} label={value.descricao} />
-                                    })
-                                    :
-                                    <Row />
-                            }
-                        </Picker>
-                        <Row></Row>
+                                <Switch
+                                    value={efetivado}
+                                    onValueChange={(valor) => AltStatus()}
+                                    thumbColor="yellow"
+                                    trackColor={{ false: "gray", true: "#FFD700" }}
+                                />
+                            </Span>
 
-                        <Texto>Data de movimentação</Texto>
-                        <Div onPress={showDatePicker}><Data>{dateFormat}</Data></Div>
-                        {show && (
-                            <DateTimePicker
-                                value={date}
-                                mode={'date'}
-                                is24Hour={true}
-                                display="default"
-                                onChange={onChange}
-                                locale="pt-BR"
+                            <Texto>Transação</Texto>
+                            <Picker
+                                selectedValue={selectedMovimentacao}
+                                onValueChange={(itemValue, itemIndex) => setSelectedMovimentacao(itemValue)}
+                                style={{ fontSize: 16 }}
+                            >
+                                {
+                                    movimentacoes != null
+                                        ?
+                                        movimentacoes.map((value, key) => {
+                                            return <Picker.Item key={key} value={key} label={value.descricao} />
+                                        })
+                                        :
+                                        <Row />
+                                }
+                            </Picker>
+                            <Row></Row>
+
+                            <Texto>Carteira</Texto>
+                            <Picker
+                                selectedValue={selectedCarteira}
+                                onValueChange={(itemValue, itemIndex) => setSelectedCarteira(itemValue)}
+                            >
+                                {
+                                    carteiras != null
+                                        ?
+                                        carteiras.map((value, key) => {
+                                            return <Picker.Item key={key} value={key} label={value.descricao} />
+                                        })
+                                        :
+                                        <Row />
+                                }
+                            </Picker>
+                            <Row></Row>
+
+                            <Texto>Categoria</Texto>
+                            <Picker
+                                selectedValue={selectedCategoria}
+                                onValueChange={(itemValue, itemIndex) => setSelectedCategoria(itemValue)}
+                            >
+                                {
+                                    categorias != null
+                                        ?
+                                        categorias.map((value, key) => {
+                                            return <Picker.Item key={key} value={key} label={value.descricao} />
+                                        })
+                                        :
+                                        <Row />
+                                }
+                            </Picker>
+                            <Row></Row>
+
+                            <Texto>Data de movimentação</Texto>
+                            <Div onPress={showDatePicker}><Data>{dateFormat}</Data></Div>
+                            {show && (
+                                <DateTimePicker
+                                    value={date}
+                                    mode={'date'}
+                                    is24Hour={true}
+                                    display="default"
+                                    onChange={onChange}
+                                    locale="pt-BR"
+                                />
+                            )}
+                            <Texto>Descrição</Texto>
+                            <Input
+                                value={descricao}
+                                onChangeText={(text) => {
+                                    setDescricao(text)
+                                }}
+                                placeholder={"Descrição"}
                             />
-                        )}
-                        <Texto>Descrição</Texto>
-                        <Input
-                            value={descricao}
-                            onChangeText={(text) => {
-                                setDescricao(text)
-                            }}
-                            placeholder={"Descrição"}
-                        />
-                        <BtnEntrar onPress={() => IsValid()}><TxtEntrar>{txtBtn}</TxtEntrar></BtnEntrar>
-                    </AreaCadastro>
+                            <BtnEntrar disabled={pressButton} onPress={() => IsValid()}><TxtEntrar>{txtBtn}</TxtEntrar></BtnEntrar>
+                        </AreaCadastro>
+                        :
+                        getContent()
+                    }
                 </Container>
             }
         </Background>

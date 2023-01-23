@@ -1,5 +1,7 @@
+//#region Import
+
 import React, { useRef, useContext, useState, useEffect } from 'react';
-import { FlatList } from 'react-native';
+import { FlatList, ActivityIndicator } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { AuthContext } from '../../contexts/auth';
 import { Modalize } from 'react-native-modalize';
@@ -35,6 +37,8 @@ import {
 import LblExtrato from '../../components/LblExtrato';
 import api from '../../contexts/api';
 
+//#endregion
+
 export default function Extrato({ navigation }) {
     const modalizeRef = useRef(true);
     const meses = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
@@ -50,8 +54,11 @@ export default function Extrato({ navigation }) {
     const [valor, setValor] = useState(0);
     const [selectedCarteira, setSelectedCarteira] = useState(0);
     const [carteiras, setCarteiras] = useState();
+    const [isLoading, setIsLoading] = useState(true);
 
     async function Next(btnDescricao) {
+        setIsLoading(true);
+
         if (btnDescricao === "LEFT") {
             if (mesIndex === 0) {
                 setMesIndex(11);
@@ -106,14 +113,17 @@ export default function Extrato({ navigation }) {
             }
         }).then((response) => {
             setExtrato(response.data.extratos);
-            setValorCarteira(response.data.valorMes)
+            setValorCarteira(response.data.valorMes);
         }).catch(function (error) {
             console.log(error.response.status + " Componente: Extrato - ObterExtrato()");
         });
+
+        setIsLoading(false);
     }
 
     async function ExcluirExtrato() {
         modalizeRef.current?.close();
+        setIsLoading(true);
 
         await api.delete("extrato/excluir-extrato", {
             headers: {
@@ -132,6 +142,7 @@ export default function Extrato({ navigation }) {
     }
 
     async function AlterarStatus() {
+        setIsLoading(true);
         modalizeRef.current?.close();
 
         await api.put("extrato/alterar-status", {
@@ -174,6 +185,11 @@ export default function Extrato({ navigation }) {
         });
     }
 
+    const getContent = () => {
+        if (isLoading)
+            return <ActivityIndicator size="large" />
+    }
+
     useEffect(() => {
         ObterDescricaoCarteiras();
     }, [exibirValor, mesIndex, selectedCarteira])
@@ -185,9 +201,12 @@ export default function Extrato({ navigation }) {
                     <AntDesign name="left" size={24} color="white" />
                 </Left>
                 <Center>
-                    <H1>R$ {valorCarteira.toFixed(2)}</H1>
-                    <H2>Vencimento 22 AGO</H2>
-                    <H2>Fechamento 14 AGO</H2>
+                    <H1>
+                        R$
+                        {exibirValor === true ? " " + valorCarteira.toFixed(2) : " ****"}
+                    </H1>
+                    {/* <H2>Vencimento {console.log(carteiras)}</H2>
+                    <H2>Fechamento 14 AGO</H2> */}
                 </Center>
                 <Right onPress={() => Next("RIGHT")}>
                     <AntDesign name="right" size={24} color="white" />
@@ -221,13 +240,18 @@ export default function Extrato({ navigation }) {
                 </ContainerCarteira>
             </Container>
 
-            <FlatList
-                horizontal={false}
-                keyExtractor={(item) => item.codigo}
-                data={extrato}
-                showsVerticalScrollIndicator={false}
-                renderItem={({ item }) => <LblExtrato data={item} exibirValor={exibirValor} metodo={onOpen} />}
-            />
+            {isLoading === false
+                ?
+                <FlatList
+                    horizontal={false}
+                    keyExtractor={(item) => item.codigo}
+                    data={extrato}
+                    showsVerticalScrollIndicator={false}
+                    renderItem={({ item }) => <LblExtrato data={item} exibirValor={exibirValor} metodo={onOpen} />}
+                />
+                :
+                getContent()
+            }
 
             <Modalize
                 ref={modalizeRef}
