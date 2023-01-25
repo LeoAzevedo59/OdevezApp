@@ -58,7 +58,7 @@ const TipoDataEnum = {
     Data_Fechamento: '2',
 };
 
-export default function FramCarteira() {
+export default function FramCarteira({ route }) {
     const { usuario, ExibirValor, exibirValor } = useContext(AuthContext);
     const navigation = useNavigation();
     const modalizeRef = useRef(null);
@@ -79,6 +79,8 @@ export default function FramCarteira() {
     const [banks, setBanks] = useState([]);
     const [BancoDes, setBancoDes] = useState();
     const [selectedBank, setSelectedBank] = useState(null);
+
+    const [txtBtn, setTxtBtn] = useState('');
 
     const [erroDescricao, setErroDescricao] = useState('');
     const [erroTipoCarteira, setErroTipoCarteira] = useState('');
@@ -405,6 +407,14 @@ export default function FramCarteira() {
     useEffect(() => {
         ObterBancos();
         ObterTipoCarteira();
+
+        if (route.params !== undefined) {
+            console.log(route.params.codigoCarteiraAlterar)
+            //ObterCarteira(route.params.codigoCarteiraAlterar) --> Criação da routa na API
+            setTxtBtn('Alterar');
+        }
+        else
+            setTxtBtn('Cadastrar');
     }, []);
 
     return (
@@ -447,7 +457,7 @@ export default function FramCarteira() {
                             {
                                 isLoading === false
                                     ?
-                                    <TxtEntrar>Cadastrar</TxtEntrar>
+                                    <TxtEntrar>{txtBtn}</TxtEntrar>
                                     :
                                     getContent()
                             }

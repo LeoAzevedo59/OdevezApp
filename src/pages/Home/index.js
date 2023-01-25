@@ -1,8 +1,9 @@
 //#region Imports
-import React, { useContext, useState, useEffect } from 'react';
-import { ScrollView, View, ActivityIndicator, SafeAreaView, Modal, Button, Text } from 'react-native';
+import React, { useContext, useState, useEffect, useRef } from 'react';
+import { ScrollView, View, ActivityIndicator, SafeAreaView, Modal, FlatList, Text } from 'react-native';
 import { AuthContext } from '../../contexts/auth';
 import { useNavigation } from '@react-navigation/native';
+import { Modalize } from 'react-native-modalize';
 
 import {
   Container,
@@ -22,6 +23,8 @@ import LblObjetivoSimplificado from '../../components/LblObjetivoSimplificado';
 import LblExtrato from '../../components/LblExtrato';
 import ComponenteVazio from '../../components/ComponenteVazio';
 import ConfettiCannon from 'react-native-confetti-cannon';
+import LblCarteira from '../../components/LblCarteira';
+import LblCarteiraResumida from '../../components/LblCarteiraResumida';
 
 //#endregion
 
@@ -34,6 +37,7 @@ export default function Home() {
   const [animate, SetAnimate] = useState(false);
   const [apelido, SetApelido] = useState(null);
   const [nome, SetNome] = useState('');
+  const [carteira, setCarteira] = useState();
 
   const data = [
     { codigo: 0, tipo: 'users', descricao: 'Casa', valor: '154,90', porcentagem: '20' },
@@ -124,6 +128,23 @@ export default function Home() {
     });
   }
 
+  async function ObterCarteira() {
+    setIsLoading(true);
+    await api.get("carteira/obter-carteira-por-usuario", {
+      headers: {
+        Authorization: usuario.type + " " + usuario.token
+      },
+      params: {
+        usuario: usuario.codigo
+      }
+    }).then((response) => {
+      setCarteira(response.data);
+    }).catch(function (error) {
+      console.log(error.response.status + " Componente: Carteira - Obter Carteira");
+    });
+    setIsLoading(false);
+  }
+
   const getContent = () => {
     if (isLoading)
       return <ActivityIndicator size="large" />
@@ -137,6 +158,7 @@ export default function Home() {
     else {
       ObterPatrimonio();
       ObterExtrato();
+      ObterCarteira();
     }
   }, [exibirValor])
 
@@ -201,6 +223,15 @@ export default function Home() {
             :
             getContent()
         }
+
+        <FlatList
+          style={{ marginRight: 10, marginTop: 24 }}
+          horizontal={true}
+          keyExtractor={(item) => item.codigo}
+          data={carteira}
+          showsHorizontalScrollIndicator={false}
+          renderItem={({ item }) => <LblCarteiraResumida data={item} exibirValor={exibirValor} />}
+        />
 
         {usuario.apelido === ''
           ?
