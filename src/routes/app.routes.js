@@ -1,5 +1,5 @@
-import React, { useState, useContext } from 'react';
-import { View, TouchableOpacity, useWindowDimensions } from 'react-native';
+import React, { useState, useContext, useEffect } from 'react';
+import { View, TouchableOpacity, useWindowDimensions, Image } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons, MaterialCommunityIcons, Feather, Octicons, Entypo } from '@expo/vector-icons';
 import { AuthContext } from '../contexts/auth';
@@ -18,6 +18,7 @@ import Objetivo from '../pages/Objetivo';
 import FrmCarteira from '../formularios/FrmCarteira';
 import FrmPatrimonio from '../formularios/FrmPatrimonio';
 import FrmObjetivo from '../formularios/FrmObjetivo';
+import Perfil from '../pages/Perfil';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -26,8 +27,9 @@ function Tabs({ navigation }) {
     const window = useWindowDimensions();
     const tamanho = window.width;
     const [eye, setEye] = useState('eye');
+    const [URLimage, setURLImage] = useState('https://containerodevez.blob.core.windows.net/container/');
 
-    const { usuario, ExibirValor } = useContext(AuthContext);
+    const { usuario, exibirValor, ExibirValor } = useContext(AuthContext);
 
     function exibirSimNao() {
         if (eye === 'eye') {
@@ -39,6 +41,7 @@ function Tabs({ navigation }) {
             ExibirValor(true);
         }
     }
+
     return (
         <Tab.Navigator
             screenOptions={{
@@ -46,11 +49,20 @@ function Tabs({ navigation }) {
                 headerRight: () => { return null },
                 headerLeft: () => (
                     <Container style={{ width: tamanho }}>
-                        <ContainerPerfil>
+                        <ContainerPerfil onPress={() => navigation.navigate('Perfil')} >
                             <View>
-                                <ImgPerfil>
-                                    <Entypo name="image" size={20} color="yellow" />
-                                </ImgPerfil>
+                                {usuario.imagem == null ?
+                                    <>
+                                        <ImgPerfil>
+                                            <Entypo name="image" size={20} color="yellow" />
+                                        </ImgPerfil>
+                                    </>
+                                    :
+                                    <>
+                                        <Image
+                                            style={{ width: 40, height: 40, borderRadius: 50 }}
+                                            source={{ uri: URLimage + usuario.imagem }} />
+                                    </>}
                             </View>
                             <View style={{ alignSelf: 'center' }}>
                                 <NomeUsuario>Olá, {usuario && usuario.apelido}</NomeUsuario>
@@ -193,6 +205,13 @@ function AppRoutes() {
                 component={FrmObjetivo}
                 options={{
                     headerTitle: 'Objetivo',
+                }} />
+            <Stack.Screen
+                key={12}
+                name='Perfil'
+                component={Perfil}
+                options={{
+                    headerTitle: 'Perfil',
                 }} />
         </Stack.Navigator>
     );
