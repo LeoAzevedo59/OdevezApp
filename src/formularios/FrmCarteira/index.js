@@ -58,7 +58,7 @@ const TipoDataEnum = {
     Data_Fechamento: '2',
 };
 
-export default function FramCarteira() {
+export default function FramCarteira({ route }) {
     const { usuario, ExibirValor, exibirValor } = useContext(AuthContext);
     const navigation = useNavigation();
     const modalizeRef = useRef(null);
@@ -79,42 +79,14 @@ export default function FramCarteira() {
     const [banks, setBanks] = useState([]);
     const [BancoDes, setBancoDes] = useState();
     const [selectedBank, setSelectedBank] = useState(null);
+    const [txtBtn, setTxtBtn] = useState('');
+    const [isAlteration, setIsAlteration] = useState(false);
 
     const [erroDescricao, setErroDescricao] = useState('');
     const [erroTipoCarteira, setErroTipoCarteira] = useState('');
     const [erroDataVencimento, setErroDataVencimento] = useState('');
     const [erroDataFechamento, setErroDataFechamento] = useState('');
     const [erroBanco, setErroBanco] = useState('');
-
-    async function ObterTipoCarteira() {
-        await api.get("carteira/obter-tipo-carteira", {
-            headers: {
-                Authorization: usuario.type + " " + usuario.token
-            }
-        }).then((response) => {
-            const array = [{
-                codigo: 0,
-                descricao: 'NENHUM'
-            }]
-
-            const jun = [...array, ...response.data]
-            setTiposCarteiras(jun);
-        }).catch(function (error) {
-            console.log(error.response.status + " Componente: Cadastro de carteira - ObterTipoCarteira()");
-        });
-    }
-
-    async function ObterBancos() {
-        await api.get("carteira/obter", {
-            headers: {
-                Authorization: usuario.type + " " + usuario.token
-            }
-        }).then((response) => {
-            setBancos(response.data)
-        }).catch(function (error) {
-            console.log(error.response.status + " Componente: Cadastro de carteira - ObterBancos()");
-        });
-    }
 
     function onOpen(value) {
 
@@ -209,7 +181,10 @@ export default function FramCarteira() {
             }
         }
 
-        IncluirCarteira();
+        if (isAlteration)
+            AlterarCarteira();
+        else
+            IncluirCarteira();
     }
 
     function chkExibirHome() {
@@ -226,6 +201,12 @@ export default function FramCarteira() {
         setErroDescricao('');
         setErroTipoCarteira('');
         setErroBanco('');
+    }
+
+    function LimparBanco() {
+        setErroBanco('');
+        setBancoDes('')
+        setBanks([])
     }
 
     async function IncluirCarteira() {
@@ -261,10 +242,91 @@ export default function FramCarteira() {
         });
     }
 
-    function LimparBanco() {
-        setErroBanco('');
-        setBancoDes('')
-        setBanks([])
+    async function AlterarCarteira() {
+        console.log(route.params.codigoCarteiraAlterar);
+
+        await api.put("carteira/alterar", {
+            Descricao: descricao,
+            Usuario: usuario.codigo,
+            TipoCarteira: tiposCarteiras[selectedTipoCarteira].codigo,
+            FechamentoFatura: dataFechamento,
+            VencimentoFatura: dataVencimento,
+            ChkExibirHome: exibirHomeIsChecked,
+            ChkNaoSomarPatrimonio: naoSomaPatrimonioIsChecked,
+            Codigo: route.params.codigoCarteiraAlterar,
+            BancoDTO: {
+                code: selectedBank !== null ? parseInt(selectedBank.code) : null,
+                name: selectedBank !== null ? selectedBank.name : '',
+                ispb: selectedBank !== null ? selectedBank.ispb : '',
+                Usuario: usuario.codigo
+            }
+        }, {
+            headers: {
+                Authorization: usuario.type + " " + usuario.token
+            }
+        }).then((response) => {
+            if (response.data) {
+                ExibirValor(!exibirValor);
+                ExibirValor(exibirValor);
+                setIsLoading(false);
+                navigation.goBack();
+            }
+        }).catch(function (error) {
+            console.log(error + " Componente: Cadastro de carrteira - IncluirCarteira()");
+            return false;
+        });
+    }
+
+    async function ObterTipoCarteira() {
+        await api.get("carteira/obter-tipo-carteira", {
+            headers: {
+                Authorization: usuario.type + " " + usuario.token
+            }
+        }).then((response) => {
+            const array = [{
+                codigo: 0,
+                descricao: 'NENHUM'
+            }]
+
+            const jun = [...array, ...response.data]
+            setTiposCarteiras(jun);
+        }).catch(function (error) {
+            console.log(error.response.status + " Componente: Cadastro de carteira - ObterTipoCarteira()");
+        });
+    }
+
+    async function ObterBancos() {
+        await api.get("carteira/obter", {
+            headers: {
+                Authorization: usuario.type + " " + usuario.token
+            }
+        }).then((response) => {
+            setBancos(response.data)
+        }).catch(function (error) {
+            console.log(error.response.status + " Componente: Cadastro de carteira - ObterBancos()");
+        });
+    }
+
+    async function ObterCarteira(codCarteira) {
+        await api.get("carteira/obter-por-codigo", {
+            headers: {
+                Authorization: usuario.type + " " + usuario.token
+            },
+            params: {
+                carteira: codCarteira,
+                usuario: usuario.codigo,
+            }
+        }).then((response) => {
+            setDescricao(response.data.descricao);
+            setSelectedTipoCarteira(response.data.tipoCarteira);
+            setSelectedBank(response.data.bancoDTO);
+            setExibirHomeIsChecked(response.data.chkExibirHome);
+            setNaoSomaPatrimonioIsChecked(response.data.chkNaoSomarPatrimonio);
+            setDataVencimento(response.data.vencimentoFatura);
+            setDataFechamento(response.data.fechamentoFatura);
+        }).catch(function (error) {
+            console.log(error.response.status + " Componente: Alteração de carteira - ObterCarteira()");
+        });
     }
 
     const getContent = () => {
@@ -277,6 +339,7 @@ export default function FramCarteira() {
             <View>
                 <Texto>Descrição</Texto>
                 <Input
+                    value={descricao}
                     onChangeText={(text) => {
                         setDescricao(text)
                         setErroDescricao('')
@@ -294,14 +357,18 @@ export default function FramCarteira() {
     const inputVlrInicial = () => {
         return (
             <View>
-                <Texto>Valor Inicial</Texto>
-                <Input
-                    onChangeText={(value) => {
-                        setValorInicial(value)
-                    }}
-                    placeholder={"0.00"}
-                    keyboardType='numeric'
-                />
+                {!isAlteration &&
+                    <>
+                        <Texto>Valor Inicial</Texto>
+                        <Input
+                            onChangeText={(value) => {
+                                setValorInicial(value)
+                            }}
+                            placeholder={"0.00"}
+                            keyboardType='numeric'
+                        />
+                    </>
+                }
             </View>
         );
     }
@@ -405,6 +472,17 @@ export default function FramCarteira() {
     useEffect(() => {
         ObterBancos();
         ObterTipoCarteira();
+
+        if (route.params !== undefined) {
+            ObterCarteira(route.params.codigoCarteiraAlterar)
+            setTxtBtn('Alterar');
+            setIsAlteration(true);
+        }
+        else {
+            setIsAlteration(true);
+            setTxtBtn('Cadastrar');
+            setIsAlteration(false);
+        }
     }, []);
 
     return (
@@ -447,7 +525,7 @@ export default function FramCarteira() {
                             {
                                 isLoading === false
                                     ?
-                                    <TxtEntrar>Cadastrar</TxtEntrar>
+                                    <TxtEntrar>{txtBtn}</TxtEntrar>
                                     :
                                     getContent()
                             }

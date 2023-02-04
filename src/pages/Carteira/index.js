@@ -45,6 +45,12 @@ export default function Carteira() {
         setSelectedItem(item);
     }
 
+    function AlterarCarteira() {
+        modalizeRef.current?.close();
+
+        navigation.navigate('FrmCarteira', { codigoCarteiraAlterar: codigoCarteira });
+    }
+
     async function ObterTipoCarteira() {
         await api.get("carteira/obter-tipo-carteira", {
             headers: {
@@ -102,7 +108,6 @@ export default function Carteira() {
 
     async function ExcluirCarteira() {
         modalizeRef.current?.close();
-
 
         await api.delete("carteira/excluir-carteira", {
             headers: {
@@ -174,7 +179,7 @@ export default function Carteira() {
             >
                 <Background>
                     <ContainerButton>
-                        <Botao onPress={() => alert('Alteração de carteirax')}>
+                        <Botao onPress={() => AlterarCarteira()}>
                             <AntDesign name="retweet" size={24} color="#333" />
                             <TextoBotao>Alterar</TextoBotao>
                         </Botao>

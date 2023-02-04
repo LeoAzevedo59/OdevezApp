@@ -56,8 +56,15 @@ export default function AuthProvider({ children }) {
         ExibirValor(true);
     }
 
+    function InserirImagem(urlImagem) {
+        usuario.imagem = urlImagem;
+        setUsuario(usuario);
+        setexibirValor(!exibirValor);
+        setexibirValor(exibirValor);
+    }
+
     return (
-        <AuthContext.Provider value={{ signed: !!usuario, usuario, exibirValor, Logar, Cadastrar, Deslogar, ExibirValor, AlterarApelido }}>
+        <AuthContext.Provider value={{ signed: !!usuario, usuario, exibirValor, Logar, Cadastrar, Deslogar, ExibirValor, AlterarApelido, InserirImagem }}>
             {children}
         </AuthContext.Provider>
     );
