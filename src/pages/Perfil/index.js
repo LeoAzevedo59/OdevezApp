@@ -1,20 +1,29 @@
-import Ract, { useState, useContext } from 'react';
+import Ract, { useState, useContext, useEffect } from 'react';
 import { View, Text, Button, Image, TouchableOpacity } from 'react-native';
 import { AuthContext } from '../../contexts/auth';
 import * as ImagePicker from 'expo-image-picker';
 import * as FileSystem from 'expo-file-system';
 import api from '../../contexts/api';
+import {
+    Container,
+    BtnImagem,
+    Texto,
+    BtnDeletarConta,
+    Div
+} from './styles';
+import { Entypo } from '@expo/vector-icons';
 
 export default function Perfil() {
     const { usuario, InserirImagem } = useContext(AuthContext);
-    const [URLimage, setURLImage] = useState('https://containerodevez.blob.core.windows.net/container/');
+    const [URLimage, setURLImage] = useState(null);
+    const [link, setLink] = useState('https://containerodevez.blob.core.windows.net/container/')
 
     const pickImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
             allowsEditing: true,
             aspect: [4, 3],
-            quality: 1,
+            quality: 0.1,
         });
 
         if (!result.canceled) {
@@ -34,7 +43,7 @@ export default function Perfil() {
                     Authorization: usuario.type + " " + usuario.token
                 }
             }).then((response) => {
-                setURLImage(URLimage + response.data);
+                setURLImage(link + response.data);
                 InserirImagem(response.data);
             }).catch(function (error) {
                 console.log(error + " Componente: Perfil - IncluirImagemPerfil()");
@@ -43,16 +52,30 @@ export default function Perfil() {
         }
     };
 
+    useEffect(() => {
+        setURLImage(link + usuario.imagem)
+    }, []);
+
     return (
-        <View>
+        <Container>
+            <Div>
 
-            <TouchableOpacity onPress={pickImage}>
-                <Image
-                    style={{ width: 50, height: 50 }}
-                    source={{ uri: URLimage }}
-                />
-            </TouchableOpacity>
-
-        </View>
+                <BtnImagem onPress={pickImage}>
+                    {usuario.imagem !== null
+                        ?
+                        <Image
+                            style={{ width: 150, height: 150, borderRadius: 150 }}
+                            source={{ uri: URLimage }}
+                        />
+                        :
+                        <Entypo name="image" size={50} color="yellow" />
+                    }
+                </BtnImagem>
+                <Texto>{usuario.apelido}</Texto>
+            </Div>
+            <BtnDeletarConta>
+                <Text style={{color: 'white'}}>Excluir Conta</Text>
+            </BtnDeletarConta>
+        </Container>
     );
 }
