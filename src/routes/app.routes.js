@@ -97,7 +97,7 @@ function Tabs({ navigation }) {
                             <Ionicons key={1} name={'home-outline'} size={size} color={color} />
                     ])
                 }} />
-            {/* <Tab.Screen
+            <Tab.Screen
                 key={1}
                 name='Dashboard'
                 component={Dashboard}
@@ -110,7 +110,7 @@ function Tabs({ navigation }) {
                                 :
                                 <MaterialCommunityIcons key={1} name='view-dashboard-outline' size={size} color={color} />
                         ])
-                }} /> */}
+                }} />
             <Tab.Screen
                 key={2}
                 name='Adicionar'
@@ -134,7 +134,7 @@ function Tabs({ navigation }) {
                             <Ionicons key={1} name='wallet-outline' size={size} color={color} /> // wallet
                     ])
                 }} />
-            {/* <Tab.Screen
+            <Tab.Screen
                 key={4}
                 name='Mais'
                 component={Mais}
@@ -143,7 +143,7 @@ function Tabs({ navigation }) {
                     tabBarIcon: ({ size, color }) => (
                         <Feather key={0} name='more-horizontal' size={size} color={color} />
                     )
-                }} /> */}
+                }} />
         </Tab.Navigator>
     )
 }

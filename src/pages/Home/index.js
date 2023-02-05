@@ -4,6 +4,7 @@ import { ScrollView, View, ActivityIndicator, SafeAreaView, Modal, FlatList, Tex
 import { AuthContext } from '../../contexts/auth';
 import { useNavigation } from '@react-navigation/native';
 import { Modalize } from 'react-native-modalize';
+import { VictoryLine, VictoryChart, VictoryTheme } from 'victory-native';
 
 import {
   Container,
@@ -14,7 +15,8 @@ import {
   ModalBtn,
   ModalInput,
   H1,
-  Paragraph
+  Paragraph,
+  ContainerGrafico
 } from './styles';
 
 import api from '../../contexts/api';
@@ -163,7 +165,7 @@ export default function Home() {
   }, [exibirValor])
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#FBFBFB' }}>
 
       {animate ?
         <ConfettiCannon
@@ -177,7 +179,26 @@ export default function Home() {
         <Container>
           <LblPatrimonio valor={" " + patrimonio.toFixed(2)} exibirValor={exibirValor} link="FrmPatrimonio" titulo="Patrimônio" />
         </Container>
+        <ContainerGrafico>
+          <VictoryChart
+            theme={VictoryTheme.material}
+          >
+            <VictoryLine
+              style={{
+                data: { stroke: "#c43a31" },
+                parent: { border: "1px solid #ccc" }
+              }}
 
+              data={[
+                { x: 'jan/23', y: 208 }, //x = MES -- y = VALOR
+                { x: 'fev/23', y: 309 },
+                { x: 'mar/23', y: 599 },
+                { x: 'abr/23', y: -88 },
+                { x: 'mai/23', y: 100 }
+              ]}
+            />
+          </VictoryChart>
+        </ContainerGrafico>
         {/* {objetivos.length === 0
           ?
           <Container>
