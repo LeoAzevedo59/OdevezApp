@@ -4,7 +4,7 @@ import { ScrollView, View, ActivityIndicator, SafeAreaView, Modal, FlatList, Tex
 import { AuthContext } from '../../contexts/auth';
 import { useNavigation } from '@react-navigation/native';
 import { Modalize } from 'react-native-modalize';
-import { VictoryLine, VictoryChart, VictoryTheme } from 'victory-native';
+import { VictoryLine, VictoryChart, VictoryTheme, VictoryLabel, VictoryVoronoiContainer } from 'victory-native';
 
 import {
   Container,
@@ -40,15 +40,15 @@ export default function Home() {
   const [apelido, SetApelido] = useState(null);
   const [nome, SetNome] = useState('');
   const [carteira, setCarteira] = useState();
-
-  const data = [
-    { codigo: 0, tipo: 'users', descricao: 'Casa', valor: '154,90', porcentagem: '20' },
-    { codigo: 1, tipo: 'user', descricao: 'Carro', valor: '3122,90', porcentagem: '5' },
-    { codigo: 2, tipo: 'user', descricao: 'Carro', valor: '3122,90', porcentagem: '5' }
-  ];
-
-  const [objetivos, setObjetivo] = useState(data);
+  const [balanco, setBalanco] = useState([]);
+  // const [objetivos, setObjetivo] = useState(data);
   const [extrato, setExtrato] = useState([]);
+
+  // const data = [
+  //   { codigo: 0, tipo: 'users', descricao: 'Casa', valor: '154,90', porcentagem: '20' },
+  //   { codigo: 1, tipo: 'user', descricao: 'Carro', valor: '3122,90', porcentagem: '5' },
+  //   { codigo: 2, tipo: 'user', descricao: 'Carro', valor: '3122,90', porcentagem: '5' }
+  // ];
 
   const startAnimation = () => {
     SetAnimate(true);
@@ -147,6 +147,23 @@ export default function Home() {
     setIsLoading(false);
   }
 
+  async function ObterBalancoMensal() {
+    await api.get("extrato/obter-balanco-mensal", {
+      headers: {
+        Authorization: usuario.type + " " + usuario.token
+      },
+      params: {
+        usuario: usuario.codigo
+      }
+    }).then((response) => {
+      setBalanco(response.data);
+    }).catch(function (error) {
+      console.log(error.response.status + " Componente: Home - ObterBalancoMensal()");
+    });
+    setIsLoading(false);
+  }
+
+
   const getContent = () => {
     if (isLoading)
       return <ActivityIndicator size="large" />
@@ -161,6 +178,7 @@ export default function Home() {
       ObterPatrimonio();
       ObterExtrato();
       ObterCarteira();
+      ObterBalancoMensal();
     }
   }, [exibirValor])
 
@@ -188,17 +206,17 @@ export default function Home() {
                 data: { stroke: "#c43a31" },
                 parent: { border: "1px solid #ccc" }
               }}
-
-              data={[
-                { x: 'jan/23', y: 208 }, //x = MES -- y = VALOR
-                { x: 'fev/23', y: 309 },
-                { x: 'mar/23', y: 599 },
-                { x: 'abr/23', y: -88 },
-                { x: 'mai/23', y: 100 }
-              ]}
+              animate={{
+                duration: 2000,
+                onLoad: { duration: 1000 }
+              }}
+              data={balanco}
+              x="data"
+              y="valor"
             />
           </VictoryChart>
         </ContainerGrafico>
+
         {/* {objetivos.length === 0
           ?
           <Container>

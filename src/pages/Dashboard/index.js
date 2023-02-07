@@ -1,3 +1,4 @@
+//#region Imports
 import React, { useState, useEffect } from 'react';
 import { Picker } from '@react-native-community/picker';
 import { View, Text, ScrollView, SafeAreaView } from 'react-native';
@@ -13,6 +14,7 @@ import {
     TxtDinheiro,
     ContainerTextoCategoria
 } from './styles';
+//#endregion
 
 const EXPRESS = {
     'Janeiro': [

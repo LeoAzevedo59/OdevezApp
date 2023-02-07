@@ -10,10 +10,10 @@ export default function SignIn() {
     const navigation = useNavigation();
     const { Logar } = useContext(AuthContext);
 
-    const [celular, setCelular] = useState('(19)98235-8635'); //deBug
-    const [senha, setSenha] = useState('1'); //deBug
-    // const [celular, setCelular] = useState(''); //producao 
-    // const [senha, setSenha] = useState(''); //producao
+    // const [celular, setCelular] = useState('(19)98235-8635'); //deBug
+    // const [senha, setSenha] = useState('1'); //deBug
+    const [celular, setCelular] = useState(''); //producao 
+    const [senha, setSenha] = useState(''); //producao
     const [erroSenha, SetErroSenha] = useState('');
     const [erroCelular, setErroCelular] = useState('');
 
