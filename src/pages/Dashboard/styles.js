@@ -8,17 +8,17 @@ padding-right: 16px;
 
 export const Title = styled.Text`
 font-size: 16px;
-margin-top: 16px;
+margin-top: 28px;
 font-weight: bold;
 text-align: center;
 `;
 
-export const ContainerData = styled.View`
+export const Head = styled.View`
 width: 100%;
 align-items: flex-start;
 `;
 
-export const Texto = styled.Text`
+export const H1 = styled.Text`
 font-size: 16px;
 padding-left: 16px;
 font-weight: bold;
@@ -35,8 +35,10 @@ justify-content: space-between;
 flex-direction: row;
 `;
 
-export const Div = styled.View`
-width: 100px;
+export const Header = styled.View`
+width: 100%;
+flex-direction: row;
+align-items: center;
 `;
 
 export const ContainerCategoria = styled.View`
@@ -53,3 +55,19 @@ width: 8px;
 height: 100%;
 background-color: #975FFF;
 `;
+
+export const Texto = styled.Text``;
+
+export const ContainerMovimentacao = styled.View`
+width: 40%;
+`;
+
+export const ContainerData = styled.View`
+flex-direction: row;
+align-items: center;
+justify-content: space-between;
+width: 55%;
+margin-left: 16px;
+`;
+
+export const Row = styled.View``;

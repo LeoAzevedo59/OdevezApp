@@ -1,18 +1,25 @@
 //#region Imports
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Picker } from '@react-native-community/picker';
-import { View, Text, ScrollView, SafeAreaView } from 'react-native';
+import { View, Text, ScrollView, SafeAreaView, TouchableOpacity } from 'react-native';
 import { VictoryPie, VictoryArea, VictoryLine } from 'victory-native';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import { AuthContext } from '../../contexts/auth';
+import api from '../../contexts/api';
 import {
     Background,
     Title,
-    ContainerData,
-    Texto,
-    Div,
+    Head,
+    H1,
+    Header,
     ContainerCategoria,
     Cor,
     TxtDinheiro,
-    ContainerTextoCategoria
+    ContainerTextoCategoria,
+    Texto,
+    ContainerData,
+    ContainerMovimentacao,
+    Row
 } from './styles';
 //#endregion
 
@@ -39,29 +46,148 @@ const EXPRESS = {
     ]
 }
 
+const MOVIMENTACAO = [
+    {
+        codigo: 0,
+        descricao: 'TODOS'
+    }, {
+        codigo: 1,
+        descricao: 'ENTRADA'
+    },
+    {
+        codigo: 2,
+        descricao: 'SAIDA'
+    }
+]
+
 export default function Dashboard() {
-    const [mes, setMes] = useState("Janeiro");
+    const { usuario, ExibirValor, exibirValor } = useContext(AuthContext);
     const [data, setData] = useState([]);
+    const [selectedMovimentacao, SetSelectedMovimentacao] = useState(0);
+    const [showStart, setStartShow] = useState(false);
+    let d = new Date();
+    d.setMonth(0);
+    const [dateStart, setDateStart] = useState(new Date(d));
+    const [dateStartFormat, setDateStartFormat] = useState(dateStart.getDate().toString() + '/' + (parseInt(dateStart.getMonth() + 1)).toString() + '/' + dateStart.getFullYear().toString());
+    const [showEnd, setEndShow] = useState(false);
+    const [dateEnd, setDateEnd] = useState(new Date());
+    const [dateEndFormat, setDateEndFormat] = useState(dateEnd.getDate().toString() + '/' + (parseInt(dateEnd.getMonth() + 1)).toString() + '/' + dateEnd.getFullYear().toString());
+
+    async function ObterDashboardPizza() {
+        await api.post("extrato/obter-dashboard-pizza", {
+            DataInicio: new Date(dateStartFormat),
+            DataFim: new Date(dateEndFormat),
+            Movimentacao: selectedMovimentacao,
+            Usuario: usuario.codigo,
+        }, {
+            headers: {
+                Authorization: usuario.type + " " + usuario.token
+            }
+        }).then((response) => {
+            console.log(response.data);
+            setData(response.data);
+        }).catch(function (error) {
+            console.log(error + " Componente: Dashboard - ObterDashboardPizza()");
+            return false;
+        });
+        
+    }
+
+    const showDateStartPicker = () => {
+        if (showStart == false)
+            setStartShow(true)
+        else
+            setStartShow(false)
+    }
+
+    const showDateEndPicker = () => {
+        if (showEnd == false)
+            setEndShow(true)
+        else
+            setEndShow(false)
+    }
+
+    const onChangeStart = (event, selectedDateStart, alt) => {
+        if (showStart == false && alt !== true)
+            setStartShow(true)
+        else {
+            setStartShow(false)
+            setDateStart(selectedDateStart);
+            setDateStartFormat(selectedDateStart.getDate().toString() + '/' + (parseInt(selectedDateStart.getMonth() + 1)).toString() + '/' + selectedDateStart.getFullYear().toString())
+        }
+    }
+
+    const onChangeEnd = (event, selectedDateEnd, alt) => {
+        if (showEnd == false && alt !== true)
+            setEndShow(true)
+        else {
+            setEndShow(false)
+            setDateEnd(selectedDateEnd);
+            setDateEndFormat(selectedDateEnd.getDate().toString() + '/' + (parseInt(selectedDateEnd.getMonth() + 1)).toString() + '/' + selectedDateEnd.getFullYear().toString())
+        }
+    }
 
     useEffect(() => {
-        setData(EXPRESS[mes]);
-    }, [mes]);
+        ObterDashboardPizza();
+    }, [selectedMovimentacao]);
 
     return (
         <SafeAreaView style={{ backgroundColor: '#FBFBFB', flex: 1 }}>
             <Background>
-                <ContainerData>
+                <Head>
                     <Title>Receitas & Despesas</Title>
-                    <Div>
-                        <Picker></Picker>
-                    </Div>
-                </ContainerData>
+                    <Header>
+                        <ContainerMovimentacao>
+                            <Picker
+                                selectedValue={selectedMovimentacao}
+                                onValueChange={(itemValue) => SetSelectedMovimentacao(itemValue)}
+                                style={{ width: 135 }}
+                            >
+                                {
+                                    MOVIMENTACAO.map((value, key) => {
+                                        return <Picker.Item key={key} value={key} label={value.descricao} />
+                                    })
+                                }
+                            </Picker>
+                        </ContainerMovimentacao>
+                        <ContainerData>
+                            <Row>
+                                <Texto style={{ fontWeight: 'bold' }}>Inicio</Texto>
+                                <TouchableOpacity onPress={showDateStartPicker}><Text>{dateStartFormat}</Text></TouchableOpacity>
+                                {showStart && (
+                                    <DateTimePicker
+                                        value={dateStart}
+                                        mode={'date'}
+                                        is24Hour={true}
+                                        display="default"
+                                        onChange={onChangeStart}
+                                        locale="pt-BR"
+                                    />
+                                )}
+                            </Row>
+                            <Row>
+                                <Texto style={{ fontWeight: 'bold' }}>Fim</Texto>
+                                <TouchableOpacity onPress={showDateEndPicker}><Text>{dateEndFormat}</Text></TouchableOpacity>
+                                {showEnd && (
+                                    <DateTimePicker
+                                        value={dateEnd}
+                                        mode={'date'}
+                                        is24Hour={true}
+                                        display="default"
+                                        onChange={onChangeEnd}
+                                        locale="pt-BR"
+                                    />
+                                )}
+                            </Row>
+                        </ContainerData>
+                    </Header>
+                </Head>
 
                 <VictoryPie
                     data={data}
-                    x="label"
-                    y="value"
-                    colorScale={data.map(exprense => exprense.color)}
+                    x="descricao"
+                    y="valor"
+                    colorScale={data.map(exprense => exprense.cor)}
                     innerRadius={80}
                     style={{
                         labels: {
@@ -69,20 +195,15 @@ export default function Dashboard() {
                         }
                     }}
                 />
+
                 <ContainerCategoria>
                     <Cor />
                     <ContainerTextoCategoria>
-                        <Texto>Alimentação</Texto>
+                        <H1>Alimentação</H1>
                         <TxtDinheiro>R$ -982.00</TxtDinheiro>
                     </ContainerTextoCategoria>
                 </ContainerCategoria>
-                <ContainerCategoria>
-                    <Cor style={{backgroundColor: "#FF8555"}}/>
-                    <ContainerTextoCategoria>
-                        <Texto>Transporte</Texto>
-                        <TxtDinheiro>R$ -388.00</TxtDinheiro>
-                    </ContainerTextoCategoria>
-                </ContainerCategoria>
+
             </Background>
 
         </SafeAreaView>
