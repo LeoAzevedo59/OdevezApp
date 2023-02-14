@@ -1,7 +1,10 @@
 //#region Improts
+import React, { useState } from 'react';
+import { SafeAreaView, StyleSheet } from 'react-native';
 import {
     MaterialCommunityIcons,
-    MaterialIcons
+    MaterialIcons,
+    AntDesign
 } from '@expo/vector-icons';
 import {
     Extrato,
@@ -13,31 +16,46 @@ import {
     ContainerInfo,
     StatusExtrato
 } from './styles';
-import { SafeAreaView, StyleSheet } from 'react-native';
 //#endregion
 
 export default function LblExtrato(props) {
-    let corExpandMore = props.data.movimentacao.codigo === 1 ? 'green' : 'red'
+    let corExpandMore = props.data.movimentacao.codigo === 1 ? 'green' : 'red';
+
+    function setColor() {
+        if (props.data.categoria.descricao == "TRANSPORTE")
+            return '#FF8555';
+        else if (props.data.categoria.descricao == "ALIMENTAÇÃO")
+            return '#975FFF';
+        else if (props.data.categoria.descricao == "LAZER")
+            return '#55FF85';
+        else if (props.data.categoria.descricao == "TRANSFERÊNCIA")
+            return '#FF55C5';
+        else if (props.data.categoria.descricao == "BÔNUS")
+            return '#55EBFF';
+        else if (props.data.categoria.descricao == "OUTROS")
+            return '#D2D2D2';
+        else if (props.data.categoria.descricao == "SALÁRIO")
+            return '#FFDC5F';
+    }
 
     function exibirIcone() {
         let nome = "";
-
         if (props.data.categoria.descricao == "TRANSPORTE")
-            nome = "train-car-passenger-variant";
+            return <MaterialCommunityIcons name={'train-car-passenger-variant'} size={24} color="#fff" />;
         else if (props.data.categoria.descricao == "ALIMENTAÇÃO")
             nome = "food";
         else if (props.data.categoria.descricao == "LAZER")
             nome = "table-tennis";
-        else if (props.data.categoria.descricao == "COMPRA ONLINE")
-            nome = "shopping";
-        else if (props.data.categoria.descricao == "MERCADO")
-            nome = "cart";
-        else if (props.data.categoria.descricao == "SALARIO") {
-            return (<MaterialIcons name="attach-money" size={24} color="#333" />)
-        }
-
+        else if (props.data.categoria.descricao == "TRANSFERÊNCIA")
+            return (<AntDesign name="retweet" size={24} color="#fff" />)
+        else if (props.data.categoria.descricao == "BÔNUS")
+            return (<AntDesign name="piechart" size={24} color="#fff" />)
+        else if (props.data.categoria.descricao == "OUTROS")
+            return (<MaterialIcons name="more-horiz" size={24} color="#fff" />)
+        else if (props.data.categoria.descricao == "SALÁRIO")
+            return (<MaterialIcons name="attach-money" size={24} color="#fff" />)
         return (
-            <MaterialCommunityIcons name={nome} size={24} color="#333" />
+            <MaterialCommunityIcons name={nome} size={24} color="#fff" />
         )
     }
 
@@ -45,7 +63,7 @@ export default function LblExtrato(props) {
         <SafeAreaView>
             <Extrato onPress={() => props.resumido !== true && props.metodo(props.data.codigo, props.data.carteira.codigo, props.data.status, props.data.valor)}>
                 <ContainerInfo>
-                    <IconeExtrato>
+                    <IconeExtrato style={{ backgroundColor: setColor() }}>
                         {
                             exibirIcone()
                         }

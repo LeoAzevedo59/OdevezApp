@@ -1,50 +1,26 @@
 //#region Imports
 import React, { useState, useEffect, useContext } from 'react';
+import { Text, SafeAreaView, TouchableOpacity, FlatList, View } from 'react-native';
 import { Picker } from '@react-native-community/picker';
-import { View, Text, ScrollView, SafeAreaView, TouchableOpacity } from 'react-native';
-import { VictoryPie, VictoryArea, VictoryLine } from 'victory-native';
+import { VictoryPie } from 'victory-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { AuthContext } from '../../contexts/auth';
 import api from '../../contexts/api';
+import LblDashCategoria from '../../components/LblDashCategoria';
+
 import {
     Background,
     Title,
     Head,
-    H1,
     Header,
-    ContainerCategoria,
-    Cor,
-    TxtDinheiro,
-    ContainerTextoCategoria,
     Texto,
     ContainerData,
     ContainerMovimentacao,
-    Row
+    Row,
+    TxtTotal
+
 } from './styles';
 //#endregion
-
-const EXPRESS = {
-    'Janeiro': [
-        {
-            id: "1",
-            label: "Alimentação",
-            value: 982.00,
-            color: "#975FFF"
-        },
-        {
-            id: "2",
-            label: "Transporte",
-            value: 388,
-            color: "#FF8555"
-        },
-        {
-            id: "3",
-            label: "Lazer",
-            value: 280,
-            color: "#55FF85"
-        }
-    ]
-}
 
 const MOVIMENTACAO = [
     {
@@ -61,22 +37,26 @@ const MOVIMENTACAO = [
 ]
 
 export default function Dashboard() {
-    const { usuario, ExibirValor, exibirValor } = useContext(AuthContext);
+    const { usuario, exibirValor } = useContext(AuthContext);
     const [data, setData] = useState([]);
+    const [valorTotal, setValorTotal] = useState(0);
     const [selectedMovimentacao, SetSelectedMovimentacao] = useState(0);
     const [showStart, setStartShow] = useState(false);
     let d = new Date();
     d.setMonth(0);
     const [dateStart, setDateStart] = useState(new Date(d));
-    const [dateStartFormat, setDateStartFormat] = useState(dateStart.getDate().toString() + '/' + (parseInt(dateStart.getMonth() + 1)).toString() + '/' + dateStart.getFullYear().toString());
     const [showEnd, setEndShow] = useState(false);
     const [dateEnd, setDateEnd] = useState(new Date());
+
+    const [dateStartFormat, setDateStartFormat] = useState(dateStart.getDate().toString() + '/' + (parseInt(dateStart.getMonth() + 1)).toString() + '/' + dateStart.getFullYear().toString());
+    const [filtroDateStartFormat, setFiltroDateStartFormat] = useState(dateStart.getFullYear().toString() + '/' + (parseInt(dateStart.getMonth() + 1)).toString() + '/' + dateStart.getDate().toString());
     const [dateEndFormat, setDateEndFormat] = useState(dateEnd.getDate().toString() + '/' + (parseInt(dateEnd.getMonth() + 1)).toString() + '/' + dateEnd.getFullYear().toString());
+    const [FiltroDateEndFormat, setFiltroDateEndFormat] = useState(dateEnd.getFullYear().toString() + '/' + (parseInt(dateEnd.getMonth() + 1)).toString() + '/' + dateEnd.getDate().toString());
 
     async function ObterDashboardPizza() {
         await api.post("extrato/obter-dashboard-pizza", {
-            DataInicio: new Date(dateStartFormat),
-            DataFim: new Date(dateEndFormat),
+            DataInicio: new Date(filtroDateStartFormat),
+            DataFim: new Date(FiltroDateEndFormat),
             Movimentacao: selectedMovimentacao,
             Usuario: usuario.codigo,
         }, {
@@ -84,13 +64,12 @@ export default function Dashboard() {
                 Authorization: usuario.type + " " + usuario.token
             }
         }).then((response) => {
-            console.log(response.data);
-            setData(response.data);
+            setData(response.data.dados);
+            setValorTotal(response.data.valorTotal);
         }).catch(function (error) {
             console.log(error + " Componente: Dashboard - ObterDashboardPizza()");
             return false;
         });
-        
     }
 
     const showDateStartPicker = () => {
@@ -114,6 +93,7 @@ export default function Dashboard() {
             setStartShow(false)
             setDateStart(selectedDateStart);
             setDateStartFormat(selectedDateStart.getDate().toString() + '/' + (parseInt(selectedDateStart.getMonth() + 1)).toString() + '/' + selectedDateStart.getFullYear().toString())
+            setFiltroDateStartFormat(selectedDateStart.getFullYear().toString() + '/' + (parseInt(selectedDateStart.getMonth() + 1)).toString() + '/' + selectedDateStart.getDate().toString())
         }
     }
 
@@ -124,15 +104,44 @@ export default function Dashboard() {
             setEndShow(false)
             setDateEnd(selectedDateEnd);
             setDateEndFormat(selectedDateEnd.getDate().toString() + '/' + (parseInt(selectedDateEnd.getMonth() + 1)).toString() + '/' + selectedDateEnd.getFullYear().toString())
+            setFiltroDateEndFormat(selectedDateEnd.getFullYear().toString() + '/' + (parseInt(selectedDateEnd.getMonth() + 1)).toString() + '/' + selectedDateEnd.getDate().toString())
         }
     }
 
+    function ValidarData() {
+        var dtI = new Date(dateStartFormat.split('/').reverse().join('/'));
+        var dtF = new Date(dateEndFormat.split('/').reverse().join('/'));
+
+        if (dtI >= dtF) {
+
+            alert('Data início deve ser menor que a data Fim');
+
+            const dataFim = new Date();
+            const d = new Date();
+            const dataInicio = new Date(d.setMonth(0));
+
+            setDateStart(dataInicio);
+            setDateStartFormat(dataInicio.getDate().toString() + '/' + (parseInt(dataInicio.getMonth() + 1)).toString() + '/' + dataInicio.getFullYear().toString());
+            setFiltroDateStartFormat(dataInicio.getFullYear().toString() + '/' + (parseInt(dataInicio.getMonth() + 1)).toString() + '/' + dataInicio.getDate().toString());
+
+            setDateEnd(dataFim);
+            setDateEndFormat(dataFim.getDate().toString() + '/' + (parseInt(dataFim.getMonth() + 1)).toString() + '/' + dataFim.getFullYear().toString());
+            setFiltroDateEndFormat(dataFim.getFullYear().toString() + '/' + (parseInt(dataFim.getMonth() + 1)).toString() + '/' + dataFim.getDate().toString());
+
+            ObterDashboardPizza();
+            return false;
+        }
+        return true;
+    }
+
     useEffect(() => {
-        ObterDashboardPizza();
-    }, [selectedMovimentacao]);
+        if (ValidarData())
+            ObterDashboardPizza();
+
+    }, [dateStart, dateEnd, selectedMovimentacao, exibirValor]);
 
     return (
-        <SafeAreaView style={{ backgroundColor: '#FBFBFB', flex: 1 }}>
+        <SafeAreaView style={{ backgroundColor: '#FBFBFB' }}>
             <Background>
                 <Head>
                     <Title>Receitas & Despesas</Title>
@@ -187,6 +196,7 @@ export default function Dashboard() {
                     data={data}
                     x="descricao"
                     y="valor"
+                    height={200}
                     colorScale={data.map(exprense => exprense.cor)}
                     innerRadius={80}
                     style={{
@@ -196,17 +206,26 @@ export default function Dashboard() {
                     }}
                 />
 
-                <ContainerCategoria>
-                    <Cor />
-                    <ContainerTextoCategoria>
-                        <H1>Alimentação</H1>
-                        <TxtDinheiro>R$ -982.00</TxtDinheiro>
-                    </ContainerTextoCategoria>
-                </ContainerCategoria>
+                {data.length !== 0
+                    ?
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <TxtTotal>Total</TxtTotal><Texto style={{ marginLeft: 16 }}>R$ {valorTotal.toFixed(2)}</Texto>
+                    </View>
+                    :
+                    <></>
+                }
 
+
+                <FlatList
+                    keyExtractor={(item) => item.codigo}
+                    data={data}
+                    horizontal={false}
+                    showsVerticalScrollIndicator={false}
+                    renderItem={({ item }) => <LblDashCategoria data={item} />}
+                />
             </Background>
 
-        </SafeAreaView>
+        </SafeAreaView >
     )
 }
 

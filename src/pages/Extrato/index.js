@@ -1,5 +1,4 @@
 //#region Import
-
 import React, { useRef, useContext, useState, useEffect } from 'react';
 import { FlatList, ActivityIndicator } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
