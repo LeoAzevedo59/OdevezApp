@@ -4,6 +4,7 @@ import { ScrollView, View, ActivityIndicator, SafeAreaView, Modal, FlatList, Tex
 import { AuthContext } from '../../contexts/auth';
 import { useNavigation } from '@react-navigation/native';
 import { Modalize } from 'react-native-modalize';
+import { VictoryLine, VictoryChart, VictoryTheme, VictoryLabel, VictoryVoronoiContainer } from 'victory-native';
 
 import {
   Container,
@@ -14,7 +15,8 @@ import {
   ModalBtn,
   ModalInput,
   H1,
-  Paragraph
+  Paragraph,
+  ContainerGrafico
 } from './styles';
 
 import api from '../../contexts/api';
@@ -25,6 +27,7 @@ import ComponenteVazio from '../../components/ComponenteVazio';
 import ConfettiCannon from 'react-native-confetti-cannon';
 import LblCarteira from '../../components/LblCarteira';
 import LblCarteiraResumida from '../../components/LblCarteiraResumida';
+import { FormatReais } from '../../components/Mascara';
 
 //#endregion
 
@@ -38,15 +41,15 @@ export default function Home() {
   const [apelido, SetApelido] = useState(null);
   const [nome, SetNome] = useState('');
   const [carteira, setCarteira] = useState();
-
-  const data = [
-    { codigo: 0, tipo: 'users', descricao: 'Casa', valor: '154,90', porcentagem: '20' },
-    { codigo: 1, tipo: 'user', descricao: 'Carro', valor: '3122,90', porcentagem: '5' },
-    { codigo: 2, tipo: 'user', descricao: 'Carro', valor: '3122,90', porcentagem: '5' }
-  ];
-
-  const [objetivos, setObjetivo] = useState(data);
+  const [balanco, setBalanco] = useState([]);
+  // const [objetivos, setObjetivo] = useState(data);
   const [extrato, setExtrato] = useState([]);
+
+  // const data = [
+  //   { codigo: 0, tipo: 'users', descricao: 'Casa', valor: '154,90', porcentagem: '20' },
+  //   { codigo: 1, tipo: 'user', descricao: 'Carro', valor: '3122,90', porcentagem: '5' },
+  //   { codigo: 2, tipo: 'user', descricao: 'Carro', valor: '3122,90', porcentagem: '5' }
+  // ];
 
   const startAnimation = () => {
     SetAnimate(true);
@@ -145,6 +148,23 @@ export default function Home() {
     setIsLoading(false);
   }
 
+  async function ObterBalancoMensal() {
+    await api.get("extrato/obter-balanco-mensal", {
+      headers: {
+        Authorization: usuario.type + " " + usuario.token
+      },
+      params: {
+        usuario: usuario.codigo
+      }
+    }).then((response) => {
+      setBalanco(response.data);
+    }).catch(function (error) {
+      console.log(error.response.status + " Componente: Home - ObterBalancoMensal()");
+    });
+    setIsLoading(false);
+  }
+
+
   const getContent = () => {
     if (isLoading)
       return <ActivityIndicator size="large" />
@@ -159,11 +179,12 @@ export default function Home() {
       ObterPatrimonio();
       ObterExtrato();
       ObterCarteira();
+      ObterBalancoMensal();
     }
   }, [exibirValor])
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#FBFBFB' }}>
 
       {animate ?
         <ConfettiCannon
@@ -175,8 +196,27 @@ export default function Home() {
 
       <ScrollView>
         <Container>
-          <LblPatrimonio valor={" " + patrimonio.toFixed(2)} exibirValor={exibirValor} link="FrmPatrimonio" titulo="Patrimônio" />
+          <LblPatrimonio valor={" " + FormatReais(patrimonio)} exibirValor={exibirValor} link="FrmPatrimonio" titulo="Patrimônio" />
         </Container>
+        <ContainerGrafico>
+          <VictoryChart
+            theme={VictoryTheme.material}
+          >
+            <VictoryLine
+              style={{
+                data: { stroke: "#c43a31" },
+                parent: { border: "1px solid #ccc" }
+              }}
+              animate={{
+                duration: 2000,
+                onLoad: { duration: 1000 }
+              }}
+              data={balanco}
+              x="data"
+              y="valor"
+            />
+          </VictoryChart>
+        </ContainerGrafico>
 
         {/* {objetivos.length === 0
           ?

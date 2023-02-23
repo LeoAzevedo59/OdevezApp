@@ -1,7 +1,7 @@
 //#region imports
 
 import React, { useContext, useState, useEffect } from 'react';
-import { Keyboard, StyleSheet, View, Switch, ActivityIndicator } from 'react-native';
+import { Keyboard, StyleSheet, View, Switch, ActivityIndicator, Text } from 'react-native';
 import { AuthContext } from '../../contexts/auth';
 import { Picker } from '@react-native-community/picker';
 import { useNavigation } from '@react-navigation/native';
@@ -19,8 +19,13 @@ import {
     Row,
     Erro,
     H2,
-    Span
+    Span,
+    Icon
 } from './styles';
+
+import {
+    MaterialIcons
+} from '@expo/vector-icons';
 
 import api from '../../contexts/api';
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -39,7 +44,8 @@ export default function FrmPatrimonio({ route }) {
     const [selectedCarteira, setSelectedCarteira] = useState(0);
     const [movimentacoes, setMovimentacoes] = useState();
     const [selectedMovimentacao, setSelectedMovimentacao] = useState(0);
-    const [categorias, setCategorias] = useState();
+    const [categorias, setCategorias] = useState([]);
+    const [categoriasBkp, setCategoriasBkp] = useState([]);
     const [selectedCategoria, setSelectedCategoria] = useState(0);
     const [descricao, setDescricao] = useState('');
     const [valor, setValor] = useState('');
@@ -51,6 +57,7 @@ export default function FrmPatrimonio({ route }) {
     const [codExtrato, setCodExtrato] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
     const [pressButton, setPressButton] = useState(false);
+    const [corExpandMore, setCorExpandMore] = useState('red');
 
     const onChange = (event, selectedDate, alt) => {
 
@@ -80,7 +87,6 @@ export default function FrmPatrimonio({ route }) {
             }
         }).then((response) => {
             setCarteiras(response.data);
-            return response.data;
         }).catch(function (error) {
             console.log(error.response.status + " Componente: Cadastro de patrimonio - ObterDescricaoCarteiras()");
         });
@@ -92,8 +98,13 @@ export default function FrmPatrimonio({ route }) {
                 Authorization: usuario.type + " " + usuario.token
             }
         }).then((response) => {
+
+            response.data.sort(function (obj1, obj2) {
+                return obj1.descricao > obj2.descricao ? -1 :
+                    (obj1.descricao < obj2.descricao ? 1 : 0);
+            });
+
             setMovimentacoes(response.data);
-            return response.data;
         }).catch(function (error) {
             console.log(error.response.status + " Componente: Cadastro de patrimonio - ObterDescricaoMovimentacoes()");
         });
@@ -187,7 +198,22 @@ export default function FrmPatrimonio({ route }) {
                 usuario: usuario.codigo
             }
         }).then((response) => {
-            setCategorias(response.data);
+            setCategoriasBkp(response.data);
+
+            let categoriasSaida = [];
+
+            response.data.map((value, key) => {
+                if (value.movimentacao === 2)
+                    categoriasSaida.push(value);
+            });
+
+            categoriasSaida.sort(function (obj1, obj2) {
+                return obj1.descricao < obj2.descricao ? -1 :
+                    (obj1.descricao > obj2.descricao ? 1 : 0);
+            });
+
+            setCategorias(categoriasSaida);
+
         }).catch(function (error) {
             console.log(error.response.status + " Componente: Cadastro de patrimonio");
         });
@@ -293,6 +319,25 @@ export default function FrmPatrimonio({ route }) {
         setEfetivado(!efetivado)
     }
 
+    function onValueChangeMovimentacao(itemValue) {
+        itemValue = itemValue === 1 ? 1 : 2;
+        itemValue === 1 ? setCorExpandMore('green') : setCorExpandMore('red')
+        let categoriasSaida = [];
+
+        categoriasBkp.map((value, key) => {
+            if (value.movimentacao === itemValue)
+                categoriasSaida.push(value);
+        });
+
+        categoriasSaida?.sort(function (obj1, obj2) {
+            return obj1.descricao < obj2.descricao ? -1 :
+                (obj1.descricao > obj2.descricao ? 1 : 0);
+        });
+
+        setCategorias(categoriasSaida);
+        setSelectedMovimentacao(itemValue)
+    }
+
     useEffect(() => {
         if (route.params !== undefined) {
             AlterarAsync(route.params.extrato);
@@ -320,20 +365,25 @@ export default function FrmPatrimonio({ route }) {
                         <AreaCadastro>
 
                             <Texto>Valor</Texto>
-                            <Input
-                                autoCorrect={false}
-                                autoCapitalize='none'
-                                keyboardType='numeric'
-                                placeholder={"0.00"}
-                                value={valor}
-                                onChangeText={(text) => {
-                                    setValor(text)
-                                    setErroValor('')
-                                }}
-                                style={[
-                                    erroValor != '' ? styles.styleErro : styles.styleInput
-                                ]}
-                            />
+                            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                                <Input
+                                    autoCorrect={false}
+                                    autoCapitalize='none'
+                                    keyboardType='numeric'
+                                    placeholder={"0.00"}
+                                    value={valor}
+                                    onChangeText={(text) => {
+                                        setValor(text)
+                                        setErroValor('')
+                                    }}
+                                    style={[
+                                        erroValor != '' ? styles.styleErro : styles.styleInput
+                                    ]}
+                                />
+                                <Icon>
+                                    <MaterialIcons name="expand-more" size={24} color={corExpandMore} />
+                                </Icon>
+                            </View>
                             {erroValor != '' ? <Erro>{erroValor}</Erro> : <View />}
 
                             <Texto>Status</Texto>
@@ -354,7 +404,7 @@ export default function FrmPatrimonio({ route }) {
                             <Texto>Transação</Texto>
                             <Picker
                                 selectedValue={selectedMovimentacao}
-                                onValueChange={(itemValue, itemIndex) => setSelectedMovimentacao(itemValue)}
+                                onValueChange={(itemValue, itemIndex) => onValueChangeMovimentacao(itemValue)}
                                 style={{ fontSize: 16 }}
                             >
                                 {
@@ -415,6 +465,7 @@ export default function FrmPatrimonio({ route }) {
                                     locale="pt-BR"
                                 />
                             )}
+
                             <Texto>Descrição</Texto>
                             <Input
                                 value={descricao}

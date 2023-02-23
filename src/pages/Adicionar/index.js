@@ -15,7 +15,7 @@ export default function Adicionar() {
             <ContainerButton>
                 <Botao onPress={() => navigation.navigate('FrmPatrimonio')}>
                     <MaterialIcons name="attach-money" size={24} color="#333" />
-                    <TextoBotao>Patrimônio</TextoBotao>
+                    <TextoBotao>Receita & Despesa</TextoBotao>
                 </Botao>
                 {/* <Botao onPress={() => navigation.navigate('FrmObjetivo')}>
                     <Feather name="target" size={24} color="#333" />

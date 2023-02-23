@@ -18,12 +18,6 @@ margin-top: 16px;
 margin-bottom: 16px;
 `;
 
-export const Input = styled.TextInput`
-border-bottom-width: 1px;
-height: 40px;
-padding-left: 6px;
-`;
-
 export const Btn = styled.TouchableOpacity`
 background-color: #FAFF00;
 height: 64px;
@@ -90,4 +84,19 @@ export const Span = styled.View`
 flex-direction: row;
 align-items: center;
 justify-content: space-between;
+`;
+
+export const Icon = styled.View`
+position: absolute;
+top: 0;
+right: 10;
+`;
+
+
+export const Input = styled.TextInput`
+border-bottom-width: 1px;
+height: 40px;
+padding-left: 6px;
+width: 100%;
+position: relative;
 `;

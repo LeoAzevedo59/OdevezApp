@@ -24,3 +24,15 @@ export const InputEmail = value => {
     return value
         .replace(/^[a-z0-9.]+@[a-z0-9]+\.[a-z]+\.[a-z]?$/i).substring(0, 50)
 }
+
+export const SomenteNumero = value => {
+    return value
+        .replace(/\D/g, '')
+}
+
+export const FormatReais = value => {
+    value = isNaN(value) === true ? 0 : value;
+    value = value.toFixed(2).replace('.', ',');
+    value = value.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
+    return value;
+}

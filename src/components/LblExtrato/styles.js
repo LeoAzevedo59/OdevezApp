@@ -31,7 +31,7 @@ background-color: orange;
 position: absolute;
 right: 0;
 top: 20px;
-border: 1px solid #eee;
+border: 1px solid #fff;
 `;
 
 export const ContainerDescricao = styled.View`

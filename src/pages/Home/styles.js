@@ -67,3 +67,9 @@ export const Paragraph = styled.Text`
 margin-top: 8px;
 margin-bottom: 8px;
 `;
+
+export const ContainerGrafico = styled.View`
+width: 100%;
+align-items: center;
+justify-content: center;
+`;

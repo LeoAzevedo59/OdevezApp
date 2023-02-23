@@ -19,6 +19,7 @@ import FrmCarteira from '../formularios/FrmCarteira';
 import FrmPatrimonio from '../formularios/FrmPatrimonio';
 import FrmObjetivo from '../formularios/FrmObjetivo';
 import Perfil from '../pages/Perfil';
+import CalcJurosCompostosAporteMensal from '../components/CalcJurosCompostosAporteMensal';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -97,7 +98,7 @@ function Tabs({ navigation }) {
                             <Ionicons key={1} name={'home-outline'} size={size} color={color} />
                     ])
                 }} />
-            {/* <Tab.Screen
+            <Tab.Screen
                 key={1}
                 name='Dashboard'
                 component={Dashboard}
@@ -110,7 +111,7 @@ function Tabs({ navigation }) {
                                 :
                                 <MaterialCommunityIcons key={1} name='view-dashboard-outline' size={size} color={color} />
                         ])
-                }} /> */}
+                }} />
             <Tab.Screen
                 key={2}
                 name='Adicionar'
@@ -134,7 +135,7 @@ function Tabs({ navigation }) {
                             <Ionicons key={1} name='wallet-outline' size={size} color={color} /> // wallet
                     ])
                 }} />
-            {/* <Tab.Screen
+            <Tab.Screen
                 key={4}
                 name='Mais'
                 component={Mais}
@@ -143,7 +144,7 @@ function Tabs({ navigation }) {
                     tabBarIcon: ({ size, color }) => (
                         <Feather key={0} name='more-horizontal' size={size} color={color} />
                     )
-                }} /> */}
+                }} />
         </Tab.Navigator>
     )
 }
@@ -207,11 +208,18 @@ function AppRoutes() {
                     headerTitle: 'Objetivo',
                 }} />
             <Stack.Screen
-                key={12}
+                key={13}
                 name='Perfil'
                 component={Perfil}
                 options={{
                     headerTitle: 'Perfil',
+                }} />
+            <Stack.Screen
+                key={14}
+                name='CalcJurosCompostosAporteMensal'
+                component={CalcJurosCompostosAporteMensal}
+                options={{
+                    headerTitle: 'Juros Compostos',
                 }} />
         </Stack.Navigator>
     );
