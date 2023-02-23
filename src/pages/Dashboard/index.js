@@ -112,7 +112,7 @@ export default function Dashboard() {
         var dtI = new Date(dateStartFormat.split('/').reverse().join('/'));
         var dtF = new Date(dateEndFormat.split('/').reverse().join('/'));
 
-        if (dtI >= dtF) {
+        if (dateStart > dateEnd) {
 
             alert('Data início deve ser menor que a data Fim');
 
@@ -137,8 +137,7 @@ export default function Dashboard() {
     useEffect(() => {
         if (ValidarData())
             ObterDashboardPizza();
-
-    }, [dateStart, dateEnd, selectedMovimentacao, exibirValor]);
+    }, [dateStart, dateEnd, selectedMovimentacao, exibirValor, dateEndFormat, filtroDateStartFormat]);
 
     return (
         <SafeAreaView style={{ backgroundColor: '#FBFBFB' }}>
@@ -223,6 +222,7 @@ export default function Dashboard() {
                     showsVerticalScrollIndicator={false}
                     renderItem={({ item }) => <LblDashCategoria data={item} />}
                 />
+          
             </Background>
 
         </SafeAreaView >
