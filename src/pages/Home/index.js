@@ -27,6 +27,7 @@ import ComponenteVazio from '../../components/ComponenteVazio';
 import ConfettiCannon from 'react-native-confetti-cannon';
 import LblCarteira from '../../components/LblCarteira';
 import LblCarteiraResumida from '../../components/LblCarteiraResumida';
+import { FormatReais } from '../../components/Mascara';
 
 //#endregion
 
@@ -195,7 +196,7 @@ export default function Home() {
 
       <ScrollView>
         <Container>
-          <LblPatrimonio valor={" " + patrimonio.toFixed(2)} exibirValor={exibirValor} link="FrmPatrimonio" titulo="Patrimônio" />
+          <LblPatrimonio valor={" " + FormatReais(patrimonio)} exibirValor={exibirValor} link="FrmPatrimonio" titulo="Patrimônio" />
         </Container>
         <ContainerGrafico>
           <VictoryChart

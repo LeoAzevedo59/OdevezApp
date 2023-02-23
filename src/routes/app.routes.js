@@ -19,6 +19,7 @@ import FrmCarteira from '../formularios/FrmCarteira';
 import FrmPatrimonio from '../formularios/FrmPatrimonio';
 import FrmObjetivo from '../formularios/FrmObjetivo';
 import Perfil from '../pages/Perfil';
+import CalcJurosCompostosAporteMensal from '../components/CalcJurosCompostosAporteMensal';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -207,11 +208,18 @@ function AppRoutes() {
                     headerTitle: 'Objetivo',
                 }} />
             <Stack.Screen
-                key={12}
+                key={13}
                 name='Perfil'
                 component={Perfil}
                 options={{
                     headerTitle: 'Perfil',
+                }} />
+            <Stack.Screen
+                key={14}
+                name='CalcJurosCompostosAporteMensal'
+                component={CalcJurosCompostosAporteMensal}
+                options={{
+                    headerTitle: 'Juros Compostos',
                 }} />
         </Stack.Navigator>
     );

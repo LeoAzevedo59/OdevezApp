@@ -22,7 +22,7 @@ export default function Mais() {
                     <Feather name="target" size={24} color="#333" />
                     <TextoBotao>Objetivos</TextoBotao>
                 </Botao> */}
-                <Botao>
+                <Botao onPress={() => navigate.navigate('CalcJurosCompostosAporteMensal')}>
                     <Ionicons name="ios-calculator" size={24} color="#333" />
                     <TextoBotao>Calculadora</TextoBotao>
                 </Botao>
