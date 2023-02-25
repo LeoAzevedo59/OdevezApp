@@ -17,6 +17,7 @@ export default function Perfil() {
     const { usuario, InserirImagem } = useContext(AuthContext);
     const [URLimage, setURLImage] = useState(null);
     const [link, setLink] = useState('https://containerodevez.blob.core.windows.net/container/')
+    const { Deslogar } = useContext(AuthContext);
 
     const pickImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
@@ -52,6 +53,26 @@ export default function Perfil() {
         }
     };
 
+    async function Excluir() {
+
+        await api.delete("usuario/excluir", {
+            headers: {
+                Authorization: usuario.type + " " + usuario.token
+            },
+            params: {
+                user: usuario.codigo
+            }
+        }).then((response) => {
+            if (response.data) {
+                alert('Conta excluida com sucesso');
+                Deslogar();
+            }
+        }).catch(function (error) {
+            alert(error);
+            return false;
+        });
+    }
+
     useEffect(() => {
         setURLImage(link + usuario.imagem)
     }, []);
@@ -73,8 +94,8 @@ export default function Perfil() {
                 </BtnImagem>
                 <Texto>{usuario.apelido}</Texto>
             </Div>
-            <BtnDeletarConta>
-                <Text style={{color: 'white'}}>Excluir Conta</Text>
+            <BtnDeletarConta onPress={() => Excluir()}>
+                <Text style={{ color: 'white' }}>Excluir Conta</Text>
             </BtnDeletarConta>
         </Container>
     );
