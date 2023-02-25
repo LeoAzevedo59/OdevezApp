@@ -20,6 +20,7 @@ import FrmPatrimonio from '../formularios/FrmPatrimonio';
 import FrmObjetivo from '../formularios/FrmObjetivo';
 import Perfil from '../pages/Perfil';
 import CalcJurosCompostosAporteMensal from '../components/CalcJurosCompostosAporteMensal';
+import ImportExtrato from '../pages/ImportExtrato';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -220,6 +221,13 @@ function AppRoutes() {
                 component={CalcJurosCompostosAporteMensal}
                 options={{
                     headerTitle: 'Juros Compostos',
+                }} />
+            <Stack.Screen
+                key={15}
+                name='ImportExtrato'
+                component={ImportExtrato}
+                options={{
+                    headerTitle: 'Importar Extrato',
                 }} />
         </Stack.Navigator>
     );

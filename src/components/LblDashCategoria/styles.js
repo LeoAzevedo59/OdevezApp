@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const H1 = styled.Text`
 font-size: 16px;
-padding-left: 16px;
+padding-left: 4px;
 font-weight: bold;
 `;
 

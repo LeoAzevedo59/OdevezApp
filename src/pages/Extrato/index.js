@@ -204,8 +204,6 @@ export default function Extrato({ navigation }) {
                         R$
                         {exibirValor === true ? " " + valorCarteira.toFixed(2) : " ****"}
                     </H1>
-                    {/* <H2>Vencimento {console.log(carteiras)}</H2>
-                    <H2>Fechamento 14 AGO</H2> */}
                 </Center>
                 <Right onPress={() => Next("RIGHT")}>
                     <AntDesign name="right" size={24} color="white" />

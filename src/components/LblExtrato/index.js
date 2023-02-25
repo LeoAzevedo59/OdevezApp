@@ -78,7 +78,7 @@ export default function LblExtrato(props) {
                             {props.data.categoria.descricao}
                         </TxtDescricao>
                         <TxtData>
-                            {props.data.descricao}
+                            {props.data.descricao.substring(0, 30)}
                         </TxtData>
                         <TxtData>
                             {props.data.dataCriacao.slice(0, 10)}

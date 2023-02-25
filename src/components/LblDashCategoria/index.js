@@ -26,7 +26,7 @@ export default function LblDashCategoria(props) {
             <ContainerCategoria>
                 <Cor style={{ backgroundColor: props.data.cor }} />
                 <ContainerTextoCategoria>
-                    <H1>{props.data.categoria}</H1>
+                    <H1>{props.data.categoria.substring(0, 22)}</H1>
                     {
                         props.data.movimentacao === undefined ?
                             <Row>

@@ -89,7 +89,7 @@ justify-content: space-between;
 export const Icon = styled.View`
 position: absolute;
 top: 0;
-right: 10;
+right: 10px;
 `;
 
 

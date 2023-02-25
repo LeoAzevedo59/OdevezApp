@@ -3,7 +3,7 @@ import { } from 'react-native';
 import { Background, ContainerButton, Botao, TextoBotao } from '../Mais/styles';
 import {
     MaterialIcons,
-    AntDesign,
+    MaterialCommunityIcons ,
     Feather
 } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
@@ -17,6 +17,11 @@ export default function Adicionar() {
                     <MaterialIcons name="attach-money" size={24} color="#333" />
                     <TextoBotao>Receita & Despesa</TextoBotao>
                 </Botao>
+                <Botao onPress={() => navigation.navigate('ImportExtrato')}>
+                <MaterialCommunityIcons name="import" size={24} color="#333" />
+                    <TextoBotao>Iportar Extrato</TextoBotao>
+                </Botao>
+
                 {/* <Botao onPress={() => navigation.navigate('FrmObjetivo')}>
                     <Feather name="target" size={24} color="#333" />
                     <TextoBotao>Objetivo</TextoBotao>
