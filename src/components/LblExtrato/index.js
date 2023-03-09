@@ -17,6 +17,7 @@ import {
     StatusExtrato
 } from './styles';
 //#endregion
+import { FormatReais } from '../../components/Mascara';
 
 export default function LblExtrato(props) {
     let corExpandMore = props.data.movimentacao.codigo === 1 ? 'green' : 'red';
@@ -88,7 +89,7 @@ export default function LblExtrato(props) {
                 <ContainerInfo>
                     <TxtValorExtrato>
                         R$
-                        {props.exibirValor === true ? " " + props.data.valor.toFixed(2) : " ****"}
+                        {props.exibirValor === true ? " " + FormatReais(props.data.valor) : " ****"}
                     </TxtValorExtrato>
                     <MaterialIcons name="expand-more" size={24} color={corExpandMore} />
                 </ContainerInfo>

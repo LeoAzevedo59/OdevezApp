@@ -10,6 +10,7 @@ import {
 import {
     MaterialIcons
 } from '@expo/vector-icons';
+import { FormatReais } from '../Mascara';
 
 let MovimentacaoEnum = {
     Todos: 0,
@@ -30,12 +31,11 @@ export default function LblDashCategoria(props) {
                     {
                         props.data.movimentacao === undefined ?
                             <Row>
-                                <TxtDinheiro style={{marginRight: 8}}>R$ {props.data.valor}</TxtDinheiro>
-                                
+                                <TxtDinheiro style={{marginRight: 8}}>{props.exibirValor === true ? " " + FormatReais(props.data.valor) : " ****"}</TxtDinheiro>
                             </Row>
                             :
                             <Row>
-                                <TxtDinheiro>R$ {negativo}{props.data.valor.toFixed(2)}</TxtDinheiro>
+                                <TxtDinheiro>R$ {negativo}{props.exibirValor === true ? " " + FormatReais(props.data.valor) : " ****"}</TxtDinheiro>
                                 <MaterialIcons name="expand-more" size={24} color={corExpandMore} />
                             </Row>
                     }

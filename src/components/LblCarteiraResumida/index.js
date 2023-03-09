@@ -17,6 +17,7 @@ import { StyleSheet } from 'react-native';
 import { AuthContext } from '../../contexts/auth';
 
 import api from '../../contexts/api';
+import { FormatReais } from '../Mascara';
 
 export default function LblCarteiraResumida(props) {
     const dateObj = new Date();
@@ -68,7 +69,7 @@ export default function LblCarteiraResumida(props) {
                         </CarteiraData>
                         <CarteiraValor>
                             <H2>Saldo</H2>
-                            <Span>R$  {props.exibirValor == true ? valorCarteira.toFixed(2) : " ****"}</Span>
+                            <Span>R$  {props.exibirValor == true ? FormatReais(valorCarteira) : " ****"}</Span>
                         </CarteiraValor>
                     </CarteiraFooter>
                 </Carteira>

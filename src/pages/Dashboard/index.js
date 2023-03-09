@@ -20,6 +20,7 @@ import {
     TxtTotal
 
 } from './styles';
+import { FormatReais } from '../../components/Mascara';
 //#endregion
 
 const MOVIMENTACAO = [
@@ -208,7 +209,7 @@ export default function Dashboard() {
                 {data.length !== 0
                     ?
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <TxtTotal>Total</TxtTotal><Texto style={{ marginLeft: 16 }}>R$ {valorTotal.toFixed(2)}</Texto>
+                        <TxtTotal>Total</TxtTotal><Texto style={{ marginLeft: 16 }}>R$ {exibirValor === true ? " " + FormatReais(valorTotal) : " ****"}</Texto>
                     </View>
                     :
                     <></>
@@ -220,7 +221,7 @@ export default function Dashboard() {
                     data={data}
                     horizontal={false}
                     showsVerticalScrollIndicator={false}
-                    renderItem={({ item }) => <LblDashCategoria data={item} />}
+                    renderItem={({ item }) => <LblDashCategoria  exibirValor={exibirValor} data={item} />}
                 />
           
             </Background>

@@ -208,36 +208,42 @@ export default function FramCarteira({ route }) {
     }
 
     async function IncluirCarteira() {
-        await api.post("carteira/incluir", {
-            Descricao: descricao,
-            Usuario: usuario.codigo,
-            TipoCarteira: tiposCarteiras[selectedTipoCarteira].codigo,
-            FechamentoFatura: dataFechamento,
-            VencimentoFatura: dataVencimento,
-            ChkExibirHome: exibirHomeIsChecked,
-            ChkNaoSomarPatrimonio: naoSomaPatrimonioIsChecked,
-            Valor: valorInicial,
-            BancoDTO: {
-                code: selectedBank !== null ? parseInt(selectedBank.code) : null,
-                name: selectedBank !== null ? selectedBank.name : '',
-                ispb: selectedBank !== null ? selectedBank.ispb : '',
-                Usuario: usuario.codigo
-            }
-        }, {
-            headers: {
-                Authorization: usuario.type + " " + usuario.token
-            }
-        }).then((response) => {
-            if (response.data) {
-                ExibirValor(!exibirValor);
-                ExibirValor(exibirValor);
+        try {
+            await api.post("carteira/incluir", {
+                Descricao: descricao,
+                Usuario: usuario.codigo,
+                TipoCarteira: tiposCarteiras[selectedTipoCarteira].codigo,
+                FechamentoFatura: dataFechamento,
+                VencimentoFatura: dataVencimento,
+                ChkExibirHome: exibirHomeIsChecked,
+                ChkNaoSomarPatrimonio: naoSomaPatrimonioIsChecked,
+                Valor: valorInicial,
+                BancoDTO: {
+                    code: selectedBank !== null ? parseInt(selectedBank.code) : null,
+                    name: selectedBank !== null ? selectedBank.name : '',
+                    ispb: selectedBank !== null ? selectedBank.ispb : '',
+                    Usuario: usuario.codigo
+                }
+            }, {
+                headers: {
+                    Authorization: usuario.type + " " + usuario.token
+                }
+            }).then((response) => {
+                if (response.data) {
+                    ExibirValor(!exibirValor);
+                    ExibirValor(exibirValor);
+                    setIsLoading(false);
+                    navigation.goBack();
+                }
+            }).catch(function (error) {
+                console.log(error + " Componente: Cadastro de carrteira - IncluirCarteira()");
                 setIsLoading(false);
-                navigation.goBack();
-            }
-        }).catch(function (error) {
-            console.log(error + " Componente: Cadastro de carrteira - IncluirCarteira()");
-            return false;
-        });
+                Alert("Erro ao incluir carteira.");
+                return false;
+            });
+        } catch (error) {
+            console.log('error:', error);
+        }
     }
 
     async function AlterarCarteira() {
@@ -276,6 +282,7 @@ export default function FramCarteira({ route }) {
     }
 
     async function ObterTipoCarteira() {
+        console.log(usuario.type + " " + usuario.token)
         await api.get("carteira/obter-tipo-carteira", {
             headers: {
                 Authorization: usuario.type + " " + usuario.token
@@ -578,8 +585,8 @@ export default function FramCarteira({ route }) {
                                 setBancoDes(text)
                                 const arry = [];
                                 bancos?.forEach(element => {
-                                    if (element.fullName.toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(text.toUpperCase()) ||
-                                        element.name.toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(text.toUpperCase()))
+                                    if (element.fullName?.toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(text?.toUpperCase()) ||
+                                        element.name?.toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(text?.toUpperCase()))
                                         arry.push(element)
                                 })
                                 setBanks(arry.splice(0, 50));

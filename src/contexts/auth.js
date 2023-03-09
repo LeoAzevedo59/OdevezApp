@@ -34,6 +34,7 @@ export default function AuthProvider({ children }) {
             senha: senha,
             confirmarSenha: confirmarSenha
         }).then((response) => {
+            console.log(response.data);
             setUsuario(response.data);
         }).catch(function (error) {
             console.log(error.response.status + " Componente: Cadastro");

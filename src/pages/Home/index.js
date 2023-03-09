@@ -97,38 +97,44 @@ export default function Home() {
   }
 
   async function ObterNomeUsuario() {
-    await api.get("usuario/obter-nome", {
-      headers: {
-        Authorization: usuario.type + " " + usuario.token
-      },
-      params: {
-        usuario: usuario.codigo
-      }
-    }).then((response) => {
-      SetNome(response.data);
-    }).catch(function (error) {
-      console.log(error.response.status + " Componente: Home - Obter Extrato");
-    });
-    setIsLoading(false);
+    try {
+      await api.get("usuario/obter-nome", {
+        params: {
+          usuario: usuario.codigo
+        }
+      }).then((response) => {
+        SetNome(response.data)
+      }).catch(function (error) {
+        console.log(error.response.status + " Componente: Home - Obter nome");
+      });
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   async function InserirApelido() {
-    await api.post("usuario/inserir-apelido", {
-      Codigo: usuario.codigo,
-      Apelido: apelido,
-      Usuario: usuario.codigo,
-      Nome: usuario.Nome
-    }, {
-      headers: {
-        Authorization: usuario.type + " " + usuario.token
-      }
-    }).then((response) => {
-      AlterarApelido(response.data);
-      startAnimation();
-    }).catch(function (error) {
-      console.log(error.response.status + " Componente: Home - Inserir apelido");
-      return false;
-    });
+
+    try {
+      await api.post("usuario/inserir-apelido", {
+        Codigo: usuario.codigo,
+        Apelido: apelido,
+        Usuario: usuario.codigo,
+        Nome: usuario.Nome
+      }, {
+        headers: {
+          Authorization: usuario.type + " " + usuario.token
+        }
+      }).then((response) => {
+        AlterarApelido(response.data);
+        startAnimation();
+      }).catch(function (error) {
+        console.log(error.response.status + " Componente: Home - Inserir apelido");
+        return false;
+      });
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   async function ObterCarteira() {
@@ -171,7 +177,7 @@ export default function Home() {
   }
 
   useEffect(() => {
-    if (usuario.apelido === '') {
+    if (usuario.apelido === '' || usuario.apelido === undefined || usuario.apelido === null) {
       ObterNomeUsuario();
       setVisible(true);
     }
@@ -273,7 +279,7 @@ export default function Home() {
           renderItem={({ item }) => <LblCarteiraResumida data={item} exibirValor={exibirValor} />}
         />
 
-        {usuario.apelido === ''
+        {usuario.apelido === '' || usuario.apelido === undefined || usuario.apelido === null
           ?
           <Modal transparent={false}
             animationType={"slide"}

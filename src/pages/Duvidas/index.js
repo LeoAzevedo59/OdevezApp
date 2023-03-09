@@ -37,7 +37,7 @@ export default function Duvidas() {
                 <ContainerDuvida>
                     <TouchableOpacity onPress={() => AlterarIcone(1)} >
                         <Header>
-                            <Titulo>Como alterar a forma de pagamento da assinatura?</Titulo>
+                            <Titulo>O que é um aplicativo de gestão financeira pessoal?</Titulo>
                             <AntDesign name={[
                                 isOpen1 ? 'down' : 'right'
                             ]} size={24} color="#333" />
@@ -45,16 +45,13 @@ export default function Duvidas() {
                     </TouchableOpacity>
                     <Descricao style={[
                         isOpen1 ? { display: 'flex' } : { display: 'none' }
-                    ]}>Se você fez a assinatura do Odevez Finance pela Web e deseja alterar a forma de pagamento, siga os passos abaixo:{"\n"}{"\n"}
-                        1. mAcesse seu gmail e busque pela palavra chave Odevez Finance Labs. {"\n"}{"\n"}
-                        2. Você encontrará um e-mail do Pagar.me. Acesse ele e então clique em Gerenciar assinatura; {"\n"}{"\n"}
-                        3. Ao clicar, será apresentada uma tela com os detalhes da assinatura e poderá alterar a forma de pagamento.</Descricao>
+                    ]}>Um aplicativo de gestão financeira pessoal é uma ferramenta que ajuda os usuários a controlar suas finanças pessoais, gerenciar despesas, fazer orçamentos e planejar suas finanças a longo prazo.</Descricao>
                 </ContainerDuvida>
 
                 <ContainerDuvida>
                     <TouchableOpacity onPress={() => AlterarIcone(2)} >
                         <Header>
-                            <Titulo>Como alterar a forma de pagamento da assinatura?</Titulo>
+                            <Titulo>Quais são os benefícios de usar um aplicativo de gestão financeira pessoal?</Titulo>
                             <AntDesign name={[
                                 isOpen2 ? 'down' : 'right'
                             ]} size={24} color="#333" />
@@ -63,16 +60,13 @@ export default function Duvidas() {
 
                     <Descricao style={[
                         isOpen2 ? { display: 'flex' } : { display: 'none' }
-                    ]}>Se você fez a assinatura do Odevez Finance pela Web e deseja alterar a forma de pagamento, siga os passos abaixo:{"\n"}{"\n"}
-                        1. mAcesse seu gmail e busque pela palavra chave Odevez Finance Labs. {"\n"}{"\n"}
-                        2. Você encontrará um e-mail do Pagar.me. Acesse ele e então clique em Gerenciar assinatura; {"\n"}{"\n"}
-                        3. Ao clicar, será apresentada uma tela com os detalhes da assinatura e poderá alterar a forma de pagamento.</Descricao>
+                    ]}>Os benefícios incluem um maior controle sobre as finanças pessoais, a capacidade de ver claramente onde o dinheiro está sendo gasto e identificar áreas onde pode haver oportunidades de economia. Além disso, esses aplicativos podem ajudar os usuários a economizar tempo e esforço ao automatizar tarefas de rastreamento de despesas e fornecer relatórios de gastos.</Descricao>
                 </ContainerDuvida>
 
                 <ContainerDuvida>
                     <TouchableOpacity onPress={() => AlterarIcone(3)} >
                         <Header>
-                            <Titulo>Como alterar a forma de pagamento da assinatura?</Titulo>
+                            <Titulo>Como esses aplicativos funcionam?</Titulo>
                             <AntDesign name={[
                                 isOpen3 ? 'down' : 'right'
                             ]} size={24} color="#333" />
@@ -81,10 +75,7 @@ export default function Duvidas() {
 
                     <Descricao style={[
                         isOpen3 ? { display: 'flex' } : { display: 'none' }
-                    ]}>Se você fez a assinatura do Odevez Finance pela Web e deseja alterar a forma de pagamento, siga os passos abaixo:{"\n"}{"\n"}
-                        1. mAcesse seu gmail e busque pela palavra chave Odevez Finance Labs. {"\n"}{"\n"}
-                        2. Você encontrará um e-mail do Pagar.me. Acesse ele e então clique em Gerenciar assinatura; {"\n"}{"\n"}
-                        3. Ao clicar, será apresentada uma tela com os detalhes da assinatura e poderá alterar a forma de pagamento.</Descricao>
+                    ]}>Esses aplicativos geralmente permitem que os usuários adicionem suas contas bancárias, cartões de crédito e outras contas financeiras para que possam ver um panorama completo de suas finanças. Eles também permitem que os usuários categorizem suas despesas, definam orçamentos e recebam alertas quando atingirem um limite de gastos ou quando uma conta estiver baixa.</Descricao>
                 </ContainerDuvida>
 
                 <Button onPress={() =>
