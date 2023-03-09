@@ -10,13 +10,13 @@ export default function SignIn() {
     const navigation = useNavigation();
     const { Cadastrar } = useContext(AuthContext);
 
-    const [nome, setNome] = useState('Leo');
-    const [sobrenome, setSobrenome] = useState('Leo');
+    const [nome, setNome] = useState('');
+    const [sobrenome, setSobrenome] = useState('');
     const [cpf, setCPF] = useState('');
-    const [email, setEmail] = useState('Leo');
-    const [celular, setCelular] = useState('(19)98235-8635');
-    const [senha, setSenha] = useState('1');
-    const [confirmarSenha, setConfirmarSenha] = useState('1');
+    const [email, setEmail] = useState('');
+    const [celular, setCelular] = useState('');
+    const [senha, setSenha] = useState('');
+    const [confirmarSenha, setConfirmarSenha] = useState('');
 
     const [erroNome, setErroNome] = useState('');
     const [erroSobrenome, setErroSobrenome] = useState('');
