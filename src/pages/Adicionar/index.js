@@ -19,7 +19,7 @@ export default function Adicionar() {
                 </Botao>
                 <Botao onPress={() => navigation.navigate('ImportExtrato')}>
                 <MaterialCommunityIcons name="import" size={24} color="#333" />
-                    <TextoBotao>Iportar Extrato</TextoBotao>
+                    <TextoBotao>Importar Extrato</TextoBotao>
                 </Botao>
 
                 {/* <Botao onPress={() => navigation.navigate('FrmObjetivo')}>

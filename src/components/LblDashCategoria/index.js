@@ -22,6 +22,9 @@ let MovimentacaoEnum = {
 export default function LblDashCategoria(props) {
     const negativo = props.data.movimentacao === MovimentacaoEnum.Saida ? '-' : '';
     const corExpandMore = props.data.movimentacao === MovimentacaoEnum.Saida ? 'red' : 'green';
+
+    let value = parseFloat(props.data.valor.replace('.', '').replace(',', '.'));
+
     return (
         <SafeAreaView>
             <ContainerCategoria>
@@ -31,7 +34,7 @@ export default function LblDashCategoria(props) {
                     {
                         props.data.movimentacao === undefined ?
                             <Row>
-                                <TxtDinheiro style={{marginRight: 8}}>{props.exibirValor === true ? " " + FormatReais(props.data.valor) : " ****"}</TxtDinheiro>
+                                <TxtDinheiro style={{ marginRight: 8 }}>{props.exibirValor === true ? " " + FormatReais(value) : " ****"}</TxtDinheiro>
                             </Row>
                             :
                             <Row>

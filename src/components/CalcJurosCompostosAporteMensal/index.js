@@ -178,7 +178,7 @@ export default function CalcJurosCompostosAporteMensal() {
                 <ContainerValue>
                     {
                         resultado.map((value, key) => {
-                            return <LblDashCategoria key={key} data={value} />
+                            return <LblDashCategoria key={key} data={value} exibirValor={true}/>
                         })
                     }
                 </ContainerValue>
