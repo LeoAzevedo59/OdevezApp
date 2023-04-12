@@ -79,9 +79,9 @@ export default function Duvidas() {
                 </ContainerDuvida>
 
                 <Button onPress={() =>
-                    Linking.openURL('mailto:support@example.com')
+                    Linking.openURL('mailto:suporte@odevez.com')
                 }
-                    title="support@example.com" />
+                    title="suporte@odevez.com" />
             </ScrollView>
         </Background>
     );
