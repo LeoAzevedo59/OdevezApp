@@ -23,7 +23,10 @@ export default function LblDashCategoria(props) {
     const negativo = props.data.movimentacao === MovimentacaoEnum.Saida ? '-' : '';
     const corExpandMore = props.data.movimentacao === MovimentacaoEnum.Saida ? 'red' : 'green';
 
-    let value = parseFloat(props.data.valor.replace('.', '').replace(',', '.'));
+
+    let value = props.data.valor;
+    if (!props.dash)
+        value = parseFloat(props.data.valor.replace('.', '').replace(',', '.'));
 
     return (
         <SafeAreaView>

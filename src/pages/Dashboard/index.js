@@ -44,7 +44,7 @@ export default function Dashboard() {
     const [selectedMovimentacao, SetSelectedMovimentacao] = useState(0);
     const [showStart, setStartShow] = useState(false);
     let d = new Date();
-    d.setMonth(0);
+    console.log('date:', d);
     const [dateStart, setDateStart] = useState(new Date(d));
     const [showEnd, setEndShow] = useState(false);
     const [dateEnd, setDateEnd] = useState(new Date());
@@ -54,23 +54,33 @@ export default function Dashboard() {
     const [dateEndFormat, setDateEndFormat] = useState(dateEnd.getDate().toString() + '/' + (parseInt(dateEnd.getMonth() + 1)).toString() + '/' + dateEnd.getFullYear().toString());
     const [FiltroDateEndFormat, setFiltroDateEndFormat] = useState(dateEnd.getFullYear().toString() + '/' + (parseInt(dateEnd.getMonth() + 1)).toString() + '/' + dateEnd.getDate().toString());
 
+
+
+
+
     async function ObterDashboardPizza() {
-        await api.post("extrato/obter-dashboard-pizza", {
-            DataInicio: new Date(filtroDateStartFormat),
-            DataFim: new Date(FiltroDateEndFormat),
-            Movimentacao: selectedMovimentacao,
-            Usuario: usuario.codigo,
-        }, {
-            headers: {
-                Authorization: usuario.type + " " + usuario.token
-            }
-        }).then((response) => {
-            setData(response.data.dados);
-            setValorTotal(response.data.valorTotal);
-        }).catch(function (error) {
-            console.log(error + " Componente: Dashboard - ObterDashboardPizza()");
-            return false;
-        });
+        console.log(filtroDateStartFormat, FiltroDateEndFormat)
+
+        try {
+            await api.post("extrato/obter-dashboard-pizza", {
+                DataInicioStrg: filtroDateStartFormat,
+                DataFimStrg: FiltroDateEndFormat,
+                Movimentacao: selectedMovimentacao,
+                Usuario: usuario.codigo,
+            }, {
+                headers: {
+                    Authorization: usuario.type + " " + usuario.token
+                }
+            }).then((response) => {
+                setData(response.data.dados);
+                setValorTotal(response.data.valorTotal);
+            }).catch(function (error) {
+                console.log(error + " Componente: Dashboard - ObterDashboardPizza()");
+                return false;
+            });
+        } catch (error) {
+            console.log('catch:', error);
+        }
     }
 
     const showDateStartPicker = () => {
@@ -138,7 +148,7 @@ export default function Dashboard() {
     useEffect(() => {
         if (ValidarData())
             ObterDashboardPizza();
-    }, [dateStart, dateEnd, selectedMovimentacao, exibirValor, dateEndFormat, filtroDateStartFormat]);
+    }, [selectedMovimentacao, filtroDateStartFormat]);
 
     return (
         <SafeAreaView style={{ backgroundColor: '#FBFBFB' }}>
@@ -221,9 +231,9 @@ export default function Dashboard() {
                     data={data}
                     horizontal={false}
                     showsVerticalScrollIndicator={false}
-                    renderItem={({ item }) => <LblDashCategoria  exibirValor={exibirValor} data={item} />}
+                    renderItem={({ item }) => <LblDashCategoria exibirValor={exibirValor} data={item} dash={true}/>}
                 />
-          
+
             </Background>
 
         </SafeAreaView >
